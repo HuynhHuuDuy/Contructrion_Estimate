@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Construction_Estimating" Class="DataDTXDDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.;Initial Catalog=Construction_Estimating;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="Construction_EstimatingConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Area" Member="Areas">
+    <Type Name="Area">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Association Name="Area_UnitPrice_Area" Member="UnitPrice_Areas" ThisKey="ID" OtherKey="Area_ID" Type="UnitPrice_Area" />
+      <Association Name="User_Area" Member="User" ThisKey="Email" OtherKey="Email" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserWorks" Member="UserWorks">
+    <Type Name="UserWork">
+      <Column Name="ID_Primary" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BuildingItem_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Sub_BuildingItem_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="IndexSheet" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NormWork_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(3000)" CanBeNull="true" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Number" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="Horizontal" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="Vertical" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="Height" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="Area" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="PriceMaterial" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="PriceLabor" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="PriceMachine" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="SumMaterial" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="SumLabor" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Column Name="SumMachine" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
+      <Association Name="BuildingItem_UserWork" Member="BuildingItem" ThisKey="BuildingItem_ID" OtherKey="ID" Type="BuildingItem" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Building" Member="Buildings">
+    <Type Name="Building">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Sum" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Association Name="Building_BuildingItem" Member="BuildingItems" ThisKey="ID" OtherKey="Building_ID" Type="BuildingItem" />
+      <Association Name="Building_Images_Url" Member="Images_Urls" ThisKey="ID" OtherKey="Building_ID" Type="Images_Url" />
+      <Association Name="User_Building" Member="User" ThisKey="Email" OtherKey="Email" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BuildingItems" Member="BuildingItems">
+    <Type Name="BuildingItem">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Building_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+      <Column Name="Sum" Type="System.Decimal" DbType="Decimal(18,3) NOT NULL" CanBeNull="false" />
+      <Association Name="BuildingItem_UserWork" Member="UserWorks" ThisKey="ID" OtherKey="BuildingItem_ID" Type="UserWork" />
+      <Association Name="BuildingItem_UserWork_Resource" Member="UserWork_Resources" ThisKey="ID" OtherKey="BuildingItem_ID" Type="UserWork_Resource" />
+      <Association Name="Building_BuildingItem" Member="Building" ThisKey="Building_ID" OtherKey="ID" Type="Building" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Images_Url" Member="Images_Urls">
+    <Type Name="Images_Url">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Building_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Association Name="Building_Images_Url" Member="Building" ThisKey="Building_ID" OtherKey="ID" Type="Building" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NormDetails" Member="NormDetails">
+    <Type Name="NormDetail">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NormWork_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Numbers" Type="System.Decimal" DbType="Decimal(18,3) NOT NULL" CanBeNull="false" />
+      <Association Name="NormWork_NormDetail" Member="NormWork" ThisKey="NormWork_ID" OtherKey="ID" Type="NormWork" IsForeignKey="true" />
+      <Association Name="UnitPrice_NormDetail" Member="UnitPrice" ThisKey="UnitPrice_ID" OtherKey="ID" Type="UnitPrice" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NormWorks" Member="NormWorks">
+    <Type Name="NormWork">
+      <Column Name="ID" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="NormWork_NormDetail" Member="NormDetails" ThisKey="ID" OtherKey="NormWork_ID" Type="NormDetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UnitPrice" Member="UnitPrices">
+    <Type Name="UnitPrice">
+      <Column Name="ID" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="UnitPrice_NormDetail" Member="NormDetails" ThisKey="ID" OtherKey="UnitPrice_ID" Type="NormDetail" />
+      <Association Name="UnitPrice_UnitPrice_Area" Member="UnitPrice_Areas" ThisKey="ID" OtherKey="UnitPrice_ID" Type="UnitPrice_Area" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UnitPrice_Area" Member="UnitPrice_Areas">
+    <Type Name="UnitPrice_Area">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Area_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,3) NOT NULL" CanBeNull="false" />
+      <Association Name="Area_UnitPrice_Area" Member="Area" ThisKey="Area_ID" OtherKey="ID" Type="Area" IsForeignKey="true" />
+      <Association Name="UnitPrice_UnitPrice_Area" Member="UnitPrice" ThisKey="UnitPrice_ID" OtherKey="ID" Type="UnitPrice" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="Email" Type="System.String" DbType="NVarChar(200) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Last_Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="First_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="Workplace" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Url_Image" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="User_Area" Member="Areas" ThisKey="Email" OtherKey="Email" Type="Area" />
+      <Association Name="User_Building" Member="Buildings" ThisKey="Email" OtherKey="Email" Type="Building" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserWork_Resource" Member="UserWork_Resources">
+    <Type Name="UserWork_Resource">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BuildingItem_ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="UserWork_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Number_Norm" Type="System.Decimal" DbType="Decimal(18,3) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,3) NOT NULL" CanBeNull="false" />
+      <Association Name="BuildingItem_UserWork_Resource" Member="BuildingItem" ThisKey="BuildingItem_ID" OtherKey="ID" Type="BuildingItem" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

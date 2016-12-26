@@ -1,0 +1,70 @@
+﻿
+
+.body-estimate {
+    width: 100%;
+    min-height: 250px;
+    padding: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 2px;
+    padding-right: 5px;
+}
+
+.treeview {
+    cursor: pointer;
+    padding: 10px;
+}
+
+    .treeview:hover {
+        background-color: #ccc;
+    }
+
+.wrap-treeview {
+    margin-top: 10px;
+}
+
+.left_menu {
+    /*z-index: 1000;
+    left: 250px;
+    width: 250px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    float: left;
+    margin-top: 150px;*/
+
+    position: absolute;
+    background-color: #f1f1f1 !important;
+    padding-top: 50px;
+    height: 1000px;
+    width: 250px;
+    z-index: 1000;
+    -webkit-transition: -webkit-transform .3s ease-in-out,width .3s ease-in-out;
+    -moz-transition: -moz-transform .3s ease-in-out,width .3s ease-in-out;
+    -o-transition: -o-transform .3s ease-in-out,width .3s ease-in-out;
+    transition: transform .3s ease-in-out,width .3s ease-in-out;
+}
+
+.active_leftmenu {
+    width: 0px !important;
+}
+
+.active_contentwrapper {
+    margin-left: 10px !important;
+}
+
+.content-wrapper {
+    min-height: 1000px;
+    margin-left: 250px;
+    background-color: white;
+}
+
+.content_page {
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-style: solid;
+    border-color: #ddd;
+    border-width: 0px 1px 1px 1px;
+    background-color: white;
+}

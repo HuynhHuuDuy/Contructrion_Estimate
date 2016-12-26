@@ -1,0 +1,156 @@
+﻿@using Du_Toan_Xay_Dung.Handlers;
+@using Du_Toan_Xay_Dung.Models;
+@{
+    ViewBag.Title = "Work_SPA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+
+    <!--Bootstrap angular-->
+    <script src="~/Scripts/Angular/ui-bootstrap-tpls-2.0.0.min.js"></script>
+
+    <!--App script-->
+    <script src="~/Scripts/DuToan/Estimate_Work/App_work.js"></script>
+
+    <script src="~/Scripts/DuToan/Estimate_Work/services/dataService.js"></script>
+
+    <script src="~/Scripts/DuToan/Estimate_Work/Controllers/EstimateCtrl.js"></script>
+
+    <script src="~/Scripts/DuToan/Estimate_Work/Controllers/MaterialCtrl.js"></script>
+
+    <script src="~/Scripts/DuToan/Estimate_Work/Controllers/SpecificationCtrl.js"></script>
+
+    <script src="~/Scripts/DuToan/Bootstrap_UploadFile.js"></script>
+}
+
+@section CSS{
+    <link href="~/Content/dutoan/estimate_work.css" rel="stylesheet" />
+    <link href="~/Content/dutoan/Bootstrap_UploadFile.css" rel="stylesheet" />
+    <link href="~/Content/loading.css" rel="stylesheet" />
+}
+
+<script>
+    $(document).ready(function () {
+        $("#body_content").removeClass("container");
+    });
+</script>
+
+<div class="body-estimate" ng-app="app_work" ng-controller="mainController" id="body_estimate">
+    <aside class="left_menu" id="left_menu" ng-class="{'active_leftmenu': active_leftmenu}">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar" style="height: auto;">
+            <div class="sidebar-menu">
+                <!--building-->
+                <div class="wrap-treeview">
+                    <div class="treeview" ng-click="treeview($event)">
+                        <span>
+                            <i class="fa fa-pie-chart"></i>
+                            <span>Công Trình</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </div>
+                    <div class="treeview-menu" style="display:none; margin-left:10px">
+                        <div style="margin-top:10px">
+                            <select name="" id=""
+                                    ng-options="option.Name for option in Buildings.availableOptions track by option.ID"
+                                    ng-model="Buildings.selectedOption"
+                                    ng-change="change_building(Buildings.selectedOption.ID)"
+                                    class="form-control"
+                                    style="width:200px">
+                            </select>
+                        </div>
+                        <div ng-show="show_cbb_buildingitem" style="margin-top:20px;">
+                            <select name="" id=""
+                                    ng-options="option.Name for option in BuildingItems.availableOptions track by option.ID"
+                                    ng-model="BuildingItems.selectedOption"
+                                    ng-change="change_buildingitem(BuildingItems.selectedOption.ID)"
+                                    class="form-control"
+                                    style="width:200px"></select>
+                        </div>
+                    </div>
+                </div>
+                <!--Price-->
+                <div class="wrap-treeview">
+                    <div class="treeview" ng-click="treeview($event)">
+                        <span>
+                            <i class="fa fa-pie-chart"></i>
+                            <span>Đơn Giá</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </div>
+                    <div class="treeview-menu" style="display:none">
+                        <div>
+                            <h4>Chọn Đơn Giá:</h4>
+                            <select name="change_unitprice" id="change_unitprice"
+                                    ng-options="option.Name for option in unitprice.availableOptions track by option.ID"
+                                    ng-model="unitprice.selectedOption"
+                                    ng-change="change_price(unitprice.selectedOption.ID)"
+                                    class="form-control"
+                                    style="width:200px"></select>
+                        </div>
+                    </div>
+                    <div class="treeview-menu" style="display:none">
+                        <div>
+                            <h4>Chỉnh sửa Đơn Giá:</h4>
+                            <div class="box-header with-border">
+                                <h5 class="box-title">
+                                    <a href="/UnitPrice/Index">Tạo và Sửa</a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <div class="content-wrapper" style="" id="content_wrapper" ng-class="{'active_contentwrapper': active_contentwrapper}">
+        <!-- Content Header (Page header) -->
+        <section class="content-header col-sm-12">
+            <div class="col-sm-2">
+                <span class="btn btn-default" id="menu-toggle" ng-click="menu_toggle($event)">Toggle Menu</span>
+            </div>
+            <div class="col-sm-10">
+                <!--title building/ building_item-->
+
+                <h4>{{infortitle.BuildingName}} / {{infortitle.BuildingItemName}}</h4>
+
+                @if (SessionHandler.User != null)
+                {
+                    var buildingitem_id = Url.RequestContext.RouteData.Values["id"];
+                    if (buildingitem_id != null)
+                    {
+                        <input type="hidden" value="@buildingitem_id" id="txt_building_item" />
+                    }
+                    <input type="hidden" value="@SessionHandler.User.Email" id="txt_session_user" />
+                }
+            </div>
+        </section>
+        <!-- Main content -->
+        <section class="content col-sm-12" style="margin-top:15px">
+            <!-- Main row -->
+            <div class="row">
+                <div class="col-sm-12" style="margin-top:20px">
+                    <uib-tabset active="active">
+                        <uib-tab index="0" heading="Dự toán" ui-sref="DuToan">
+                        </uib-tab>
+                        <uib-tab index="1" heading="Thành Phần Hao Phí" ui-sref="HaoPhi">
+                        </uib-tab>
+                        <uib-tab index="2" heading="Phân Tích" ui-sref="PhanTich">
+                        </uib-tab>
+                        <uib-tab index="3" heading="Tổng Hợp" ui-sref="TongHop">
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+                <div class="col-sm-12 content_page" ui-view>
+
+                </div>
+            </div><!-- /.row (main row) -->
+
+        </section><!-- /.content -->
+    </div>
+
+</div>
