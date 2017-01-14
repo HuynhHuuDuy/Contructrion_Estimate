@@ -25,9 +25,9 @@ namespace Du_Toan_Xay_Dung.Models
             PriceMaterial = obj.PriceMaterial;
             PriceLabor = obj.PriceLabor;
             PriceMachine = obj.PriceMachine;
-            SumMaterial = obj.SumMaterial;
-            SumLabor = obj.SumLabor;
-            SumMachine = obj.SumMachine;
+            //SumMaterial = obj.SumMaterial;
+            //SumLabor = obj.SumLabor;
+            //SumMachine = obj.SumMachine;
 
         }
         public long BuildingItem_ID { get; set; }
@@ -45,9 +45,9 @@ namespace Du_Toan_Xay_Dung.Models
         public decimal? PriceMaterial { get; set; }
         public decimal? PriceLabor { get; set; }
         public decimal? PriceMachine { get; set; }
-        public decimal? SumMaterial { get; set; }
-        public decimal? SumLabor { get; set; }
-        public decimal? SumMachine { get; set; }
+        //public decimal? SumMaterial { get; set; }
+        //public decimal? SumLabor { get; set; }
+        //public decimal? SumMachine { get; set; }
 
     }
 }

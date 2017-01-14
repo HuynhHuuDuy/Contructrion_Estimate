@@ -29,7 +29,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
 });
 
-app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http', function ($scope, $rootScope, dataService, $http) {
+app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http', '$filter', function ($scope, $rootScope, dataService, $http, $filter) {
 
     //<!-- Menu Toggle Script -->
     $scope.active_leftmenu = false;
@@ -158,7 +158,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
 
     //create list works
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 100; i++) {
         var item = {
             IndexSheet: i,
             ID: "",
@@ -185,7 +185,10 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
     if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
         dataService.getAllSheet(buildingItem_id).then(function (data) {
-            angular.forEach(data, function (value, key) {
+            angular.forEach(data.sheets, function (value, key) {
+
+                var regular_expression = /^\d+$/;
+
                 $rootScope.works[value.IndexSheet].ID = value.ID;
                 $rootScope.works[value.IndexSheet].NormWork_ID = value.NormWork_ID;
                 $rootScope.works[value.IndexSheet].Name = value.Name;
@@ -195,18 +198,44 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                 $rootScope.works[value.IndexSheet].Vertical = value.Vertical;
                 $rootScope.works[value.IndexSheet].Height = value.Height;
                 $rootScope.works[value.IndexSheet].Area = value.Area;
-                $rootScope.works[value.IndexSheet].PriceMaterial = value.PriceMaterial;
-                $rootScope.works[value.IndexSheet].PriceLabor = value.PriceLabor;
-                $rootScope.works[value.IndexSheet].PriceMachine = value.PriceMachine;
-                $rootScope.works[value.IndexSheet].SumMaterial = value.SumMaterial;
-                $rootScope.works[value.IndexSheet].SumLabor = value.SumLabor;
-                $rootScope.works[value.IndexSheet].SumMachine = value.SumMachine;
+                //put data sum from user work resourse
                 $rootScope.works[value.IndexSheet].BuildingItem_ID = value.BuildingItem_ID;
                 $rootScope.works[value.IndexSheet].Sub_BuildingItem_ID = value.Sub_BuildingItem_ID;
 
-                var regular_expression = /^\d+$/;
                 if (regular_expression.test(value.ID)) {
+                    var p_material = 0;
+                    var p_labor = 0;
+                    var p_machine = 0;
+                    var resourcework = $filter('filter')(data.userworkresource, { UserWork_ID: value.ID }, true);
+
+                    if (value.ID == 4) {
+                        console.log(resourcework);
+                    }
+
+                    angular.forEach(resourcework, function (v, k) {
+
+                        if (v.UnitPrice_ID.substring(0, 1) == "V") {
+                            p_material = parseFloat(p_material) + (parseFloat(v.Number_Norm) * parseFloat(v.Price));
+                        }
+                        if (v.UnitPrice_ID.substring(0, 1) == "N") {
+                            p_labor = parseFloat(p_labor) + (parseFloat(v.Number_Norm) * parseFloat(v.Price));
+                        }
+                        if (v.UnitPrice_ID.substring(0, 1) == "M")
+                            p_machine = parseFloat(p_machine) + (parseFloat(v.Number_Norm) * parseFloat(v.Price));
+                    });
+
+                    
+
+                    $rootScope.works[value.IndexSheet].PriceMaterial = p_material;
+                    $rootScope.works[value.IndexSheet].PriceLabor = p_labor;
+                    $rootScope.works[value.IndexSheet].PriceMachine = p_machine;
+                    $rootScope.works[value.IndexSheet].SumMaterial = parseFloat(p_material) * parseFloat(value.Area);
+                    $rootScope.works[value.IndexSheet].SumLabor = parseFloat(p_labor) * parseFloat(value.Area);
+                    $rootScope.works[value.IndexSheet].SumMachine = parseFloat(p_machine) * parseFloat(value.Area);
+
+
                     $rootScope.index_work = parseInt($rootScope.index_work) + 1;
+
                 }
             });
         });

@@ -231,6 +231,8 @@
     <Compile Include="Models\DinhMucViewModel.cs" />
     <Compile Include="Models\DonGiaViewModel.cs" />
     <Compile Include="Models\BuildingItemViewModel.cs" />
+    <Compile Include="Models\SaveUserWorkResourceViewModel.cs" />
+    <Compile Include="Models\SaveUserWorkViewModel.cs" />
     <Compile Include="Models\UserWorkResourceViewModel.cs" />
     <Compile Include="Models\Images_CongTrinhViewModel.cs" />
     <Compile Include="Models\UnitPrice_AreaViewModel.cs" />

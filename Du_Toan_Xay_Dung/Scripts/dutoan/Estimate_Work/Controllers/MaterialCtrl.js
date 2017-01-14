@@ -17,7 +17,7 @@ angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataS
 
                 var obj = {
                     IndexSheet: d,
-                    Category: value.UnitPrice_ID.substring(0,1),
+                    Category: value.UnitPrice_ID.substring(0, 1),
                     Name: value.Name,
                     Unit: value.Unit,
                     Number: value.Number_Norm,
@@ -67,5 +67,53 @@ angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataS
             row_header.find("div").eq(index_eq).css({ "background-color": "#eaeaea" });
         }
     }
+
+    
+    $scope.focus = function (value_focus, $event) {
+        var div = angular.element($event.currentTarget).parent().parent();
+        var id = div.find(".column_header input").val();
+
+        $scope.blur = function (value_blur) {
+            if (value_focus != value_blur) {
+
+                //calculate sum
+                var sum = parseFloat($scope.materials[id].Number) * parseFloat($scope.materials[id].Price);
+                $scope.materials[id].Sum = sum;
+
+                //saving price updated to database
+                SavePricetoDatabase($scope.materials[id]);
+            }
+        };
+    };
+
+
+    function SavePricetoDatabase(items) {
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+            $scope.message_save = true;
+            var unitprice_id = items.UnitPrice_ID;
+            var price = items.Price;
+            var obj = {
+                BuildingItem_ID: buildingItem_id,
+                UnitPrice_ID: unitprice_id,
+                Price: price
+            };
+
+            $http({
+                method: "post",
+                url: "/HangMuc/post_updateprice",
+                data: JSON.stringify(obj),
+                dataType: "json",
+            })
+                .success(function (result) {
+                    //display message
+                    window.setTimeout(function () { $scope.message_save = false; }, 100);
+                });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    };
 
 }]);

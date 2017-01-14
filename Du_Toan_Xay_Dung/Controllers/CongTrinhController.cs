@@ -479,9 +479,9 @@ namespace Du_Toan_Xay_Dung.Controllers
                         ws1.Cells[K].Value = row.Unit;
                         ws1.Cells[M].Value = row.Number;
                         // chỉnh lại công thức excel
-                        ws1.Cells[O].Value = row.SumMaterial;
-                        ws1.Cells[Q].Value = row.SumLabor;
-                        ws1.Cells[S].Value = row.SumMachine;
+                        ws1.Cells[O].Value = row.PriceMaterial * row.Area;
+                        ws1.Cells[Q].Value = row.PriceLabor * row.Area;
+                        ws1.Cells[S].Value = row.PriceMachine * row.Area;
                         ws1.Cells[U].Formula = "+PRODUCT(SUM(O" + r1 + ":S" + r1 + "),M" + r1 + ")";
                         r1++;
                     }

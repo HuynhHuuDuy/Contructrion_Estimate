@@ -17,6 +17,10 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
     //data searched
     $scope.list_searched = [];
 
+    //variable id mean work when change number to calculate area
+    $scope.area_id_meanwork = -1;
+
+
     function getNormWorks() {
         dataService.getNormworks().then(function (data) {
             var eachItem;
@@ -34,17 +38,18 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         });
     };
 
-    function getListPrice() {
-        dataService.getListPrice().then(function (data) {
-            $scope.list_AllPrice = data;
-        });
-    };
+    //function getListPrice() {
+    //    dataService.getListPrice().then(function (data) {
+    //        $scope.list_AllPrice = data;
+    //    });
+    //};
 
     var buildingItem_id = angular.element("#txt_building_item").val();
     var session_user = angular.element("#txt_session_user").val();
 
     function SaveWorktoDatabase(items) {
         if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
             $scope.message_save = true;
             $http({
                 method: "post",
@@ -64,13 +69,21 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
     };
 
-    function UpdateWorktoDatabase(items) {
+    function updateArea_Work(items) {
         if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
             $scope.message_save = true;
+            var index = items.IndexSheet;
+            var area = items.Area;
+            var building_item_id = items.BuildingItem_ID;
+            var obj = {
+                IndexSheet: index,
+                Area: area,
+                BuildingItem_ID: building_item_id
+            };
             $http({
                 method: "post",
                 url: "/HangMuc/post_updatework",
-                data: JSON.stringify(items),
+                data: JSON.stringify(obj),
                 dataType: "json",
             })
                 .success(function (result) {
@@ -144,7 +157,11 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 }
                 if ($rootScope.works[$scope.No].ID != "") {
                     $rootScope.works[$scope.No].Sub_BuildingItem_ID = $scope.subcategory;
+                    if ($scope.area_id_meanwork != -1) {
+                        updateArea_Work($rootScope.works[$scope.area_id_meanwork]);
+                    }
                     SaveWorktoDatabase($rootScope.works[$scope.No]);
+                    
                 }
                 //....
                 $scope.No = -1;
@@ -282,6 +299,13 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 $rootScope.works[index].NormWork_ID = value.ID;
                 $rootScope.works[index].Name = value.Name;
                 $rootScope.works[index].Unit = value.Unit;
+
+                $rootScope.works[index].Number = "1";
+                $rootScope.works[index].Horizontal = "1";
+                $rootScope.works[index].Vertical = "1";
+                $rootScope.works[index].Height = "1";
+                $rootScope.works[index].Area = "1";
+
                 $rootScope.works[index].PriceMaterial = value.pricematerial;
                 $rootScope.works[index].PriceLabor = value.pricelabor;
                 $rootScope.works[index].PriceMachine = value.pricemachine;
@@ -336,8 +360,6 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         });
     };
 
-
-
     function substring_array(s, begin, end) {
         var string = String(s);
         string = string.substring(begin, end);
@@ -378,7 +400,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
 
             //save work and check log in
-            UpdateWorktoDatabase($rootScope.works[id_work]);
+            //UpdateWorktoDatabase($rootScope.works[id_work]);
         }
 
 
@@ -407,7 +429,16 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             for (var i = id_work; i >= 0; i--) {
                 if ($rootScope.works[i].ID == temp) {
                     id_meanwork = i;
+                    $scope.area_id_meanwork = i;
                     break;
+                }
+                else {
+                    var s = $rootScope.works[i].ID;
+                    d = s.indexOf(".");
+                    var id_temp = s.substring(0, d);
+                    if (id_temp != temp) {
+                        break;
+                    }
                 }
             }
 
@@ -426,7 +457,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 $rootScope.works[id_meanwork].SumMachine = (parseFloat($rootScope.works[id_meanwork].PriceMachine) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
 
                 //save work and check log in
-                UpdateWorktoDatabase($rootScope.works[id_meanwork]);
+                //UpdateWorktoDatabase($rootScope.works[id_meanwork]);
             }
 
 

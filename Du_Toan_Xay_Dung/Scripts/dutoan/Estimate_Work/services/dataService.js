@@ -51,13 +51,13 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
 
 
 
-    var getListPrice = function () {
-        return $http.get('/HangMuc/GetDSDonGia').then(function (response) {
-            return response.data
-        }, function (response) {
-            //Showing errors
-        });
-    };
+    //var getListPrice = function () {
+    //    return $http.get('/HangMuc/GetDSDonGia').then(function (response) {
+    //        return response.data
+    //    }, function (response) {
+    //        //Showing errors
+    //    });
+    //};
 
 
 
@@ -110,7 +110,7 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
         getAllSheet: getAllSheet,
         getGroupbyResources: getGroupbyResources,
         getNormworks: getNormworks,
-        getListPrice: getListPrice,
+        //getListPrice: getListPrice,
         GetDetailNormWork_Price: GetDetailNormWork_Price,
         GetBuildings: GetBuildings,
         get_BuildingItems: get_BuildingItems,

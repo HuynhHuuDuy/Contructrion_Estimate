@@ -9,6 +9,7 @@ using Du_Toan_Xay_Dung.Filter;
 using System.Data;
 using System.Data.OleDb;
 using System.Xml;
+using System.Globalization;
 
 namespace Du_Toan_Xay_Dung.Controllers
 {
@@ -18,25 +19,19 @@ namespace Du_Toan_Xay_Dung.Controllers
 
         public ActionResult Estimate_Work()
         {
-            
+
             return View();
         }
-
         public JsonResult get_Buildings()
         {
             var list = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult get_BuildingItems(string id)
         {
             var list = _db.BuildingItems.Where(i => i.Building_ID.Equals(id)).Select(i => new BuildingItemViewModel(i)).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-
-        
-
-
         public JsonResult get_infoBuildingItem(string id)
         {
             if (id != null)
@@ -60,25 +55,14 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error");
             }
         }
-
+        //get Norm work (Default by System)
         public JsonResult GetNormWorks()
         {
             var list_normwork = _db.NormWorks.Select(i => new DinhMucViewModel(i)).ToList();
 
             return Json(list_normwork, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult GetDSDonGia()
-        {
-            var list = _db.UnitPrices.Select(i => new
-            {
-                UnitPrice_ID = i.ID,
-                Name = i.Name,
-                Unit = i.Unit
-            }).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
+        //get Norm resource (Default by System)
         public JsonResult GetDetailNormWork_Price(string area_id)
         {
             var list = _db.NormDetails.Join(_db.UnitPrices, nd => nd.UnitPrice_ID, up => up.ID, (nd, up) => new
@@ -102,19 +86,26 @@ namespace Du_Toan_Xay_Dung.Controllers
                     }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-
+        //get All sheet's user saved
         public JsonResult getAllSheets(string buildingitem_id)
         {
             if (buildingitem_id != null)
             {
                 var sheets = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id)).Select(i => new UserWorkViewModel(i)).ToList();
-                return Json(sheets, JsonRequestBehavior.AllowGet);
+                var userworkresource = _db.UserWork_Resources.Where(i => i.BuildingItem_ID.Equals(buildingitem_id)).Select(i => new UserWorkResourceViewModel(i)).ToList();
+
+                return Json(new { sheets = sheets, userworkresource = userworkresource }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
         }
+
+
+
+        //......
+        //Get data follow action's user
 
         public JsonResult getAllResources(string buildingitem_id)
         {
@@ -223,27 +214,28 @@ namespace Du_Toan_Xay_Dung.Controllers
 
         }
 
-        public JsonResult post_savework(UserWorkViewModel model)
+        [HttpPost]
+        public JsonResult post_savework(SaveUserWorkViewModel model)
         {
             try
             {
                 if (model.BuildingItem_ID != 0)
                 {
-                    var work = _db.UserWorks.FirstOrDefault(i => i.IndexSheet.Equals(model.IndexSheet));
+                    var work = _db.UserWorks.FirstOrDefault(i => i.BuildingItem_ID.Equals(model.BuildingItem_ID) && i.IndexSheet.Equals(model.IndexSheet));
                     if (work != null)
                     {
                         work.ID = model.ID;
                         work.NormWork_ID = model.NormWork_ID;
                         work.Name = model.Name;
                         work.Unit = model.Unit;
-                        work.Number = model.Number;
-                        work.Horizontal = model.Horizontal;
-                        work.Vertical = model.Vertical;
-                        work.Height = model.Height;
-                        work.Area = model.Area;
-                        work.SumMaterial = model.SumMaterial;
-                        work.SumLabor = model.SumLabor;
-                        work.SumMachine = model.SumMachine;
+                        work.Number = Convert.ToDecimal(model.Number, CultureInfo.InvariantCulture);
+                        work.Horizontal = Convert.ToDecimal(model.Horizontal, CultureInfo.InvariantCulture);
+                        work.Vertical = Convert.ToDecimal(model.Vertical, CultureInfo.InvariantCulture);
+                        work.Height = Convert.ToDecimal(model.Height, CultureInfo.InvariantCulture);
+                        work.Area = Convert.ToDecimal(model.Area, CultureInfo.InvariantCulture);
+                        work.PriceMaterial = Convert.ToDecimal(model.PriceMaterial, CultureInfo.InvariantCulture);
+                        work.PriceLabor = Convert.ToDecimal(model.PriceLabor, CultureInfo.InvariantCulture);
+                        work.PriceMachine = Convert.ToDecimal(model.PriceMachine, CultureInfo.InvariantCulture);
                     }
                     else
                     {
@@ -255,17 +247,15 @@ namespace Du_Toan_Xay_Dung.Controllers
                         ew.NormWork_ID = model.NormWork_ID;
                         ew.Name = model.Name;
                         ew.Unit = model.Unit;
-                        ew.Number = model.Number;
-                        ew.Horizontal = model.Horizontal;
-                        ew.Vertical = model.Vertical;
-                        ew.Height = model.Height;
-                        ew.Area = model.Area;
-                        ew.PriceLabor = model.PriceLabor;
-                        ew.PriceMaterial = model.PriceMaterial;
-                        ew.PriceMachine = model.PriceMachine;
-                        ew.SumMaterial = model.SumMaterial;
-                        ew.SumLabor = model.SumLabor;
-                        ew.SumMachine = model.SumMachine;
+                        ew.Number = Convert.ToDecimal(model.Number, CultureInfo.InvariantCulture);
+                        ew.Horizontal = Convert.ToDecimal(model.Horizontal, CultureInfo.InvariantCulture);
+                        ew.Vertical = Convert.ToDecimal(model.Vertical, CultureInfo.InvariantCulture);
+                        ew.Height = Convert.ToDecimal(model.Height, CultureInfo.InvariantCulture);
+                        ew.Area = Convert.ToDecimal(model.Area, CultureInfo.InvariantCulture);
+                        ew.PriceMaterial = Convert.ToDecimal(model.PriceMaterial, CultureInfo.InvariantCulture);
+                        ew.PriceLabor = Convert.ToDecimal(model.PriceLabor, CultureInfo.InvariantCulture);
+                        ew.PriceMachine = Convert.ToDecimal(model.PriceMachine, CultureInfo.InvariantCulture);
+
                         _db.UserWorks.InsertOnSubmit(ew);
                     }
                     _db.SubmitChanges();
@@ -278,19 +268,17 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
-        public JsonResult post_updatework(UserWorkViewModel model)
+        [HttpPost]
+        public JsonResult post_updatework(SaveUserWorkViewModel model)
         {
             try
             {
                 if (model.BuildingItem_ID != 0)
                 {
-                    var work = _db.UserWorks.FirstOrDefault(i => i.IndexSheet.Equals(model.IndexSheet));
+                    var work = _db.UserWorks.FirstOrDefault(i => i.BuildingItem_ID.Equals(model.BuildingItem_ID) && i.IndexSheet.Equals(model.IndexSheet));
                     if (work != null)
                     {
-                        work.Area = model.Area;
-                        work.SumMaterial = model.SumMaterial;
-                        work.SumLabor = model.SumLabor;
-                        work.SumMachine = model.SumMachine;
+                        work.Area = Convert.ToDecimal(model.Area, CultureInfo.InvariantCulture);
                     }
                     _db.SubmitChanges();
                 }
@@ -302,6 +290,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult post_updateresource(List<UserWorkResourceViewModel> list)
         {
             try
@@ -329,5 +318,35 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error");
             }
         }
+
+        [HttpPost]
+        public JsonResult post_updateprice(SaveUserWorkResourceViewModel model)
+        {
+            try
+            {
+                if (model.BuildingItem_ID != null && model.UnitPrice_ID != null && model.Price != null)
+                {
+                    var list_userworkresource = _db.UserWork_Resources.Where(i => i.UnitPrice_ID.Equals(model.UnitPrice_ID) && i.BuildingItem_ID.Equals(model.BuildingItem_ID)).ToList();
+
+                    foreach (var item in list_userworkresource)
+                    {
+                        item.Price = Convert.ToDecimal(model.Price, CultureInfo.InvariantCulture);
+                    }
+                    _db.SubmitChanges();
+
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
+
+
     }
 }
