@@ -20,20 +20,12 @@ using PagedList.Mvc;
 using PagedList;
 namespace Du_Toan_Xay_Dung.Controllers
 {
-    [HandleError]
+    //[HandleError]
     public class AdminController : Controller
     {
         DataDTXDDataContext _db = new DataDTXDDataContext();
         public ActionResult Index()
         {
-            if (SessionHandler.User != null)
-            {
-                var user = SessionHandler.User;
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
             ViewBag.Title = "Dự toán xây dựng";
             return View();
         }
@@ -94,14 +86,14 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
         public ActionResult suaxoanguoidung(int page = 1, int pagesize = 10)
         {
-            if (SessionHandler.User != null)
-            {
-                var user = SessionHandler.User;
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            //if (SessionHandler.User != null)
+            //{
+            //    var user = SessionHandler.User;
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
             ViewBag.Title = "Dự toán xây dựng";
             var model = ListAllPageging1(page, pagesize);
             return View(model);
