@@ -20,6 +20,13 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
     //variable id mean work when change number to calculate area
     $scope.area_id_meanwork = -1;
 
+    //variable saving row user picked
+    $scope.rowpicked = null;
+    $scope.rowspicked = [];
+
+    //variable location focus
+    $scope.divfocus = null;
+
 
     function getNormWorks() {
         dataService.getNormworks().then(function (data) {
@@ -122,6 +129,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         var div = angular.element($event.currentTarget).parent().parent();
         var column_header = div.find(".column_header input");
         column_header.css({ "background-color": "#D4D4D4" });
+        $scope.divfocus = div;
 
         var index_eq = angular.element($event.currentTarget).parent().index();
         var row_header = angular.element("#sheet_cellheader");
@@ -161,7 +169,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                         updateArea_Work($rootScope.works[$scope.area_id_meanwork]);
                     }
                     SaveWorktoDatabase($rootScope.works[$scope.No]);
-                    
+
                 }
                 //....
                 $scope.No = -1;
@@ -464,4 +472,174 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         }
 
     };
+
+    $scope.pickingrow = function ($event) {
+
+        $event.stopPropagation();
+        //choose row
+        var div_rowsheet = angular.element($event.currentTarget).parent();
+
+        //removing row was picked by user
+        if ($scope.rowpicked != null) {
+
+            if ($event.shiftKey) {
+
+                var id_start = $scope.rowpicked.find("input").eq(0).val();
+                var id_end = div_rowsheet.find("input").eq(0).val();
+
+                if (id_start < id_end) {
+                    var i;
+                    var temp = $scope.rowpicked;
+                    for (i = id_start; i <= id_end; i++) {
+                        var ta = temp.find("textarea");
+                        var is = temp.find("input");
+                        ta.css({ "background-color": "#E2E8FA" });
+                        is.css({ "background-color": "#E2E8FA" });
+                        temp.find("input").eq(0).css({ "background-color": "#8eb0e7" });
+                        temp.find(".border-line").css({ "background-color": "blue" });
+                        temp.next().find(".border-line").css({ "background-color": "blue" });
+                        temp.addClass("picked");
+                        $scope.rowspicked.push(temp);
+                        temp = temp.next();
+                    }
+                    $scope.rowspicked.push(temp);
+                }
+                if (id_start > id_end) {
+                    var i;
+                    var temp = div_rowsheet;
+                    for (i = id_end; i <= id_start; i++) {
+                        var ta = temp.find("textarea");
+                        var is = temp.find("input");
+                        ta.css({ "background-color": "#E2E8FA" });
+                        is.css({ "background-color": "#E2E8FA" });
+                        temp.find("input").eq(0).css({ "background-color": "#8eb0e7" });
+                        temp.find(".border-line").css({ "background-color": "blue" });
+                        temp.next().find(".border-line").css({ "background-color": "blue" });
+                        temp.addClass("picked");
+                        $scope.rowspicked.push(temp);
+                        temp = temp.next();
+                    }
+                    $scope.rowspicked.push(temp);
+                }
+
+
+            }
+            else {
+                var ul = angular.element("#dropdowncontext");
+                ul.css({
+                    'display': 'none'
+                });
+
+                if ($scope.rowspicked.length != 0) {
+                    angular.forEach($scope.rowspicked, function (value, key) {
+                        var ta = value.find("textarea");
+                        var is = value.find("input");
+                        ta.css({ "background-color": "" });
+                        is.css({ "background-color": "" });
+                        value.find("input").eq(0).css({ "background-color": "" });
+                        value.find(".border-line").css({ "background-color": "" });
+                        value.next().find(".border-line").css({ "background-color": "" });
+                        value.removeClass("picked");
+                    });
+
+                    $scope.rowspicked = [];
+                }
+                else {
+                    var ta = $scope.rowpicked.find("textarea");
+                    var is = $scope.rowpicked.find("input");
+                    ta.css({ "background-color": "" });
+                    is.css({ "background-color": "" });
+                    $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+                    $scope.rowpicked.find(".border-line").css({ "background-color": "" });
+                    $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
+                    $scope.rowpicked.removeClass("picked");
+
+                    //remove $scope.rowpicked
+                    $scope.rowpicked = null;
+                }
+                //saving anything row user choose
+                $scope.rowpicked = div_rowsheet;
+
+                //set css
+                var textarea = div_rowsheet.find("textarea");
+                var input_sheet = div_rowsheet.find("input");
+                textarea.css({ "background-color": "#E2E8FA" });
+                input_sheet.css({ "background-color": "#E2E8FA" });
+                div_rowsheet.find("input").eq(0).css({ "background-color": "#8eb0e7" });
+                div_rowsheet.find(".border-line").css({ "background-color": "blue" });
+                div_rowsheet.next().find(".border-line").css({ "background-color": "blue" });
+                div_rowsheet.addClass("picked");
+            }
+        }
+        else {
+            //saving anything row user choose
+            $scope.rowpicked = div_rowsheet;
+
+            //set css
+            var textarea = div_rowsheet.find("textarea");
+            var input_sheet = div_rowsheet.find("input");
+            textarea.css({ "background-color": "#E2E8FA" });
+            input_sheet.css({ "background-color": "#E2E8FA" });
+            div_rowsheet.find("input").eq(0).css({ "background-color": "#8eb0e7" });
+            div_rowsheet.find(".border-line").css({ "background-color": "blue" });
+            div_rowsheet.next().find(".border-line").css({ "background-color": "blue" });
+            div_rowsheet.addClass("picked");
+        }
+    }
+
+    $scope.remove_csspicked = function ($event) {
+
+        var ul = angular.element("#dropdowncontext");
+        ul.css({
+            'display': 'none'
+        });
+
+        if ($scope.rowspicked.length != 0) {
+            var id = $scope.divfocus.find("input").eq(0).val();
+
+            angular.forEach($scope.rowspicked, function (value, key) {
+
+                var i = value.find("input").eq(0).val();
+                var ta = value.find("textarea");
+                var is = value.find("input");
+                ta.css({ "background-color": "" });
+                is.css({ "background-color": "" });
+                value.find(".border-line").css({ "background-color": "" });
+                value.next().find(".border-line").css({ "background-color": "" });
+                value.removeClass("picked");
+
+                if (id === i) {
+                    value.find("input").eq(0).css({ "background-color": "#D4D4D4" });
+                }
+                else {
+                    value.find("input").eq(0).css({ "background-color": "" });
+                }
+            });
+
+            $scope.rowspicked = [];
+        }
+        if ($scope.rowpicked != null) {
+
+            var id = $scope.divfocus.find("input").eq(0).val();
+            var i = $scope.rowpicked.find("input").eq(0).val();
+            var ta = $scope.rowpicked.find("textarea");
+            var is = $scope.rowpicked.find("input");
+            ta.css({ "background-color": "" });
+            is.css({ "background-color": "" });
+            $scope.rowpicked.find(".border-line").css({ "background-color": "" });
+            $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
+            $scope.rowpicked.removeClass("picked");
+
+            if (id === i) {
+                $scope.rowpicked.find("input").eq(0).css({ "background-color": "#D4D4D4" });
+
+            }
+            else {
+                $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+            }
+
+            //remove $scope.rowpicked
+            $scope.rowpicked = null;
+        }
+    }
 }])

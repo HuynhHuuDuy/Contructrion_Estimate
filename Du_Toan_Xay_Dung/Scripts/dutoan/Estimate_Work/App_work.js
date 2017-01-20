@@ -31,6 +31,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http', '$filter', function ($scope, $rootScope, dataService, $http, $filter) {
 
+
+
     //<!-- Menu Toggle Script -->
     $scope.active_leftmenu = false;
     $scope.active_contentwrapper = false;
@@ -96,43 +98,6 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                 });
     };
 
-
-    /*
-    if (typeof (session_user) != "undefined") {
-        get_Buildings();
-    }
-    //get all buildings and push data into combobox
-    function get_Buildings() {
-        dataService.GetBuildings().then(function (data) {
-            var obj_initialize = { ID: '-1', Name: '---Chọn Công Trình---' };
-            data.push(obj_initialize);
-            $scope.Buildings = {
-                availableOptions: data,
-                selectedOption: { ID: '-1'} //This sets the default value of the select in the ui
-
-            };
-        });
-    }
-
-    //get buildingitems and push data into combobox
-    function get_BuildingItem(id) {
-        dataService.get_BuildingItems(id).then(function (data) {
-            var obj_initialize = { ID: '-1', Name: '---Chọn Hạng Mục---' };
-            data.push(obj_initialize);
-            $scope.BuildingItems = {
-                availableOptions: data,
-                selectedOption: { ID: '-1'} //This sets the default value of the select in the ui
-            };
-        });
-    }
-
-    $scope.change_building = function (selection) {
-        $scope.show_cbb_buildingitem = true;
-        get_BuildingItem(selection);
-    }
-
-    */
-
     function get_areapirce() {
         dataService.GetArea_Price().then(function (data) {
             $scope.unitprice = {
@@ -185,6 +150,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
     if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
         dataService.getAllSheet(buildingItem_id).then(function (data) {
+
             angular.forEach(data.sheets, function (value, key) {
 
                 var regular_expression = /^\d+$/;
@@ -224,7 +190,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                             p_machine = parseFloat(p_machine) + (parseFloat(v.Number_Norm) * parseFloat(v.Price));
                     });
 
-                    
+
 
                     $rootScope.works[value.IndexSheet].PriceMaterial = p_material;
                     $rootScope.works[value.IndexSheet].PriceLabor = p_labor;
@@ -280,7 +246,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
 
 //right click and show menu context
-app.directive('ngRightClick', function () {
+app.directive('ngRightClick', [function () {
     return {
         restrict: 'AE',
         scope: '@&',
@@ -288,15 +254,11 @@ app.directive('ngRightClick', function () {
             return {
                 post: function postLink(scope, iElement, iAttrs, controller) {
                     var ul = $('#' + iAttrs.context),
-                      last = null,
-                        div_rowsheet = null,
-                          textarea = null,
-                            input_sheet = null;
+                        div_rowsheet = null;
 
                     ul.css({
                         'display': 'none'
                     });
-
 
                     $(iElement).bind('contextmenu', function (event) {
 
@@ -304,62 +266,23 @@ app.directive('ngRightClick', function () {
 
                         //choose row
                         div_rowsheet = angular.element(event.currentTarget).parent();
-                        textarea = div_rowsheet.find("textarea");
-                        input_sheet = div_rowsheet.find("input");
-                        textarea.css({ "background-color": "#E2E8FA" });
-                        input_sheet.css({ "background-color": "#E2E8FA" });
-                        div_rowsheet.find("input").eq(0).css({ "background-color": "#8eb0e7" });
-                        div_rowsheet.find(".border-line").css({ "background-color": "blue" });
-                        div_rowsheet.next().find(".border-line").css({ "background-color": "blue" });
-                        //show context menu
-                        ul.css({
-                            position: "fixed",
-                            display: "block",
-                            left: event.clientX + 'px',
-                            top: event.clientY + 'px'
-                        });
 
-                        last = event.timeStamp;
+                        if (div_rowsheet.hasClass("picked")) {
+                            //show context menu
+                            ul.css({
+                                position: "fixed",
+                                display: "block",
+                                left: event.clientX + 'px',
+                                top: event.clientY + 'px'
+                            });
+                        }
                     });
-                    //$(iElement).click(function(event) {
-                    //  ul.css({
-                    //    position: "fixed",
-                    //    display: "block",
-                    //    left: event.clientX + 'px',
-                    //    top: event.clientY + 'px'
-                    //  });
-                    //  last = event.timeStamp;
-                    //});
-
-                    //$(document).click(function (event) {
-                    //    //var target = $(event.target);
-                    //    //if (!target.is(".popover") && !target.parents().is(".popover")) {
-                    //    //    if (last === event.timeStamp)
-                    //    //        return;
-
-                    //    //    //hide context menu
-                    //    //    ul.css({
-                    //    //        'display': 'none'
-                    //    //    });
-
-                    //    //    if (textarea != null && input_sheet != null && div_rowsheet != null) {
-                    //    //        //cancel choose row
-                    //    //        textarea.css({ "background-color": ""});
-                    //    //        input_sheet.css({ "background-color": ""});
-                    //    //        div_rowsheet.find("input").eq(0).css({ "background-color": "" });
-                    //    //        div_rowsheet.find(".border-line").css({ "background-color": "" });
-                    //    //        div_rowsheet.next().find(".border-line").css({ "background-color": "" });
-                    //    //    }
-
-                    //    //}
-                    //    alert("haha");
-                    //});
                 }
             };
         }
     };
 
-});
+}]);
 
 //key press and move another textbox in sheet
 app.directive('movefocus', function () {

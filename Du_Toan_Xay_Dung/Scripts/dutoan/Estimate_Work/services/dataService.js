@@ -1,6 +1,7 @@
 ﻿
 angular.module('app_work').factory('dataService', ['$http', function ($http) {
 
+
     var getAllSheet = function (buildingitem_id) {
         return $http({
             method: "GET",
@@ -8,6 +9,7 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
             params: { buildingitem_id: buildingitem_id }
         })
             .then(function (response) {
+                console.log(response.data);
                 return response.data;
             }, function (response) {
                 //showing errors

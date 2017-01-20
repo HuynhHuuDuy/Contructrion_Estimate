@@ -17,11 +17,15 @@ namespace Du_Toan_Xay_Dung.Controllers
     {
         public DataDTXDDataContext _db = new DataDTXDDataContext();
 
+
+
         public ActionResult Estimate_Work()
         {
 
             return View();
         }
+
+        //....
         public JsonResult get_Buildings()
         {
             var list = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
@@ -162,6 +166,8 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
+        //.....
+        //save data
         [HttpPost]
         public JsonResult Save_Resource(List<UnitPrice_AreaViewModel> list)
         {
@@ -191,7 +197,6 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error");
             }
         }
-
 
         [HttpPost]
         public JsonResult post_createUnitPrice(AreaViewModel model)
