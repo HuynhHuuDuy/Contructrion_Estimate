@@ -210,6 +210,7 @@
     <Compile Include="Controllers\CongTrinhController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HangMucController.cs" />
+    <Compile Include="Controllers\WorkTemporaryController.cs" />
     <Compile Include="Filter\PageLoginAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,7 +219,6 @@
     <Compile Include="Helper\UserHelper.cs" />
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\ChiTiet_DinhMucViewModel.cs" />
-    <Compile Include="Models\CongViec_User_ViewModel.cs" />
     <Compile Include="Models\DataDTXD.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -238,6 +238,8 @@
     <Compile Include="Models\UnitPrice_AreaViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\UserWorkViewModel.cs" />
+    <Compile Include="Models\User_NormDetailViewModel.cs" />
+    <Compile Include="Models\User_NormWorkViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -492,6 +494,7 @@
     <Content Include="Views\HangMuc\Estimate_Work.cshtml" />
     <Content Include="Scripts\Upload\don_gia.xlsx" />
     <Content Include="Views\UnitPrice\Index.cshtml" />
+    <Content Include="Views\WorkTemporary\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

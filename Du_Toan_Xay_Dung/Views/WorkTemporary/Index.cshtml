@@ -1,0 +1,443 @@
+﻿@{
+    ViewBag.Title = "TamTinh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    angular.module('worktemporary', [])
+    .controller('WorkTemporary_Controller', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+
+        //variable
+        $scope.list_UnitPrice = [];
+        $scope.list_UserNormWork = [];
+        $scope.tempwork = [];
+        //$scope.list_UserNormWorkDetail = [];
+
+        getUserNormWork();
+        getArea();
+
+        function getUserNormWork() {
+            $http.get('/WorkTemporary/Get_UserNormWork').then(function (response) {
+                $scope.list_UserNormWork = response.data;
+            }, function (response) {
+                //Showing errors
+            });
+        };
+
+        function getArea() {
+            $http.get('/WorkTemporary/GetArea_UnitPrice').then(function (response) {
+                var data = response.data;
+
+                var obj = {
+                    ID: "0",
+                    Name: "---Chọn đơn giá để tìm thành phần hao phí---",
+                };
+
+                data.push(obj);
+
+                $scope.Area = {
+                    availableOptions: data,
+                    selectedOption: { ID: '0' } //This sets the default value of the select in the ui
+                };
+
+            }, function (response) {
+                //Showing errors
+            });
+        };
+
+        function getListPrice_Picked(id) {
+            return $http({
+                method: "GET",
+                url: "/WorkTemporary/Get_UnitPrice",
+                params: { id: id }
+            })
+                .then(function (response) {
+                    $scope.list_UnitPricePicked = response.data;
+                }, function (response) {
+                    //showing errors
+                });
+        };
+
+        function get_UserNormDeTail(id) {
+
+            $http({
+                method: "GET",
+                url: "/WorkTemporary/Get_UserNormWorkDetail",
+                params: { id: id }
+            })
+                .then(function (response) {
+                    $scope.list_UnitPrice = response.data;
+                }, function (response) {
+                    //showing errors
+                });
+        }
+
+        $scope.change_area = function (id) {
+            getListPrice_Picked(id);
+        };
+
+        $scope.add_unitPrice = function (x) {
+
+            if ($scope.list_UnitPrice.length === 0) {
+                var obj = {
+                    UnitPrice_ID: x.UnitPrice_ID,
+                    Name: x.Name,
+                    Unit: x.Unit,
+                    Number: 0,
+                };
+                $scope.list_UnitPrice.push(obj);
+            }
+            else {
+                var d = 0;
+                for (var i = 0; i < $scope.list_UnitPrice.length; i++) {
+                    if ($scope.list_UnitPrice[i].UnitPrice_ID == x.UnitPrice_ID) {
+                        d = 1;
+                        break;
+                    }
+                };
+
+                if (d == 1) {
+                    alert("da ton tai");
+                }
+                else {
+                    var obj = {
+                        UnitPrice_ID: x.UnitPrice_ID,
+                        Name: x.Name,
+                        Unit: x.Unit,
+                        Number: 0,
+                    };
+                    $scope.list_UnitPrice.push(obj);
+                }
+            }
+        };
+
+        $scope.delete_unitPrice = function (id) {
+
+            for (var i = 0; i < $scope.list_UnitPrice.length; i++) {
+                if ($scope.list_UnitPrice[i].UnitPrice_ID == id) {
+                    $scope.list_UnitPrice.splice(i, 1);
+                    i--;
+                }
+            };
+        };
+
+        $scope.save_tempWork = function () {
+
+            var data = {
+                NormWork_ID: $scope.tempwork.ID,
+                Name: $scope.tempwork.Name,
+                Unit: $scope.tempwork.Unit,
+                Norm_Details: $scope.list_UnitPrice,
+            };
+
+            $http({
+                method: "post",
+                url: "/WorkTemporary/post_saveUser_NormWork",
+                data: JSON.stringify(data),
+                dataType: "json",
+            })
+             .then(function (result) {
+                 if (result.data == "ok") {
+                     alert("haha");
+                 }
+             });
+
+        };
+
+        $scope.edit_UserNormWork = function (x) {
+
+            var id = x.NormWork_ID;
+            get_UserNormDeTail(id);
+
+
+            angular.element("#show_DontEdit").text(x.NormWork_ID);
+            $scope.show_DontEdit = true;
+            $scope.show_Edit = false;
+
+            $scope.tempwork.ID = null;
+            $scope.tempwork.Name = x.Name;
+            $scope.tempwork.Unit = x.Unit;
+
+        };
+
+        $scope.show_UserNormWork = function (x) {
+
+
+            var tbody = angular.element("#table_showUserNormDetail");
+            var id = x.NormWork_ID;
+
+            var myNode = document.getElementById("table_showUserNormDetail");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            $http({
+                method: "GET",
+                url: "/WorkTemporary/Get_UserNormWorkDetail",
+                params: { id: id }
+            })
+                .then(function (response) {
+                    angular.forEach(response.data, function (value, key) {
+                        var s = '<tr>' +
+                        '<td>' + value.UnitPrice_ID + '</td>' +
+                        '<td>' + value.Name + '</td>' +
+                        '<td>' + value.Unit + '</td>' +
+                        '<td>' + value.Number + '</td>' +
+                        '</tr>';
+                        tbody.append(s);
+
+                    });
+
+                }, function (response) {
+                    //showing errors
+                });
+
+
+
+            angular.element("#show_ID").text(x.NormWork_ID);
+            angular.element("#show_Name").text(x.Name);
+            angular.element("#show_Unit").text(x.Unit);
+
+        };
+
+
+    }]);
+</script>
+
+<style>
+    #table_worktemporary {
+        counter-reset: serial-number; /* Set the serial number counter to 0 */
+    }
+
+        #table_worktemporary td:first-child:before {
+            counter-increment: serial-number; /* Increment the serial number counter */
+            content: counter(serial-number);
+        }
+</style>
+
+<section class="content-header">
+    <h3>Tạm Tính<small class="label label-info">Danh sách</small></h3>
+    <ol class="breadcrumb">
+        <li class="active">Tạm Tính</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div id="container" class="container" style="margin-top:100px" ng-app="worktemporary" ng-controller="WorkTemporary_Controller">
+        <div class="row col-sm-12">
+            <div class="col-sm-12">
+                <form class="form-horizontal">
+                    <div class="box box-success" style="background-color: ghostwhite">
+                        <div class="box-header">
+                            <h3 class="box-title">Thêm công việc tạm tính</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-sm-6">
+                                <!-- ID -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">Mã:</label>
+                                    <div class="col-sm-10">
+                                        <span ng-show="show_DontEdit" id="show_DontEdit"></span>
+                                        <input type="text" ng-model="tempwork.ID" ng-show="show_Edit" class="form-control" id="ID_TempWork" name="ID_TempWork" placeholder="Nhập mã công việc tạm tính...">
+                                    </div>
+                                </div>
+                                <!-- Name -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">Tên:</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" ng-model="tempwork.Name" id="Name_TempWork" name="Name_TempWork" placeholder="Nhập tên công việc tạm tính..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- Unit -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">Đơn vị:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" ng-model="tempwork.Unit" class="form-control" id="Unit_TempWork" name="Unit_TempWork" placeholder="Nhập đơn vị công việc tạm tính...">
+                                    </div>
+                                </div>
+
+                                <!--Material-->
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-8" for="">Thành phần hao phí đã chọn:</label>
+                                    <div class="col-sm-4"></div>
+                                </div>
+
+                                <div class="box-body table-responsive no-padding" style="height:300px; overflow-y:auto">
+                                    <table class="table table-hover">
+                                        <tbody id="">
+                                            <tr>
+                                                <th>Mã</th>
+                                                <th>Tên</th>
+                                                <th>Đơn Vị</th>
+                                                <th>Định Mức</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr ng-repeat="x in list_UnitPrice">
+                                                <td>{{x.UnitPrice_ID}}</td>
+                                                <td>{{x.Name}}</td>
+                                                <td>{{x.Unit}}</td>
+                                                <td>
+                                                    <input type="text" ng-model="x.Number" size="4" />
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-danger btn-flat btn-xs" title="xem" ng-click="delete_unitPrice(x.UnitPrice_ID)">
+                                                        <i class="fa fa-fw fa-remove"></i>xóa
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Search -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <select name="" id=""
+                                                ng-options="option.Name for option in Area.availableOptions track by option.ID"
+                                                ng-model="Area.selectedOption"
+                                                ng-change="change_area(Area.selectedOption.ID)"
+                                                class="form-control"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="txt_search_resource" ng-model="keysearch" autofocus placeholder="Nhập thành phần hao phí cần tìm kiếm..." />
+                                    </div>
+                                </div>
+                                <div class="box-body table-responsive no-padding" style="height:300px; overflow-y:auto">
+                                    <table class="table table-hover">
+                                        <tbody id="">
+                                            <tr>
+                                                <th></th>
+                                                <th>Mã</th>
+                                                <th>Tên</th>
+                                                <th>Đơn Vị</th>
+                                            </tr>
+                                            <tr ng-repeat="x in list_UnitPricePicked | filter: {Name:keysearch} | limitTo:100">
+                                                <td>
+                                                    <a class="btn btn-primary btn-flat btn-xs" title="Thêm" ng-click="add_unitPrice(x)">
+                                                        Thêm
+                                                    </a>
+                                                </td>
+                                                <td>{{x.UnitPrice_ID}}</td>
+                                                <td>{{x.Name}}</td>
+                                                <td>{{x.Unit}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.box-body -->
+                            </div>
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-block btn-primary btn-lg" ng-click="save_tempWork()">Primary</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row col-sm-12" style="margin-top:50px">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="box-header">
+                            <h3 class="box-title" style="color:white">
+                                Công việc tạm tính của tôi
+                            </h3>
+                            <div class="box-tools">
+                                <div class="input-group" style="width: 200px;">
+                                    <input type="text" name="txt_search_UnitPriceUser" class="form-control input-sm pull-right" placeholder="Search">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-header -->
+
+                    </div>
+                    <div class="panel-body" style="padding:0px">
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover" id="table_worktemporary">
+                                <tbody>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã</th>
+                                        <th>Tên</th>
+                                        <th>Đơn vị</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr ng-repeat="x in list_UserNormWork">
+                                        <td></td>
+                                        <td>{{x.NormWork_ID}}</td>
+                                        <td>{{x.Name}}</td>
+                                        <td>{{x.Unit}}</td>
+                                        <td>
+                                            <a class="btn btn-primary btn-flat btn-xs" title="xem" ng-click="show_UserNormWork(x)" data-placement="top" data-toggle="modal" data-target="#modal_showUserNormWork">
+                                                <i class="fa fa-fw fa-list"></i>xem
+                                            </a>
+                                            <a class="btn btn-primary btn-flat btn-xs" title="xem" ng-click="edit_UserNormWork(x)">
+                                                <i class="fa fa-fw fa-edit"></i>sửa
+                                            </a>
+                                            <a class="btn btn-danger btn-flat btn-xs" title="xem" ng-click="delete_UserNormWork(x)">
+                                                <i class="fa fa-fw fa-remove"></i>xóa
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal-->
+    <div class="modal fade" id="modal_showUserNormWork" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thông tin chi tiết</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <p><strong>- Mã :</strong> <span id="show_ID"></span></p>
+                                <p><strong>- Tên :</strong> <span id="show_Name"></span></p>
+                                <p><strong>- Đơn vị :</strong> <span id="show_Unit"></span></p>
+                            </div>
+
+                            <!--Material-->
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-8" for="">Thành phần hao phí đã chọn:</label>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <table class="table table-hover">
+                                <tbody id="table_showUserNormDetail">
+                                    <tr>
+                                        <th>Mã</th>
+                                        <th>Tên</th>
+                                        <th>Đơn Vị</th>
+                                        <th>Định Mức</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
