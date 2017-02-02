@@ -28,9 +28,6 @@
       <Column Name="PriceMaterial" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
       <Column Name="PriceLabor" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
       <Column Name="PriceMachine" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
-      <Column Name="SumMaterial" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
-      <Column Name="SumLabor" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
-      <Column Name="SumMachine" Type="System.Decimal" DbType="Decimal(18,3)" CanBeNull="true" />
       <Association Name="BuildingItem_UserWork" Member="BuildingItem" ThisKey="BuildingItem_ID" OtherKey="ID" Type="BuildingItem" IsForeignKey="true" />
     </Type>
   </Table>
@@ -92,6 +89,7 @@
       <Column Name="Unit" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="UnitPrice_NormDetail" Member="NormDetails" ThisKey="ID" OtherKey="UnitPrice_ID" Type="NormDetail" />
       <Association Name="UnitPrice_UnitPrice_Area" Member="UnitPrice_Areas" ThisKey="ID" OtherKey="UnitPrice_ID" Type="UnitPrice_Area" />
+      <Association Name="UnitPrice_User_NormDetail" Member="User_NormDetails" ThisKey="ID" OtherKey="UnitPrice_ID" Type="User_NormDetail" />
     </Type>
   </Table>
   <Table Name="dbo.UnitPrice_Area" Member="UnitPrice_Areas">
@@ -104,10 +102,30 @@
       <Association Name="UnitPrice_UnitPrice_Area" Member="UnitPrice" ThisKey="UnitPrice_ID" OtherKey="ID" Type="UnitPrice" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.User_NormDetails" Member="User_NormDetails">
+    <Type Name="User_NormDetail">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserNormWork_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Number" Type="System.Decimal" DbType="Decimal(18,3) NOT NULL" CanBeNull="false" />
+      <Association Name="UnitPrice_User_NormDetail" Member="UnitPrice" ThisKey="UnitPrice_ID" OtherKey="ID" Type="UnitPrice" IsForeignKey="true" />
+      <Association Name="User_NormWork_User_NormDetail" Member="User_NormWork" ThisKey="UserNormWork_ID" OtherKey="NormWork_ID" Type="User_NormWork" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User_NormWorks" Member="User_NormWorks">
+    <Type Name="User_NormWork">
+      <Column Name="NormWork_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Unit" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="User_NormWork_User_NormDetail" Member="User_NormDetails" ThisKey="NormWork_ID" OtherKey="UserNormWork_ID" Type="User_NormDetail" />
+      <Association Name="User_User_NormWork" Member="User" ThisKey="Email" OtherKey="Email" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Users" Member="Users">
     <Type Name="User">
       <Column Name="Email" Type="System.String" DbType="NVarChar(200) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="Last_Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="First_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Phone" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
@@ -117,6 +135,7 @@
       <Column Name="Role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="User_Area" Member="Areas" ThisKey="Email" OtherKey="Email" Type="Area" />
       <Association Name="User_Building" Member="Buildings" ThisKey="Email" OtherKey="Email" Type="Building" />
+      <Association Name="User_User_NormWork" Member="User_NormWorks" ThisKey="Email" OtherKey="Email" Type="User_NormWork" />
     </Type>
   </Table>
   <Table Name="dbo.UserWork_Resource" Member="UserWork_Resources">

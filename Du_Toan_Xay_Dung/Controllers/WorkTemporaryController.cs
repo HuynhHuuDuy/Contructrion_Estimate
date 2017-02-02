@@ -7,6 +7,7 @@ using Du_Toan_Xay_Dung.Models;
 using Du_Toan_Xay_Dung.Handlers;
 using Du_Toan_Xay_Dung.Filter;
 using System.Data;
+using System.Globalization;
 
 namespace Du_Toan_Xay_Dung.Controllers
 {
@@ -69,7 +70,61 @@ namespace Du_Toan_Xay_Dung.Controllers
         [HttpPost]
         public JsonResult post_saveUser_NormWork(User_NormWorkViewModel model)
         {
-            return Json("ok");
+            try
+            {
+                var list_und = _db.User_NormDetails.Where(i => i.UserNormWork_ID.Equals(model.NormWork_ID)).ToList();
+                var unw = _db.User_NormWorks.Where(i => i.NormWork_ID.Equals(model.NormWork_ID)).FirstOrDefault();
+
+                //update
+                if (list_und.Count != 0 && unw != null)
+                {
+
+                    _db.User_NormDetails.DeleteAllOnSubmit(list_und);
+                    _db.SubmitChanges();
+
+                    unw.NormWork_ID = model.NormWork_ID;
+                    unw.Email = SessionHandler.User.Email;
+                    unw.Name = model.Name;
+                    unw.Unit = model.Unit;
+
+                    foreach (var item in model.Norm_Details)
+                    {
+                        User_NormDetail und = new User_NormDetail();
+                        und.UserNormWork_ID = model.NormWork_ID;
+                        und.UnitPrice_ID = item.UnitPrice_ID;
+                        und.Number = Convert.ToDecimal(item.Number, CultureInfo.InvariantCulture);
+                        unw.User_NormDetails.Add(und);
+                    }
+                }
+                else
+                {
+                    unw = new User_NormWork();
+                    unw.NormWork_ID = model.NormWork_ID;
+                    unw.Email = SessionHandler.User.Email;
+                    unw.Name = model.Name;
+                    unw.Unit = model.Unit;
+
+                    _db.User_NormWorks.InsertOnSubmit(unw);
+
+                    foreach (var item in model.Norm_Details)
+                    {
+                        User_NormDetail und = new User_NormDetail();
+                        und.UserNormWork_ID = model.NormWork_ID;
+                        und.UnitPrice_ID = item.UnitPrice_ID;
+                        und.Number = Convert.ToDecimal(item.Number, CultureInfo.InvariantCulture);
+                        unw.User_NormDetails.Add(und);
+                    }
+                }
+
+                _db.SubmitChanges();
+
+                return Json("ok");
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+
         }
 
         [PageLogin]
