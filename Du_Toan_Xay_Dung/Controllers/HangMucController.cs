@@ -66,7 +66,18 @@ namespace Du_Toan_Xay_Dung.Controllers
 
             return Json(list_normwork, JsonRequestBehavior.AllowGet);
         }
-        //get Norm resource (Default by System)
+
+
+
+        //get Norm work (created by user)
+        [PageLogin]
+        public JsonResult getUser_Normworks()
+        {
+            var list = _db.User_NormWorks.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new User_NormWorkViewModel(i)).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        //get NormWork resource (Default by System)
         public JsonResult GetDetailNormWork_Price(string area_id)
         {
             var list = _db.NormDetails.Join(_db.UnitPrices, nd => nd.UnitPrice_ID, up => up.ID, (nd, up) => new
@@ -90,6 +101,34 @@ namespace Du_Toan_Xay_Dung.Controllers
                     }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+
+        //get User_NormWork resource (created by user)
+        [PageLogin]
+        public JsonResult GetDetail_UserNormWork_Price(string area_id)
+        {
+            var list = _db.User_NormDetails.Join(_db.UnitPrices, nd => nd.UnitPrice_ID, up => up.ID, (nd, up) => new
+            {
+                User_NormDetail = nd,
+                UnitPrices = up
+            })
+                .Join(_db.UnitPrice_Areas, up => up.UnitPrices.ID, upa => upa.UnitPrice_ID, (up, upa) => new
+                {
+                    UnitPrices = up,
+                    UnitPrice_Areas = upa
+                }).Where(i => i.UnitPrice_Areas.Area_ID.Equals(area_id))
+                    .Select(s => new
+                    {
+                        Key_NormWork = s.UnitPrices.User_NormDetail.UserNormWork_ID,
+                        Key_Material = s.UnitPrices.UnitPrices.ID,
+                        Number = s.UnitPrices.User_NormDetail.Number,
+                        Unit = s.UnitPrices.UnitPrices.Unit,
+                        Name_Material = s.UnitPrices.UnitPrices.Name,
+                        Price = s.UnitPrice_Areas.Price
+                    }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        [PageLogin]
         //get All sheet's user saved
         public JsonResult getAllSheets(string buildingitem_id)
         {
@@ -105,8 +144,6 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
         }
-
-
 
         //......
         //Get data follow action's user

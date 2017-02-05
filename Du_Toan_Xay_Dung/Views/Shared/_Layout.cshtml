@@ -45,22 +45,22 @@
                     <li id="li_home_index"><a href="/Home/Index">Trang Chủ</a></li>
                     @if (SessionHandler.User != null)
                     {
-                    <li><a href="/CongTrinh/Index">Công Trình</a></li>
+                        <li><a href="/CongTrinh/Index">Công Trình</a></li>
                     }
                     <li><a id="btn_href_dutoan" href="/HangMuc/Estimate_Work">Dự Toán</a></li>
                     @if (SessionHandler.User != null)
                     {
-                    <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
+                        <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
                     }
                     <li><a>Tin Tức</a></li>
                     <li><a href="#">Liên Hệ</a></li>
                     @if (SessionHandler.User == null)
                     {
-                    <li><a href="/Account/Login">Đăng Nhập</a></li>
+                        <li><a href="/Account/Login">Đăng Nhập</a></li>
                     }
                     else
                     {
-                    <li><a href="/Account/Logout">Đăng Xuất</a></li>
+                        <li><a href="/Account/Logout">Đăng Xuất</a></li>
                     }
 
                 </ul>

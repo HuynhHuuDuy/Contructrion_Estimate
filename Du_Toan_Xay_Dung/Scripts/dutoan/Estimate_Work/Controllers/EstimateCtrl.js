@@ -1,10 +1,17 @@
 ﻿'use strict';
 
-angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$rootScope', 'dataService', function ($scope, $http, $rootScope, dataService) {
+angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$rootScope', 'dataService', '$filter', function ($scope, $http, $rootScope, dataService, $filter) {
+
+    //...
+    var buildingItem_id = angular.element("#txt_building_item").val();
+    var session_user = angular.element("#txt_session_user").val();
+
     //
     $scope.list_Normwork = [];
     getNormWorks();
 
+    $scope.list_UserNormwork = [];
+    getUser_NormWorks();
     //
     $scope.checked = [];
     //
@@ -27,7 +34,6 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
     //variable location focus
     $scope.divfocus = null;
 
-
     function getNormWorks() {
         dataService.getNormworks().then(function (data) {
             var eachItem;
@@ -45,14 +51,33 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         });
     };
 
+    function getUser_NormWorks() {
+        if (typeof (session_user) != "undefined") {
+            dataService.getUser_Normworks().then(function (data) {
+                var eachItem;
+                angular.forEach(data, function (value, key) {
+                    eachItem = {
+                        ID: value.NormWork_ID,
+                        Name: value.Name,
+                        Unit: value.Unit,
+                        pricematerial: 0,
+                        pricelabor: 0,
+                        pricemachine: 0
+                    };
+                    $scope.list_UserNormwork.push(eachItem);
+                });
+            });
+        }
+
+    };
+
     //function getListPrice() {
     //    dataService.getListPrice().then(function (data) {
     //        $scope.list_AllPrice = data;
     //    });
     //};
 
-    var buildingItem_id = angular.element("#txt_building_item").val();
-    var session_user = angular.element("#txt_session_user").val();
+
 
     function SaveWorktoDatabase(items) {
         if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
@@ -206,19 +231,25 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
 
         //change content button when list == null
-        var btn_save = angular.element(document.querySelector("#btn_search_normwork"));
+        var btn_save_system = angular.element(document.querySelector("#btn_search_normwork"));
+        var btn_save_user = angular.element(document.querySelector("#btn_search_usernormwork"));
         if ($scope.list_searched.length == 0) {
-            btn_save.text("Thoát");
+            btn_save_system.text("Thoát");
+            btn_save_user.text("Thoát");
         }
         else {
-            btn_save.text("Chọn");
+            btn_save_system.text("Thoát");
+            btn_save_user.text("Thoát");
         }
         $scope.current_doubleclick = angular.element($event.currentTarget);
     };
 
     //Amazing code: checked and copy list data to listsearch and calculate price
-    $scope.checkbox_search = function (x) {
-        var btn_save = angular.element(document.querySelector("#btn_search_normwork"));
+    $scope.checkbox_search_system = function (x) {
+
+        var btn_save_system = angular.element(document.querySelector("#btn_search_normwork"));
+        var btn_save_user = angular.element(document.querySelector("#btn_search_usernormwork"));
+
         var d = $scope.list_searched.indexOf(x);
 
         //checked and then unchecked
@@ -283,16 +314,18 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
         //change content button when list != null
         if ($scope.list_searched.length != 0) {
-            btn_save.text("Chọn");
+            btn_save_system.text("Chọn");
+            btn_save_user.text("Chọn");
         }
         else {
-            btn_save.text("Thoát");
+            btn_save_system.text("Thoát");
+            btn_save_user.text("Thoát");
         }
 
         //console.log($scope.checked);
     };
 
-    $scope.save_search = function () {
+    $scope.save_search_system = function () {
 
         //check ID work and add new ID
         //...
@@ -363,9 +396,185 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
         //$scope.checked = [];
         $scope.list_searched = [];
-        angular.forEach($scope.list_Normwork, function (value, key) {
+        //angular.forEach($scope.list_Normwork, function (value, key) {
+        //    value.checked = false;
+        //});
+
+        var arr_temp = $filter('filter')($scope.list_Normwork, { checked: 'true' });
+        angular.forEach(arr_temp, function (value, key) {
             value.checked = false;
         });
+
+        arr_temp = $filter('filter')($scope.list_UserNormwork, { checked: 'true' });
+        angular.forEach(arr_temp, function (value, key) {
+            value.checked = false;
+        });
+
+    };
+
+    $scope.checkbox_search_user = function (x) {
+
+        var btn_save_system = angular.element(document.querySelector("#btn_search_normwork"));
+        var btn_save_user = angular.element(document.querySelector("#btn_search_usernormwork"));
+
+        var d = $scope.list_searched.indexOf(x);
+
+        //checked and then unchecked
+        if (d > -1) {
+            //delete work when uncheck
+            $scope.list_searched.splice(d, 1);
+
+            //delete resource when uncheck
+            for (var i = 0; i < $scope.listResource.length; i++) {
+                if ($scope.listResource[i].NormWork_ID == x.ID) {
+                    $scope.listResource.splice(i, 1);
+                    i--;
+                }
+            };
+
+            //$scope.checked.splice(d, 1);
+
+        }
+        else {
+
+            //push price data from database
+            var pricematerial = 0;
+            var pricelabol = 0;
+            var pricemachine = 0;
+
+            //should use filter array..................
+            angular.forEach($rootScope.ListDetail_UserNormWork_Price, function (value, key) {
+                if (x.ID == value.Key_NormWork) {
+                    if (value.Key_Material.substring(0, 1) == "N") {
+                        pricematerial = parseFloat(pricematerial + (value.Number * value.Price));
+                    }
+                    if (value.Key_Material.substring(0, 1) == "M") {
+                        pricelabol = parseFloat(pricelabol + (value.Number * value.Price));
+                    }
+                    if (value.Key_Material.substring(0, 1) == "V") {
+                        pricemachine = parseFloat(pricemachine + (value.Number * value.Price));
+                    }
+
+                    var item_resource = {
+                        NormWork_ID: value.Key_NormWork,
+                        BuildingItem_ID: buildingItem_id,
+                        UserWork_ID: "",
+                        ID: "",
+                        UnitPrice_ID: value.Key_Material,
+                        Name: value.Name_Material,
+                        Unit: value.Unit,
+                        Number_Norm: value.Number,
+                        Price: value.Price,
+                    };
+                    $scope.listResource.push(item_resource);
+                }
+            });
+            x.pricematerial = pricematerial.toFixed(3);
+            x.pricelabor = pricelabol.toFixed(3);
+            x.pricemachine = pricemachine.toFixed(3);
+            $scope.list_searched.push(x);
+
+            //push index to list checked
+
+            //$scope.checked.push(x.$$hashKey);
+        }
+
+        //change content button when list != null
+        if ($scope.list_searched.length != 0) {
+            btn_save_system.text("Chọn");
+            btn_save_user.text("Chọn");
+        }
+        else {
+            btn_save_system.text("Thoát");
+            btn_save_user.text("Thoát");
+        }
+
+    };
+
+    $scope.save_search_user = function () {
+
+
+        if ($scope.popupsearch == true && $scope.list_searched != 0) {
+            var div = angular.element($scope.current_doubleclick.parent().parent());
+            var id = div.find(".column_header input").val();
+            var index = parseInt(id);
+
+            angular.forEach($scope.list_searched, function (value, key) {
+                $rootScope.works[index].ID = $rootScope.index_work;
+                $rootScope.works[index].NormWork_ID = value.ID;
+                $rootScope.works[index].Name = value.Name;
+                $rootScope.works[index].Unit = value.Unit;
+
+                $rootScope.works[index].Number = "1";
+                $rootScope.works[index].Horizontal = "1";
+                $rootScope.works[index].Vertical = "1";
+                $rootScope.works[index].Height = "1";
+                $rootScope.works[index].Area = "1";
+
+                $rootScope.works[index].PriceMaterial = value.pricematerial;
+                $rootScope.works[index].PriceLabor = value.pricelabor;
+                $rootScope.works[index].PriceMachine = value.pricemachine;
+                $rootScope.works[index].SumMaterial = value.pricematerial;
+                $rootScope.works[index].SumLabor = value.pricelabor;
+                $rootScope.works[index].SumMachine = value.pricemachine;
+
+
+
+
+                //save work and check log in
+                $rootScope.works[index].Sub_BuildingItem_ID = $scope.subcategory;
+                SaveWorktoDatabase($rootScope.works[index]);
+
+                //save resource and check log in
+                var temp_list = [];
+                angular.forEach($scope.listResource, function (value, key) {
+                    if (value.NormWork_ID == $rootScope.works[index].NormWork_ID) {
+                        value.UserWork_ID = $rootScope.index_work;
+                        temp_list.push(value);
+                    }
+                });
+                SaveResourcetoDatabase(temp_list);
+
+
+                //must fix index work when show work
+                index = index + 1;
+                $rootScope.index_work = parseInt($rootScope.index_work) + 1;
+
+
+            });
+        }
+
+        $scope.popupsearchcss = {
+            "display": "none"
+        };
+        $scope.popupsearchclass = '';
+        $scope.popupsearch = !($scope.popupsearch);
+
+        //console.log($scope.checked);
+
+        //angular.forEach($scope.checked, function (value, key) {
+        //    var arr_t = value.split(':');
+        //    console.log($scope.list_Normwork[196]);
+        //    //$scope.list_Normwork[arr_t[1]].checked = false;
+
+        //});
+
+        //$scope.checked = [];
+        $scope.list_searched = [];
+        //angular.forEach($scope.list_Normwork, function (value, key) {
+        //    value.checked = false;
+        //});
+
+        var arr_temp = $filter('filter')($scope.list_Normwork, { checked: 'true' });
+        angular.forEach(arr_temp, function (value, key) {
+            value.checked = false;
+        });
+
+        arr_temp = $filter('filter')($scope.list_UserNormwork, { checked: 'true' });
+        angular.forEach(arr_temp, function (value, key) {
+            value.checked = false;
+        });
+
     };
 
     function substring_array(s, begin, end) {

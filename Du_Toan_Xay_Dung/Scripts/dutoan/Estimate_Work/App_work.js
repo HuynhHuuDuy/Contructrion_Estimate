@@ -31,7 +31,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http', '$filter', function ($scope, $rootScope, dataService, $http, $filter) {
 
-
+    //$scope.showloading = false;
 
     //<!-- Menu Toggle Script -->
     $scope.active_leftmenu = false;
@@ -39,6 +39,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
     $scope.toggle_sheet = false;
 
     $rootScope.ListDetailNormWork_Price = [];
+    $rootScope.ListDetail_UserNormWork_Price = [];
     get_areapirce();
 
     $scope.menu_toggle = function ($event) {
@@ -85,6 +86,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
         get_infotitle(buildingItem_id);
     }
     function get_infotitle(id) {
+        //$scope.showloading = true;
         $http({
             method: "post",
             url: "/HangMuc/get_infoBuildingItem",
@@ -94,7 +96,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                 .success(function (response) {
                     //display message
                     $scope.infortitle = response;
-
+                    //$scope.showloading = false;
                 });
     };
 
@@ -105,6 +107,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                 selectedOption: { ID: '1' } //This sets the default value of the select in the ui
             };
             GetDetailNormWork_Price($scope.unitprice.selectedOption.ID);
+            GetDetail_UserNormWork_Price($scope.unitprice.selectedOption.ID);
         });
     };
 
@@ -114,9 +117,16 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
         });
     };
 
+    function GetDetail_UserNormWork_Price(area_id) {
+        dataService.GetDetail_UserNormWork_Price(area_id).then(function (data) {
+            $rootScope.ListDetail_UserNormWork_Price = data;
+        });
+    };
+
 
     $scope.change_price = function (selection) {
         GetDetailNormWork_Price(selection);
+        GetDetail_UserNormWork_Price(selection);
     };
 
     $rootScope.index_work = 1;

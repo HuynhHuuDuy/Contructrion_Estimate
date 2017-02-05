@@ -67,6 +67,7 @@ namespace Du_Toan_Xay_Dung.Controllers
 
         }
 
+        [PageLogin]
         [HttpPost]
         public JsonResult post_saveUser_NormWork(User_NormWorkViewModel model)
         {
@@ -139,6 +140,32 @@ namespace Du_Toan_Xay_Dung.Controllers
                     Unit = s.UnitPrice.Unit
                 }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [PageLogin]
+        [HttpPost]
+        public JsonResult post_deleteUser_NormWork(string id)
+        {
+            try
+            {
+                var list_und = _db.User_NormDetails.Where(i => i.UserNormWork_ID.Equals(id)).ToList();
+                var unw = _db.User_NormWorks.Where(i => i.NormWork_ID.Equals(id)).FirstOrDefault();
+
+                if (list_und.Count != 0 && unw != null)
+                {
+                    _db.User_NormDetails.DeleteAllOnSubmit(list_und);
+                    _db.User_NormWorks.DeleteOnSubmit(unw);
+                }
+                _db.SubmitChanges();
+
+                return Json("ok");
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+
         }
 
     }
