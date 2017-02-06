@@ -11,6 +11,8 @@ using System.Web.UI;
 //using CRUDDeom.Models;
 using OfficeOpenXml;
 using Du_Toan_Xay_Dung.Filter;
+using PagedList.Mvc;
+using PagedList;
 
 namespace Du_Toan_Xay_Dung.Controllers
 {
@@ -19,13 +21,14 @@ namespace Du_Toan_Xay_Dung.Controllers
         DataDTXDDataContext _db = new DataDTXDDataContext();
 
         [PageLogin]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, int pagesize = 6)
         {
-
-            ViewData["List_CongTrinh"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
+            var model = ListAllPageging(page, pagesize);
+            return View(model);
+            //ViewData["List_CongTrinh"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
             //ViewData["List_CongTrinh_Null"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email) && !i.BuildingItems.Any(o => o.ID.Equals(i.ID))).Select(i => i.ID).ToList();
             //ViewData["list_hinhanh"] = _db.Images_Urls.Select(i => new Images_CongTrinhViewModel(i)).ToList();
-            return View();
+
         }
         [PageLogin]
         public JsonResult get_datafile(string ID)
@@ -33,7 +36,10 @@ namespace Du_Toan_Xay_Dung.Controllers
             var data = _db.Images_Urls.Where(i => i.Building_ID.Equals(ID)).Select(i => i.Url).ToList();
             return Json(data);
         }
-
+        public IEnumerable<Building> ListAllPageging(int page, int pagesize)
+        {
+            return _db.Buildings.OrderByDescending(x => x.ID).ToPagedList(page, pagesize);
+        }
         [PageLogin]
         public ActionResult BuildingItem()
         {

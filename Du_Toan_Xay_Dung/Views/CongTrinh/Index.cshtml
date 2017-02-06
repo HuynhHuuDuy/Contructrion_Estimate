@@ -1,10 +1,11 @@
 ﻿@using Du_Toan_Xay_Dung.Handlers
 @using Du_Toan_Xay_Dung.Models
+@model PagedList.IPagedList<Du_Toan_Xay_Dung.Models.Building>
+@using PagedList.Mvc
 @{
     ViewBag.Title = "Danh Sách Công Trình";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var list_congtrinh = ViewData["List_CongTrinh"] as List<BuildingViewModel>;
-
+   // var list_congtrinh = ViewData["List_CongTrinh"] as List<BuildingViewModel>;
 }
 <style>
     .custom-file-upload {
@@ -243,32 +244,32 @@
         <div class="col-xs-12">
             <ul class="list-unstyled">
                 <!--for each in here-->
-                @if (list_congtrinh != null)
+                @if (Model != null)
                 {
 
-                    foreach (var item in list_congtrinh)
+                    for(int i=0;i<Model.Count;i++)
                     {
                         var d = 0;
                         var description = "";
-                        if (Convert.ToString(item.Description).Length > 60)
+                        if (Convert.ToString(@Model[i].Description).Length > 60)
                         {
-                            description = Convert.ToString(item.Description).Substring(0, 60);
+                            description = Convert.ToString(@Model[i].Description).Substring(0, 60);
                         }
                         else
                         {
-                            description = item.Description;
+                            description = @Model[i].Description;
                         }
                         <li class="col-sm-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        <a class="green-light">@item.Name</a>
-                                        <p class="text-danger">Giá tiền: <small class="badge font-orbitron">@item.Sum</small></p>
+                                        <a class="green-light">@Model[i].Name</a>
+                                        <p class="text-danger">Giá tiền: <small class="badge font-orbitron">@Model[i].Sum</small></p>
                                     </h3>
-                                    <button class="btn btn-primary btn-xs" ng-click="btn_detail_building(@item.ID)" data-toggle="modal" data-target="#modal_info_building">
+                                    <button class="btn btn-primary btn-xs" ng-click="btn_detail_building(@Model[i].ID)" data-toggle="modal" data-target="#modal_info_building">
                                         Chi tiết
                                     </button>
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal_delete_building" ng-click="delete(@item.ID)">
+                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal_delete_building" ng-click="delete(@Model[i].ID)">
                                         Xóa
                                     </button>
                                     <input type="hidden" ng-model="building_id" />
@@ -285,7 +286,7 @@
                         </li>
                     }
                 }
-
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                 <!--// ket thuc vong lap ở đây-->
 
                 <li class="col-sm-4">
