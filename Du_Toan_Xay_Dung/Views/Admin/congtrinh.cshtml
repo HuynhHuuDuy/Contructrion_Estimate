@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Du_Toan_Xay_Dung.Models.Building>
+@{
+    ViewBag.Title = "congtrinh";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h2>Danh sách công trình</h2>
+<table class="table table-bordered">
+    <tr>
+        <td>Tên công trình</td>
+        <td>Tổng tiền</td>
+        <td></td>
+    </tr>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Sum</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_info_building">
+                    Xem chi tiết
+                </button>
+            </td>
+        </tr>
+    }
+</table> 
+<!--Model sửa công trình-->
+<div class="modal fade" id="modal_info_building" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông tin công trình</h4>
+            </div>
+            <div class="modal-body">
+                <br />
+                <br /><br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p><strong>Tên công trình :</strong> {{building_detail.Name}}</p>
+                        <p><strong>Địa chỉ :</strong> {{building_detail.Address}}</p>
+                        <p><strong>Mô tả :</strong> {{building_detail.Description}}</p>
+                        <p><strong>Giá :</strong> {{building_detail.Sum}}</p>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

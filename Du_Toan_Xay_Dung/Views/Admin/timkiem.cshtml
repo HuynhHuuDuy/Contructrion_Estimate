@@ -47,7 +47,11 @@
                                         <td>@Model[i].ID</td>
                                         <td>@Model[i].Name</td>
                                         <td>@Model[i].Unit</td>
-                                        <td><a href="/Admin/suadongia?MaVL_NC_MTC=@Model[i].ID">Sửa</a></td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal_sua">
+                                                Sửa
+                                            </button>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>

@@ -9,7 +9,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Bảng danh sách đơn giá</h3>
+                <h3>Quản lí đơn giá</h3>
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -25,6 +25,7 @@
                         $("#input_form").kiemtra();
                     </script>
                 </div>
+                <div></div>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -61,7 +62,11 @@
                                         <td>@Model[i].ID</td>
                                         <td>@Model[i].Name</td>
                                         <td>@Model[i].Unit</td>
-                                        <td><a href="/Admin/suadongia?MaVL_NC_MTC=@Model[i].ID">Sửa</a></td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal_sua">
+                                                Sửa
+                                            </button>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
@@ -71,6 +76,42 @@
                     </div>
                 </div>
             </div>
+        <!--Model sửa đơn giá-->
+        <div class="modal fade" id="myModal_sua" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Sửa đơn giá</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                    Tên đơn giá <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                    Đơn giá <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 <!-- /page content -->

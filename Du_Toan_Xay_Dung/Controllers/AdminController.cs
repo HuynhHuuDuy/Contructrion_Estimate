@@ -99,7 +99,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             return View(model);
 
         }
-
+       
         public ActionResult upload()
         {
             if (SessionHandler.User != null)
@@ -546,14 +546,14 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
         public ActionResult danhsachdongia(int page = 1, int pagesize = 10)
         {
-            if (SessionHandler.User != null)
-            {
-                var user = SessionHandler.User;
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            //if (SessionHandler.User != null)
+            //{
+            //    var user = SessionHandler.User;
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Login", "Account");
+            //}
             var model = ListAllPageging(page, pagesize);
             return View(model);
         }
@@ -646,6 +646,21 @@ namespace Du_Toan_Xay_Dung.Controllers
                  return Json("error");
              }
          }*/
+        public ActionResult congtrinh(string email)
+        {
+            var model = _db.Buildings.Where(i => i.Email.Equals(email)).ToList();
+            return View(model);
+        }
+        public ActionResult quanlidinhmuc(int page=1, int pagesize=10)
+        {
+            ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
+            var model = ListAllPageging2(page, pagesize);
+            return View(model);
+        }
+        public IEnumerable<NormWork> ListAllPageging2(int page, int pagesize)
+        {
+            return _db.NormWorks.OrderByDescending(x => x.ID).ToPagedList(page, pagesize);
+        }
 
 
     }

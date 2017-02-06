@@ -13,7 +13,7 @@
                 <h3>Quản lí người dùng</h3>
             </div>
             <!-- Button trigger modal -->
-            <button style="margin-left:500px" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            <button style="margin-left:500px" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal_them">
                 Thêm
             </button>
             <!-- Modal Thêm người dùng -->
@@ -99,7 +99,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Thêm người dùng</h4>
+                            <h4 class="modal-title" id="myModalLabel">Sửa người dùng</h4>
                         </div>
                         <div class="modal-body">
                             <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
@@ -187,29 +187,7 @@
 
                 </div>
             </div>
-            <!--Modal xóa -->
-            <div id="myModal_xoa" class="modal fade">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
-                        </div>
-
-                        <div class="modal-body">
-                            <p>You are about to delete one track, this procedure is irreversible.</p>
-                            <p>Do you want to proceed?</p>
-                            <p class="debug-url"></p>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-danger btn-ok" ng-click="submit_deletebuilding(building_id)">Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
         <div class="clearfix"></div>
         <div class="row">
@@ -253,7 +231,7 @@
                                     <td>@Model[i].Workplace</td>
                                     <td>@Model[i].City</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">
+                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal_sua">
                                             Sửa
                                         </button>
                                      
