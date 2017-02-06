@@ -289,7 +289,7 @@
                 <!--// ket thuc vong lap ở đây-->
 
                 <li class="col-sm-4">
-                    <div class="panel panel-default" style=" margin: 150px 190px 50px 0px;">
+                    <div class="panel panel-default" style=" margin: 50px 190px 50px 0px;">
                         <a class="btn btn-app" style="margin:30px" data-toggle="modal" data-target="#modal_add_building">
                             <i style="font-size: -webkit-xxx-large;" class="fa fa-fw fa-plus"></i>
                         </a>
@@ -313,26 +313,19 @@
                     <br />
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="col-sm-4">
-                                <a class="btn btn-block btn-default btn-sm" href="/CongTrinh/BuildingItem/{{building_detail.ID}}">
-                                    Xem hạng mục
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6" style="text-align:center">
+                                <a href="/CongTrinh/BuildingItem/{{building_detail.ID}}">
+                                    <span style="font-size: x-large; font-weight: bolder;">
+                                        Xem hạng mục
+                                        <i class="fa fa-fw fa-angle-right"></i>
+                                    </span>
                                 </a>
                             </div>
-                            <div class="col-sm-4">
-                                <a class="btn btn-block btn-default btn-sm" href="/CongTrinh/ExportToExcel/{{building_detail.ID}}">
-                                    Export Excel
-                                </a>
-                            </div>
-                            <div class="col-sm-4">
-                                <a class="btn btn-block btn-default btn-sm" href="/CongTrinh/UpdateCongTrinh/{{building_detail.ID}}">
-                                    Sửa thông tin
-                                </a>
-                            </div>
-
+                            <div class="col-sm-3"></div>
                         </div>
-
                     </div>
-                    <br /><br />
+                    <br />
                     <div class="row">
                         <div class="col-sm-12">
                             <p><strong>Tên công trình :</strong> {{building_detail.Name}}</p>
@@ -341,11 +334,23 @@
                             <p><strong>Giá :</strong> {{building_detail.Sum}}</p>
                         </div>
                     </div>
-
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <center>
+                                <a class="btn btn-default btn-lg" href="/CongTrinh/UpdateCongTrinh/{{building_detail.ID}}">
+                                    Sửa thông tin
+                                </a>
+                                <a class="btn btn-default btn-lg" href="/CongTrinh/ExportToExcel/{{building_detail.ID}}">
+                                    Export Excel
+                                </a>
+                            </center>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                 </div>
             </div>
 

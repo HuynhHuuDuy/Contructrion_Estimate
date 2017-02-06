@@ -43,22 +43,27 @@ namespace Du_Toan_Xay_Dung.Controllers
             return View();
         }
 
-        public JsonResult Get_AllHangMuc()
+        public JsonResult Get_HangMuc(string id)
         {
-            var list = _db.Buildings.Join(_db.BuildingItems, bid => bid.ID, biid => biid.Building_ID, (bid, biid) => new
-            {
-                Building = bid,
-                BuildingItem = biid
-            }).Where(i => i.Building.Email.Equals(SessionHandler.User.Email)).Select(i => new
-            {
-                ID = i.BuildingItem.ID,
-                Building_ID = i.BuildingItem.Building_ID,
-                Name = i.BuildingItem.Name,
-                Description = i.BuildingItem.Description,
-                Sum = i.BuildingItem.Sum
-            }).ToList();
+            //var list = _db.Buildings.Join(_db.BuildingItems, bid => bid.ID, biid => biid.Building_ID, (bid, biid) => new
+            //{
+            //    Building = bid,
+            //    BuildingItem = biid
+            //}).Where(i => i.Building.Email.Equals(SessionHandler.User.Email)).Select(i => new
+            //{
+            //    ID = i.BuildingItem.ID,
+            //    Building_ID = i.BuildingItem.Building_ID,
+            //    Name = i.BuildingItem.Name,
+            //    Description = i.BuildingItem.Description,
+            //    Sum = i.BuildingItem.Sum
+            //}).ToList();
+
+            var list = _db.BuildingItems.Where(i => i.Building_ID.Equals(id)).Select(i => new BuildingItemViewModel(i)).ToList();
+
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+
+        [PageLogin]
         public JsonResult Get_Allinf()
         {
             var list = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
@@ -261,13 +266,56 @@ namespace Du_Toan_Xay_Dung.Controllers
             try
             {
                 var hangmuc = _db.BuildingItems.Where(i => i.ID.Equals(obj.ID)).FirstOrDefault();
-                hangmuc.Building_ID = obj.Building_ID;
-                hangmuc.ID = obj.ID;
-                hangmuc.Description = obj.Description;
-                hangmuc.Name = obj.Name;
-                hangmuc.Sum = Convert.ToDecimal(obj.Sum);
-                _db.SubmitChanges();
-                return Json("ok");
+                if (hangmuc != null)
+                {
+                    hangmuc.Building_ID = obj.Building_ID;
+                    hangmuc.ID = obj.ID;
+                    hangmuc.Description = obj.Description;
+                    hangmuc.Name = obj.Name;
+                    hangmuc.Sum = Convert.ToDecimal(obj.Sum);
+
+                    _db.SubmitChanges();
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+
+            }
+            catch (Exception)
+            {
+                return Json("error");
+            }
+        }
+
+        [HttpPost]
+        [PageLogin]
+        public JsonResult post_deleteHangMuc(string id)
+        {
+            try
+            {
+                var hangmuc = _db.BuildingItems.Where(i => i.ID.Equals(id)).FirstOrDefault();
+                if (hangmuc != null)
+                {
+                    var userwork_resources = _db.UserWork_Resources.Where(i => i.BuildingItem_ID.Equals(id));
+                    var userwork = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(id));
+                    if (userwork_resources != null)
+                        _db.UserWork_Resources.DeleteAllOnSubmit(userwork_resources);
+                    if (userwork != null)
+                        _db.UserWorks.DeleteAllOnSubmit(userwork);
+
+                    _db.BuildingItems.DeleteOnSubmit(hangmuc);
+
+                    _db.SubmitChanges();
+
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+
             }
             catch (Exception)
             {
@@ -276,43 +324,18 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
 
         [PageLogin]
-        public JsonResult Delete_HangMuc(BuildingItemViewModel obj)
-        {
-            //try
-            //{
-            var hangmuc = _db.BuildingItems.Single(i => i.ID.Equals(obj.ID));
-                if (hangmuc != null)
-                {
-                    var userwork_resources = _db.UserWork_Resources.Where(i => i.BuildingItem_ID.Equals(obj.ID));
-                    var userwork = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(obj.ID));
-                    if (userwork_resources != null)
-                        _db.UserWork_Resources.DeleteAllOnSubmit(userwork_resources);
-                    if (userwork != null)
-                        _db.UserWorks.DeleteAllOnSubmit(userwork);
-                    _db.BuildingItems.DeleteOnSubmit(hangmuc);
-                }
-                _db.SubmitChanges();
-                return Json("ok");
-            //}
-            //catch (Exception)
-            //{
-               // return Json("error");
-            //}
-        }
-
-        [PageLogin]
         [HttpPost]
         public JsonResult post_themhangmuc(BuildingItemViewModel obj)
         {
             try
             {
-
                 BuildingItem hm = new BuildingItem();
                 hm.Building_ID = obj.Building_ID;
                 hm.Name = obj.Name;
                 hm.Description = obj.Description;
                 hm.Sum = 0;
                 _db.BuildingItems.InsertOnSubmit(hm);
+
                 _db.SubmitChanges();
 
                 return Json("ok");

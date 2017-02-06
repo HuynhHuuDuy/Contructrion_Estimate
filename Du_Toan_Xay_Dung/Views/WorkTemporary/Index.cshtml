@@ -141,7 +141,8 @@
                 })
                  .then(function (result) {
                      if (result.data == "ok") {
-                         alert("haha");
+                         open_alert("success");
+                         location.reload();
                      }
                  });
 
@@ -173,7 +174,6 @@
                     div.addClass("in");
                     div.css("height", "auto");
                 }
-
             };
 
             $scope.show_UserNormWork = function (x) {
