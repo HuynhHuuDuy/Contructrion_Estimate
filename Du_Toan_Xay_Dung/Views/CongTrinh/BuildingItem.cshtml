@@ -6,14 +6,14 @@
     ViewBag.Title = "ChiTiet_CongTrinh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.css">
+<script src="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.js"></script>
 <script>
-    angular.module('postApp', [])
-     .controller('postController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+    angular.module('postApp', [], "ngtableApp", ["ngTable"])
+     .controller('postController', 'ngtableCtrl',['$scope', '$http', '$filter', function ($scope, $http, $filter, ngTableParams) {
          //$scope.list = $scope.$parent.personList
-         $scope.config = {
-             itemsPerPage: 5,
-             fillLastPage: true
-         }
+        
          $scope.list_hangmuc = [];
          $scope.building_id = null;
          get_HangMuc();
@@ -40,6 +40,32 @@
                      });
              };
          };
+         $scope.users = [
+ { name: "Madhav Sai", age: 10, location: 'Nagpur' },
+ { name: "Suresh Dasari", age: 30, location: 'Chennai' },
+ { name: "Rohini Alavala", age: 29, location: 'Chennai' },
+ { name: "Praveen Kumar", age: 25, location: 'Bangalore' },
+ { name: "Sateesh Chandra", age: 27, location: 'Vizag' },
+ { name: "Siva Prasad", age: 38, location: 'Nagpur' },
+ { name: "Sudheer Rayana", age: 25, location: 'Kakinada' },
+ { name: "Honey Yemineni", age: 7, location: 'Nagpur' },
+ { name: "Mahendra Dasari", age: 22, location: 'Vijayawada' },
+ { name: "Mahesh Dasari", age: 23, location: 'California' },
+ { name: "Nagaraju Dasari", age: 34, location: 'Atlanta' },
+ { name: "Gopi Krishna", age: 29, location: 'Repalle' },
+ { name: "Sudheer Uppala", age: 19, location: 'Guntur' },
+ { name: "Sushmita", age: 27, location: 'Vizag' }
+         ];
+         $scope.usersTable = new ngTableParams({
+             page: 1,
+             count: 5
+         }, {
+             total: $scope.users.length,
+             getData: function ($defer, params) {
+                 $scope.data = $scope.users.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                 $defer.resolve($scope.data);
+             }
+         });
 
          //array did filter
          $scope.list_temp_inf_edit = [];
@@ -174,19 +200,7 @@
                     <div id="myTable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-  <table class="table table-striped" at-table at-paginated at-list="list_hangmuc" at-config="config">
-  <thead></thead>
-  <tbody>
-    <tr>
-      <td at-implicit at-sortable at-attribute="Name" width="150" at-initial-sorting="asc"></td>
-      <td at-implicit at-sortable at-attribute="Description"  width="250"></td>
-      <td at-implicit at-sortable at-attribute="Sum"></td>
-    </tr>
-  </tbody>
-</table>
-
-<!--
-    <table id="myTable" class="table table-striped table-bordered table-hover dataTable" role="grid" aria-describedby="myTable_info">
+                                @*<table id="myTable" class="table table-striped table-bordered table-hover dataTable" role="grid" aria-describedby="myTable_info">
                                     <thead>
                                         <tr role="row">
                                             <th class="sorting_asc" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending" style="width: 8px;"></th>
@@ -194,8 +208,8 @@
                                                 <span>Danh mục</span>
                                                 <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_add_buildingitem" ng-click="laydulieu1(hangmucfilter)">
                                                     Thêm
-                                                </button>
-                                                <div class="input-group" style="float:right">
+                                                </button>*@
+                                                @*<div class="input-group" style="float:right">
                                                     <input type="text" class="form-control" ng-model="data_search" placeholder="Nhập dữ liệu cần tìm" />
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-search"></i>
@@ -206,8 +220,8 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody>
-                                        <!--                                    ket thuc vong lap-->
+                                    <tbody>*@
+                                                                           <!--bat dau vong lap--> 
                                         @*<tr role="row" class="odd" ng-repeat="data in list_hangmuc | filter: {Name:data_search} | limitTo:10">
                                             <td></td>
                                             <td>
@@ -219,21 +233,21 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            </tr>*@
-                                            @*<td class="center" style="padding-left:30px">
+                                            <td class="center" style="padding-left:30px">
                                                 <div class="btn-group btn-group-xs">
                                                     <a data-toggle="modal" data-target="#modal_modify_buildingitem" data-placement="top" class="btn btn-success" title="Sửa" ng-click="changeclick(data)" placement="right"><span class="fa fa-edit"></span></a>
                                                     <a ng-click="delete_buildingItem(data)" data-target="#modal_delete_buildingItem" class="btn btn-danger" title="Xóa"><span class="fa fa-remove"></span></a>
                                                     <a href="/HangMuc/Estimate_Work/{{data.ID}}" class="btn btn-primary" title="Dự toán"><i class="fa fa-calculator" aria-hidden="true"></i></a>
                                                 </div>
                                             </td>
-                                                </tr>
+                                </table>*@                
+                                <table ng-table="usersTable" class="table table-striped">
+                                    <tr ng-repeat="user in data">
+                                        <td data-title="'name'">{{user.name}}</td>
+                                        <td data-title="'age'">{{user.age}}</td>
+                                        <td data-title="'location'">{{user.location}}</td>
+                                    </tr>
                                 </table>
--->*@
-
-
-<at-pagination at-list="list" at-config="config"></at-pagination>
-                                
                             </div>
                         </div>
                     </div>
@@ -241,10 +255,9 @@
             </form>
         </div>
     </div>
-    <!-- /.box-body -->
     <div class="modal fade" id="modal_add_buildingitem" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
+           <!--Modal content--> 
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -285,7 +298,7 @@
     </div>
     <div class="modal fade" id="modal_modify_buildingitem" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
+             <!--Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -321,19 +334,17 @@
 
         </div>
     </div>
-
-    @*<div id="modal_delete_buildingItem" class="modal fade">
+    <div id="modal_delete_buildingItem" class="modal fade">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                        <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
                     </div>
 
                     <div class="modal-body">
-                        <p>You are about to delete one track, this procedure is irreversible.</p>
-                        <p>Do you want to proceed?</p>
+                        <p>Bạn có thật sự muốn xóa hạng mục này????</p>
                         <p class="debug-url"></p>
                     </div>
 
@@ -343,5 +354,5 @@
                     </div>
                 </div>
             </div>
-        </div>*@
+        </div>
 </section>
