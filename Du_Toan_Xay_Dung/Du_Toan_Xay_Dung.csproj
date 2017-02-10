@@ -246,6 +246,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Du_Toan_Xay_Dung.dll" />
+    <Content Include="bin\Du_Toan_Xay_Dung.pdb" />
     <Content Include="Content\AdminLTE.css" />
     <Content Include="Content\AdminLTE.min.css" />
     <Content Include="Content\admin\css\bootstrap.min.css" />
@@ -415,6 +417,7 @@
     <Content Include="Scripts\DuToan\Bootstrap_UploadFile.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\App_work.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\Controllers\EstimateCtrl.js" />
+    <Content Include="Scripts\DuToan\Estimate_Work\Controllers\general.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\Controllers\MaterialCtrl.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\Controllers\SpecificationCtrl.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\JQuery\sheet_mainwork.js" />

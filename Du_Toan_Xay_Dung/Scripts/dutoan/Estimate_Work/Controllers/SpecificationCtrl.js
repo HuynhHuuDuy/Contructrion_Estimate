@@ -2,8 +2,6 @@
 
 angular.module('app_work').controller('SpecificationCtrl', ['$scope', '$http', '$rootScope', 'dataService', function ($scope, $http, $rootScope, dataService) {
 
-
-
     $scope.specifications = [];
 
 

@@ -17,14 +17,10 @@ namespace Du_Toan_Xay_Dung.Controllers
     {
         public DataDTXDDataContext _db = new DataDTXDDataContext();
 
-
-
-        public ActionResult Estimate_Work()
+        public ActionResult Estimate_Work(int id)
         {
-
             return View();
         }
-
         //....
         public JsonResult get_Buildings()
         {
@@ -35,6 +31,30 @@ namespace Du_Toan_Xay_Dung.Controllers
         {
             var list = _db.BuildingItems.Where(i => i.Building_ID.Equals(id)).Select(i => new BuildingItemViewModel(i)).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getname_Buildingitem(string id)
+        {
+            var name = _db.BuildingItems.Where(i => i.ID.Equals(id)).Select(i => i.Name).FirstOrDefault();
+            return Json(name, JsonRequestBehavior.AllowGet);
+        }
+       
+        public JsonResult getname_building(string id)
+        {
+            var name = _db.Buildings.Where(i => i.BuildingItems.Equals(id)).Select(i => i.Name).FirstOrDefault();
+            return Json(name, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult gettotal(string id)
+        {
+            decimal? tongtien1 = 0;
+            decimal? tongtien = 0;
+            var congviec = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(id)).Select(i => new UserWorkViewModel()).ToList();
+            foreach(var item in congviec)
+            {
+                tongtien1 = item.Number * (item.PriceLabor + item.PriceMachine + item.PriceMaterial);
+                tongtien=tongtien+tongtien1;
+            }
+            return Json(tongtien, JsonRequestBehavior.AllowGet);
+          
         }
         public JsonResult get_infoBuildingItem(string id)
         {
@@ -183,7 +203,6 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
         }
-
         public JsonResult GetArea_Price()
         {
             var list = _db.Areas.Select(i => new AreaViewModel(i)).ToList();

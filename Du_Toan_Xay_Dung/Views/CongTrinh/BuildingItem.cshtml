@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.css">
 <script src="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.js"></script>
 <script>
-    angular.module('postApp', [], "ngtableApp", ["ngTable"])
-     .controller('postController', 'ngtableCtrl',['$scope', '$http', '$filter', function ($scope, $http, $filter, ngTableParams) {
+    angular.module('postApp', [])
+     .controller('postController',['$scope', '$http', '$filter', function ($scope, $http, $filter) {
          //$scope.list = $scope.$parent.personList
         
          $scope.list_hangmuc = [];
@@ -40,33 +40,7 @@
                      });
              };
          };
-         $scope.users = [
- { name: "Madhav Sai", age: 10, location: 'Nagpur' },
- { name: "Suresh Dasari", age: 30, location: 'Chennai' },
- { name: "Rohini Alavala", age: 29, location: 'Chennai' },
- { name: "Praveen Kumar", age: 25, location: 'Bangalore' },
- { name: "Sateesh Chandra", age: 27, location: 'Vizag' },
- { name: "Siva Prasad", age: 38, location: 'Nagpur' },
- { name: "Sudheer Rayana", age: 25, location: 'Kakinada' },
- { name: "Honey Yemineni", age: 7, location: 'Nagpur' },
- { name: "Mahendra Dasari", age: 22, location: 'Vijayawada' },
- { name: "Mahesh Dasari", age: 23, location: 'California' },
- { name: "Nagaraju Dasari", age: 34, location: 'Atlanta' },
- { name: "Gopi Krishna", age: 29, location: 'Repalle' },
- { name: "Sudheer Uppala", age: 19, location: 'Guntur' },
- { name: "Sushmita", age: 27, location: 'Vizag' }
-         ];
-         $scope.usersTable = new ngTableParams({
-             page: 1,
-             count: 5
-         }, {
-             total: $scope.users.length,
-             getData: function ($defer, params) {
-                 $scope.data = $scope.users.slice((params.page() - 1) * params.count(), params.page() * params.count());
-                 $defer.resolve($scope.data);
-             }
-         });
-
+      
          //array did filter
          $scope.list_temp_inf_edit = [];
          $scope.changeclick = function (data) {
@@ -200,7 +174,7 @@
                     <div id="myTable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-                                @*<table id="myTable" class="table table-striped table-bordered table-hover dataTable" role="grid" aria-describedby="myTable_info">
+                                <table id="myTable" class="table table-striped table-bordered table-hover dataTable" role="grid" aria-describedby="myTable_info">
                                     <thead>
                                         <tr role="row">
                                             <th class="sorting_asc" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending" style="width: 8px;"></th>
@@ -208,8 +182,8 @@
                                                 <span>Danh mục</span>
                                                 <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_add_buildingitem" ng-click="laydulieu1(hangmucfilter)">
                                                     Thêm
-                                                </button>*@
-                                                @*<div class="input-group" style="float:right">
+                                                </button>
+                                                <div class="input-group" style="float:right">
                                                     <input type="text" class="form-control" ng-model="data_search" placeholder="Nhập dữ liệu cần tìm" />
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-search"></i>
@@ -220,9 +194,9 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody>*@
-                                                                           <!--bat dau vong lap--> 
-                                        @*<tr role="row" class="odd" ng-repeat="data in list_hangmuc | filter: {Name:data_search} | limitTo:10">
+                                    <tbody>
+                                                                         <!--  bat dau vong lap -->
+                                        <tr role="row" class="odd" ng-repeat="data in list_hangmuc | filter: {Name:data_search} | limitTo:10">
                                             <td></td>
                                             <td>
                                                 <div class="media font-arial">
@@ -240,14 +214,8 @@
                                                     <a href="/HangMuc/Estimate_Work/{{data.ID}}" class="btn btn-primary" title="Dự toán"><i class="fa fa-calculator" aria-hidden="true"></i></a>
                                                 </div>
                                             </td>
-                                </table>*@                
-                                <table ng-table="usersTable" class="table table-striped">
-                                    <tr ng-repeat="user in data">
-                                        <td data-title="'name'">{{user.name}}</td>
-                                        <td data-title="'age'">{{user.age}}</td>
-                                        <td data-title="'location'">{{user.location}}</td>
-                                    </tr>
-                                </table>
+                                </table>             
+                                
                             </div>
                         </div>
                     </div>
