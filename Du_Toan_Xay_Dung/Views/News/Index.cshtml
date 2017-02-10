@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Tin Tuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    hr {
+        border-top: 1px dashed #999;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<section class="content-header">
+    <h3>Tin Tức</h3>
+    <ol class="breadcrumb">
+        <li class="active">Tin tức</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div id="container" class="container" style="margin-top:100px" ng-app="unitprice" ng-controller="UnitPrice_Controller">
+        <div class="row col-sm-12">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a class="standard-article-image" href="http://www.baoxaydung.com.vn/news/vn/the-gioi/nha-choc-troi-tuong-lai-co-thiet-ke-ra-sao.html">
+                            <img class="img-responsive" src="~/Images/News/104847baoxaydung_image001.jpg" />
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3 class="standard-article-header"><a href="http://www.baoxaydung.com.vn/news/vn/the-gioi/nha-choc-troi-tuong-lai-co-thiet-ke-ra-sao.html">Nhà chọc trời tương lai có thiết kế ra sao?</a></h3>
+                        <p>- Nhiều bản vẽ tòa nhà cao tầng trong tương lai của các nhóm thiết kế và công ty kiến trúc có nhiều đặc điểm hiện đại, khác xa so với ngày nay...</p>
+                        <a class="btn standard-hover-effect bg-red" href="http://www.baoxaydung.com.vn/news/vn/the-gioi/nha-choc-troi-tuong-lai-co-thiet-ke-ra-sao.html">
+                            <span class="text">Xem Thêm</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a class="standard-article-image" href="http://www.baoxaydung.com.vn/news/vn/kinh-te/hop-dong-epc-mo-hinh-quan-ly-du-an-hieu-qua.html">
+                            <img class="img-responsive" src="~/Images/News/142552baoxaydung_image001.jpg" />
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3 class="standard-article-header"><a href="http://www.baoxaydung.com.vn/news/vn/kinh-te/hop-dong-epc-mo-hinh-quan-ly-du-an-hieu-qua.html">Hợp đồng EPC: Mô hình quản lý dự án hiệu quả</a></h3>
+                        <p>- Bộ Xây dựng vừa ban hành Thông tư quy định chi tiết về hợp đồng thiết kế - cung cấp thiết bị công nghệ và thi công xây dựng công trình (EPC) thuộc các dự án đầu tư xây dựng theo quy định tại khoản 2 Điều 1 Nghị định số 37/2015/NĐ-CP ngày 22/4/2015 của Chính phủ quy định chi tiết về hợp đồng xây dựng, trong đó hướng dẫn nguyên tắc áp dụng, quản lý thực hiện hợp đồng và hướng dẫn áp dụng mẫu hợp đồng EPC....</p>
+                        <a class="btn standard-hover-effect bg-red" href="http://www.baoxaydung.com.vn/news/vn/kinh-te/hop-dong-epc-mo-hinh-quan-ly-du-an-hieu-qua.html">
+                            <span class="text">Xem Thêm</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <a class="standard-article-image" href="http://www.baoxaydung.com.vn/news/vn/vat-lieu/quan-tro-xay-dung-bang-vat-lieu-tu-nhien-tai-bac-kinh.html">
+                            <img class="img-responsive" src="~/Images/News/141452baoxaydung_image001.jpg" />
+                        </a>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3 class="standard-article-header"><a href="http://www.baoxaydung.com.vn/news/vn/vat-lieu/quan-tro-xay-dung-bang-vat-lieu-tu-nhien-tai-bac-kinh.html">Quán trọ xây dựng bằng vật liệu tự nhiên tại Bắc Kinh</a></h3>
+                        <p>- Chỉ cách Thủ đô Bắc Kinh một giờ chạy xe, quán trọ Yi She Mountain Inn là một không gian sinh thái yên tĩnh nép mình vào một dãy núi rộng lớn...</p>
+                        <a class="btn standard-hover-effect bg-red" href="http://www.baoxaydung.com.vn/news/vn/vat-lieu/quan-tro-xay-dung-bang-vat-lieu-tu-nhien-tai-bac-kinh.html">
+                            <span class="text">Xem Thêm</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-12">
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li class="disabled"><a href="#"><small>«</small> First</a></li>
+                        <li class="disabled"><a href="#"><small>«</small> Previous</a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">Next <small>»</small></a></li>
+                        <li><a href="#">Last <small>»</small></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

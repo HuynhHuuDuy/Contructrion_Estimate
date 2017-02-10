@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Lien he";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .list-group-horizontal .list-group-item {
+        display: inline-block;
+    }
+
+    .list-group-horizontal .list-group-item {
+        margin-bottom: 0;
+        margin-left: -4px;
+        margin-right: 0;
+    }
+
+        .list-group-horizontal .list-group-item:hover {
+            background-color: #fff;
+        }
+
+    .circle {
+        border: 1px solid;
+        border-radius: 150px !important;
+        min-width: 150px;
+        height: 150px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .fit_icon {
+        margin-top: 35%;
+        font-size: -webkit-xxx-large !important;
+    }
+
+    .title_icon {
+        color: red;
+        text-align: center;
+    }
+
+    .outside_circle {
+        border-radius: 1000px !important;
+        min-width: 160px;
+        height: 170px;
+        text-align: center;
+        vertical-align: middle;
+        padding: 9px 10px 20px 2px;
+    }
+</style>
+
+<section class="content-header">
+    <h3>Liên Hệ</h3>
+    <ol class="breadcrumb">
+        <li class="active">Liên hệ</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div id="container" class="container" style="margin-top:100px" ng-app="unitprice" ng-controller="UnitPrice_Controller">
+        <div class="row col-sm-12">
+            <div class="col-sm-12">
+                <div class="list-group list-group-horizontal">
+                    <a class=" list-group-item" style="margin:25px; border: 0px">
+                        <span class="btn btn-app outside_circle" style="background-color: #fff;">
+                            <span class="btn btn-app circle">
+                                <i class="fa fa-envelope fit_icon"></i>
+                            </span>
+                        </span>
+                        <h4 class="title_icon">
+                            Email
+                        </h4>
+                        <p>mr.huynhhuuduy@gmail.com</p>
+                        <p>thachlinh</p>
+                    </a>
+                    <a class=" list-group-item" style="margin:25px; border: 0px">
+                        <span class="btn btn-app outside_circle" style="background-color: #fff;">
+                            <span class="btn btn-app circle">
+                                <i class="fa fa-phone-square fit_icon"></i>
+                            </span>
+                        </span>
+                        <h4 class="title_icon">
+                            Phone
+                        </h4>
+                        <p>+84 1227700731</p>
+                        <p>+84 ...</p>
+                    </a>
+                    <a class=" list-group-item" style="margin:25px; border: 0px">
+                        <span class="btn btn-app outside_circle" style="background-color: #fff;">
+                            <span class="btn btn-app circle">
+                                <i class="fa fa-home fit_icon"></i>
+                            </span>
+                        </span>
+                        <h4 class="title_icon">
+                            Address
+                        </h4>
+                        <p>SaiGon University</p>
+                        <p>SaiGon University</p>
+                    </a>
+                    <a class=" list-group-item" style="margin:25px; border: 0px">
+                        <span class="btn btn-app outside_circle" style="background-color: #fff;">
+                            <span class="btn btn-app circle">
+                                <i class="fa fa-facebook-square fit_icon"></i>
+                            </span>
+                        </span>
+                        <h4 class="title_icon">
+                            Facebook
+                        </h4>
+                        <p>link face</p>
+                        <p>link face</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -204,6 +204,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\ContactUsController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\UnitPriceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -315,6 +317,9 @@
     <Content Include="Images\ec300.jpg" />
     <Content Include="Images\engineer.jpg" />
     <Content Include="Images\new-construction-300x300.jpg" />
+    <Content Include="Images\News\104847baoxaydung_image001.jpg" />
+    <Content Include="Images\News\141452baoxaydung_image001.jpg" />
+    <Content Include="Images\News\142552baoxaydung_image001.jpg" />
     <Content Include="Scripts\Admin\build\admin.js" />
     <Content Include="Scripts\Admin\build\custom.min.js" />
     <Content Include="Scripts\Admin\vendors\bootstrap.min.js" />
@@ -495,6 +500,8 @@
     <Content Include="Scripts\Upload\don_gia.xlsx" />
     <Content Include="Views\UnitPrice\Index.cshtml" />
     <Content Include="Views\WorkTemporary\Index.cshtml" />
+    <Content Include="Views\ContactUs\Index.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

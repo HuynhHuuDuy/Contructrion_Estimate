@@ -46,14 +46,11 @@
                     @if (SessionHandler.User != null)
                     {
                         <li><a href="/CongTrinh/Index">Công Trình</a></li>
-                    }
-                    <li><a id="btn_href_dutoan" href="/HangMuc/Estimate_Work">Dự Toán</a></li>
-                    @if (SessionHandler.User != null)
-                    {
+                        <li><a href="/WorkTemporary/Index">Tạm Tính</a></li>
                         <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
                     }
-                    <li><a>Tin Tức</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
+                    <li><a href="/News/Index">Tin Tức</a></li>
+                    <li><a href="/ContactUs/Index">Liên Hệ</a></li>
                     @if (SessionHandler.User == null)
                     {
                         <li><a href="/Account/Login">Đăng Nhập</a></li>
