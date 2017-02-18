@@ -1,10 +1,10 @@
 ﻿
-<div class="row" ng-controller="General">
+<div class="row" ng-controller="General" ng-init="start=0;end=10;">
     <h2 style="text-align:center">BẢNG TỔNG HỢP DỰ TOÁN HẠNG MỤC</h2>
     <h4 ng-repeat="item in tencongtrinh" style="text-align:center">Tên công trình:{{item.name}}</h4>
     <h4 ng-repeat="item in tenhangmuc" style="text-align:center">Tên hạng mục:{{item.name}}</h4>
     <table class="table table-bordered" style="width:1000px">
-        
+
         <tr>
             <th>STT</th>
             <th>Nội dung chi phí</th>

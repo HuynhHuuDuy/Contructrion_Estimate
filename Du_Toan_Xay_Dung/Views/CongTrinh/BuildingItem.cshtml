@@ -4,42 +4,76 @@
     //var HangMucs_IdCT = ViewData["List_CongTrinh"] as List<HangMucViewModel>;
     var building_id = Url.RequestContext.RouteData.Values["id"];
     ViewBag.Title = "ChiTiet_CongTrinh";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
 }
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<link rel="stylesheet" href="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.css">
-<script src="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.js"></script>
+<link data-require="bootstrap-css@2.3.2" data-semver="2.3.2" rel="stylesheet" href="~/Content/CongTrinh/bootstrap-combined.min.css" />
+<script data-require="angular.js@1.1.5" data-semver="1.1.5" src="~/Scripts/Angular/angular.min.js"></script>
+<script data-require="angular-ui-bootstrap@0.3.0" data-semver="0.3.0" src="~/Scripts/Angular/ui-bootstrap-tpls-0.3.0.min.js"></script>
 <script>
-    angular.module('postApp', [])
-     .controller('postController',['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+ 
+    angular.module('postApp', ['ui.bootstrap'])
+  .controller('postController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
          //$scope.list = $scope.$parent.personList
-        
-         $scope.list_hangmuc = [];
-         $scope.building_id = null;
-         get_HangMuc();
-
-         function get_HangMuc() {
+    
+         //get list buidling item
+    
+      function get_HangMuc() {
+          $scope.list_hangmuc = [];
              //get building_id form url;
              var url = window.location.pathname;
              var building_id = url.substring(url.lastIndexOf('/') + 1);
              var regular_expression = /^\d+$/;
              if (regular_expression.test(building_id)) {
 
-                 //get building_id from url
+             //get building_id from url
                  $scope.building_id = building_id;
+             
 
-                 return $http({
-                     method: "GET",
-                     url: "/CongTrinh/Get_HangMuc",
-                     params: { id: building_id }
-                 })
-                     .then(function (response) {
-                         $scope.list_hangmuc = response.data;
-                     }, function (response) {
-                         //showing errors
-                     });
+             return $http({
+                 method: "GET",
+                 url: "/CongTrinh/Get_HangMuc",
+                 params: { id: $scope.building_id }
+             })
+                 .then(function (response) {
+                     $scope.list_hangmuc = response.data;
+                 }, function (response) {
+                     //showing errors
+                 });
+             console.log($scope.list_hangmuc);
              };
          };
+      get_HangMuc();
+    
+   
+      // test paging 1
+      $scope.filteredTodos = []
+    , $scope.currentPage = 1
+    , $scope.numPerPage = 10
+    , $scope.maxSize = 5;
+
+     
+
+      $scope.numPages = function () {
+          return Math.ceil($scope.list_hangmuc.length / $scope.numPerPage);
+      };
+
+      $scope.$watch("currentPage + numPerPage", function () {
+          var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+          , end = begin + $scope.numPerPage;
+
+          $scope.filteredTodos = $scope.list_hangmuc.slice(begin, end);
+      });
+
+      //$scope.$watch('currentPage + numPerPage', function () {
+      //    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+      //    , end = begin + $scope.numPerPage;
+
+      //    $scope.filteredTodos = $scope.list_hangmuc.slice(begin, end);
+          
+      //});
+      //   //test paging table buidlingitem
+      //   //$scope.building_id = null;
+      //console.log($scope.filteredTodos);
       
          //array did filter
          $scope.list_temp_inf_edit = [];
@@ -119,11 +153,8 @@
 
              };
          }
-
-
      }]);
 </script>
-
 <style>
     #myTable {
         counter-reset: serial-number; /* Set the serial number counter to 0 */
@@ -193,9 +224,8 @@
                                             <th class="sorting" id="dieukhien" tabindex="0" aria-controls="myTable" rowspan="1" colspan="1" aria-label="Controls: activate to sort column ascending" style="width: 140px">Điều khiển</th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
-                                                                         <!--  bat dau vong lap -->
+                                        <!--  bat dau vong lap -->
                                         <tr role="row" class="odd" ng-repeat="data in list_hangmuc | filter: {Name:data_search} | limitTo:10">
                                             <td></td>
                                             <td>
@@ -214,9 +244,13 @@
                                                     <a href="/HangMuc/Estimate_Work/{{data.ID}}" class="btn btn-primary" title="Dự toán"><i class="fa fa-calculator" aria-hidden="true"></i></a>
                                                 </div>
                                             </td>
-                                </table>             
-                                
+                                        </tr>
+                                </table>
                             </div>
+                            <div data-pagination="" data-num-pages="numPages()"
+                                 data-current-page="currentPage" data-max-size="maxSize"
+                                 data-boundary-links="true"></div>
+
                         </div>
                     </div>
                 </div>
@@ -225,7 +259,7 @@
     </div>
     <div class="modal fade" id="modal_add_buildingitem" role="dialog">
         <div class="modal-dialog">
-           <!--Modal content--> 
+            <!--Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -266,7 +300,7 @@
     </div>
     <div class="modal fade" id="modal_modify_buildingitem" role="dialog">
         <div class="modal-dialog">
-             <!--Modal content-->
+            <!--Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -303,24 +337,25 @@
         </div>
     </div>
     <div id="modal_delete_buildingItem" class="modal fade">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
-                    </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
+                </div>
 
-                    <div class="modal-body">
-                        <p>Bạn có thật sự muốn xóa hạng mục này????</p>
-                        <p class="debug-url"></p>
-                    </div>
+                <div class="modal-body">
+                    <p>Bạn có thật sự muốn xóa hạng mục này????</p>
+                    <p class="debug-url"></p>
+                </div>
 
-                    <div class="modal-footer">
-                        <a class="btn btn-danger" data-dismiss="modal" ng-click="xoa()">Đồng ý</a>
-                        <a class="btn btn-default" data-dismiss="modal">Hủy</a>
-                    </div>
+                <div class="modal-footer">
+                    <a class="btn btn-danger" data-dismiss="modal" ng-click="xoa()">Đồng ý</a>
+                    <a class="btn btn-default" data-dismiss="modal">Hủy</a>
                 </div>
             </div>
         </div>
+    </div>
 </section>
+

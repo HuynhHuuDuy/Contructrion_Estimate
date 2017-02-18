@@ -49,7 +49,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             return View();
         }
 
-        public JsonResult Get_HangMuc(string id)
+        public JsonResult Get_HangMuc(int id)
         {
             //var list = _db.Buildings.Join(_db.BuildingItems, bid => bid.ID, biid => biid.Building_ID, (bid, biid) => new
             //{
