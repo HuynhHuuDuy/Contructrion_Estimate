@@ -18,7 +18,7 @@ namespace Du_Toan_Xay_Dung.Controllers
         public DataDTXDDataContext _db = new DataDTXDDataContext();
 
 
-
+        [PageLogin]
         public ActionResult Estimate_Work()
         {
 

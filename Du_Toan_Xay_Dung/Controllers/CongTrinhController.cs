@@ -21,25 +21,26 @@ namespace Du_Toan_Xay_Dung.Controllers
         DataDTXDDataContext _db = new DataDTXDDataContext();
 
         [PageLogin]
-        public ActionResult Index(int page = 1, int pagesize = 6)
+        public ActionResult Index()
         {
-            var model = ListAllPageging(page, pagesize);
-            return View(model);
+            ////var model = ListAllPageging(page, pagesize);
+            
             //ViewData["List_CongTrinh"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
-            //ViewData["List_CongTrinh_Null"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email) && !i.BuildingItems.Any(o => o.ID.Equals(i.ID))).Select(i => i.ID).ToList();
-            //ViewData["list_hinhanh"] = _db.Images_Urls.Select(i => new Images_CongTrinhViewModel(i)).ToList();
+            ////ViewData["List_CongTrinh_Null"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email) && !i.BuildingItems.Any(o => o.ID.Equals(i.ID))).Select(i => i.ID).ToList();
+            ////ViewData["list_hinhanh"] = _db.Images_Urls.Select(i => new Images_CongTrinhViewModel(i)).ToList();
 
+            return View();
         }
+
         [PageLogin]
         public JsonResult get_datafile(string ID)
         {
             var data = _db.Images_Urls.Where(i => i.Building_ID.Equals(ID)).Select(i => i.Url).ToList();
             return Json(data);
         }
-        public IEnumerable<Building> ListAllPageging(int page, int pagesize)
-        {
-            return _db.Buildings.OrderByDescending(x => x.ID).ToPagedList(page, pagesize);
-        }
+
+
+
         [PageLogin]
         public ActionResult BuildingItem()
         {
@@ -70,7 +71,7 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
 
         [PageLogin]
-        public JsonResult Get_Allinf()
+        public JsonResult Get_AllInfoBuildings()
         {
             var list = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);

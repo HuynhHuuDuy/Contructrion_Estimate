@@ -1,6 +1,7 @@
 ﻿
 angular.module('app_work').factory('dataService', ['$http', function ($http) {
 
+
     var getAllSheet = function (buildingitem_id) {
         return $http({
             method: "GET",
@@ -8,6 +9,7 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
             params: { buildingitem_id: buildingitem_id }
         })
             .then(function (response) {
+                console.log(response.data);
                 return response.data;
             }, function (response) {
                 //showing errors
@@ -50,9 +52,8 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
     };
 
 
-
-    var getListPrice = function () {
-        return $http.get('/HangMuc/GetDSDonGia').then(function (response) {
+    var getUser_Normworks = function () {
+        return $http.get('/HangMuc/getUser_Normworks').then(function (response) {
             return response.data
         }, function (response) {
             //Showing errors
@@ -61,10 +62,33 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
 
 
 
+    //var getListPrice = function () {
+    //    return $http.get('/HangMuc/GetDSDonGia').then(function (response) {
+    //        return response.data
+    //    }, function (response) {
+    //        //Showing errors
+    //    });
+    //};
+
+
+
     var GetDetailNormWork_Price = function (area_id) {
         return $http({
             method: "GET",
             url: "/HangMuc/GetDetailNormWork_Price",
+            params: { area_id: area_id }
+        })
+            .then(function (response) {
+                return response.data;
+            }, function (response) {
+                //showing errors
+            });
+    };
+
+    var GetDetail_UserNormWork_Price = function (area_id) {
+        return $http({
+            method: "GET",
+            url: "/HangMuc/GetDetail_UserNormWork_Price",
             params: { area_id: area_id }
         })
             .then(function (response) {
@@ -82,14 +106,40 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
         });
     };
 
+    var GetBuildings = function () {
+        return $http.get('/HangMuc/get_Buildings').then(function (response) {
+            return response.data
+        }, function (response) {
+            //Showing errors
+        });
+    };
+
+    var get_BuildingItems = function (id) {
+        return $http({
+            method: "GET",
+            url: "/HangMuc/get_BuildingItems",
+            params: { id: id }
+        })
+            .then(function (response) {
+                return response.data;
+            }, function (response) {
+                //showing errors
+            });
+    };
+
+
     return {
         GetArea_Price: GetArea_Price,
         getAllResource: getAllResource,
         getAllSheet: getAllSheet,
         getGroupbyResources: getGroupbyResources,
         getNormworks: getNormworks,
-        getListPrice: getListPrice,
+        getUser_Normworks: getUser_Normworks,
+        //getListPrice: getListPrice,
         GetDetailNormWork_Price: GetDetailNormWork_Price,
+        GetDetail_UserNormWork_Price: GetDetail_UserNormWork_Price,
+        GetBuildings: GetBuildings,
+        get_BuildingItems: get_BuildingItems,
     };
 
 }]);

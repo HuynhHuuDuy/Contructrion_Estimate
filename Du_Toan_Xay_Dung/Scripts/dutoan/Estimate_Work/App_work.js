@@ -43,9 +43,34 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
     get_areapirce();
 
     $scope.menu_toggle = function ($event) {
+
         $scope.active_leftmenu = !$scope.active_leftmenu;
         $scope.active_contentwrapper = !$scope.active_contentwrapper;
         $scope.toggle_sheet = !$scope.toggle_sheet;
+
+        var width_fullscreen = $(window).width();
+        var width_contentestimate = document.getElementById("content_wrap_page").clientWidth;
+        var width_headersheet = 0;
+
+        if (document.getElementById("wrap_sheet_estimate")) {
+            width_headersheet = document.getElementById("wrap_sheet_estimate").clientWidth;
+        }
+        if (document.getElementById("wrap_sheet_material")) {
+            width_headersheet = document.getElementById("wrap_sheet_material").clientWidth;
+        }
+        if (document.getElementById("wrap_sheet_specification")) {
+            width_headersheet = document.getElementById("wrap_sheet_specification").clientWidth;
+        }
+
+        var margin = parseFloat(width_contentestimate - width_headersheet);
+
+        if ($scope.toggle_sheet) {
+            angular.element(".sheet_cellheader").css("width", parseFloat(width_fullscreen - margin - 2 - 17 - 17) + "px");
+        }
+        if (!$scope.toggle_sheet) {
+
+            angular.element(".sheet_cellheader").css("width", parseFloat(width_fullscreen - 250 - margin - 2 - 7 - 17) + "px");
+        }
     }
 
     //check session and building id
@@ -133,7 +158,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
 
     //create list works
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 10; i++) {
         var item = {
             IndexSheet: i,
             ID: "",

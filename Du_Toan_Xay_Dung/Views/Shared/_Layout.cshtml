@@ -2,10 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title> - Dự toán xây dựng</title>
 
+    <meta charset="UTF-8">
+    <meta name="description" content="Dự toán xây dựng">
+    <meta name="keywords" content="Dự toán, estimate, Định mức, Đơn giá">
+    <meta name="author" content="Huynh Huu Duy, Thach Thi Kieu Linh">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="icon" type="image/gif/png" href="~/Images/Logo/homepage_construction_estimate.png">
     <link href="http://fonts.googleapis.com/css?family=Oxygen:400,700,300" rel="stylesheet" type="text/css">
     @*<link rel="stylesheet" href="~/Content/Style.css">
         <link rel="stylesheet" href="~/Content/AdminLTE.css">
@@ -21,6 +27,7 @@
     <!--angular-->
     <script src="~/Scripts/Angular/angular.min.js"></script>
     <script src="~/Scripts/Angular/angular-ui-router.min.js"></script>
+    <script src="~/Scripts/Bootstrap/ui-bootstrap-tpls-2.5.0.min.js"></script>
 
     <!--layout-->
     <script src="~/Scripts/DuToan/Layout_Ctrl.js"></script>
@@ -31,56 +38,91 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.10/jquery.uploadfile.min.js"></script>
     -->
+
+
+    <style>
+        .body-wrapper {
+            background-color: #ffffff;
+            width: 100%;
+        }
+
+        .main-footer {
+            margin-left: 0px !important;
+        }
+    </style>
+
 </head>
 <body>
     <div id="wrapper">
-        <div id="logo" class="container">
-            <h1><a href="#">Dự Toán Xây Dựng</a></h1>
-            <div class="clear"></div>
-            <p>Vươn lên tầm cao mới</p>
-        </div>
-        <div id="menu-wrapper" style="margin-bottom:0px">
-            <div id="main_menu" class="container main_menu">
-                <ul>
-                    <li id="li_home_index"><a href="/Home/Index">Trang Chủ</a></li>
-                    @if (SessionHandler.User != null)
-                    {
-                        <li><a href="/CongTrinh/Index">Công Trình</a></li>
-                        <li><a href="/WorkTemporary/Index">Tạm Tính</a></li>
-                        <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
-                    }
-                    <li><a href="/News/Index">Tin Tức</a></li>
-                    <li><a href="/ContactUs/Index">Liên Hệ</a></li>
-                    @if (SessionHandler.User == null)
-                    {
-                        <li><a href="/Account/Login">Đăng Nhập</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="/Account/Logout">Đăng Xuất</a></li>
-                    }
-
-                </ul>
+        <!--header-->
+        <header>
+            <div id="logo" class="container">
+                <h1><a href="#">Dự Toán Xây Dựng</a></h1>
+                <div class="clear"></div>
+                <p>Vươn lên tầm cao mới</p>
             </div>
-        </div>
-        <!-- end #page cho nay la nhung cai thay doi ben trong, thay k?  -->
-        <div style="background-color: #ffffff; width:100%">
+            <div id="menu-wrapper" style="margin-bottom:0px">
+                <div id="main_menu" class="container main_menu">
+                    <ul>
+                        <li id="li_home_index"><a href="/Home/Index">Trang Chủ</a></li>
+                        @if (SessionHandler.User != null)
+                        {
+                            <li><a href="/CongTrinh/Index">Công Trình</a></li>
+                            <li><a href="/WorkTemporary/Index">Tạm Tính</a></li>
+                            <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
+                        }
+                        <li><a href="/News/Index">Tin Tức</a></li>
+                        <li><a href="/ContactUs/Index">Liên Hệ</a></li>
+                        @if (SessionHandler.User == null)
+                        {
+                            <li><a href="/Account/Login">Đăng Nhập</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/Account/Logout">Đăng Xuất</a></li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!--body-->
+        <div class="body-wrapper">
             <div class="container body-content" id="body_content">
                 @RenderBody()
             </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
 
+        
+
+        <!--footer-->
+
+        <footer class="main-footer">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <div class="pull-right hidden-xs">
+                        <b>Version</b> 1.0
+                    </div>
+                    <p>SaiGon Unisersity</p>
+                    <p>An Dương Vương, Q.5, TP. Hồ Chí Minh</p>
+                    <p>Thiết kế và phát triển bởi Huỳnh Hữu Duy, Thạch Thị Kiều Linh</p>
+                    <strong>Copyright © 2016-2017, Template design by <a href="http://templated.co">http://templated.co</a> .</strong> All rights
+                    reserved.
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+        </footer>
+
+        <footer></footer>
     </div>
-    <!--footer
-    <div id="footer-bg">
-        <div id="footer-content" class="container">
-        </div>
-    </div>
-        -->
-    <div id="footer">
-        <p>© 2013 Untitled Inc. All rights reserved. Lorem ipsum dolor sit amet nullam blandit consequat phasellus etiam lorem. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.  Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
-    </div>
-    <!-- end #footer -->
     @RenderSection("Scripts", required: false)
     @RenderSection("CSS", required: false)
 

@@ -47,13 +47,11 @@
 
     .sheet_cellheader {
         position: relative;
-        width: 98.35%;
         height: 50px;
         max-height: inherit;
     }
 
     .toggle_sheet {
-        width: 98.67%;
     }
 
     .popupsearch {
@@ -76,6 +74,7 @@
     .inputsheet_columnheader {
         background: #eaeaea;
         text-align: center;
+        font-size: smaller;
     }
 
     .border-line {
@@ -83,9 +82,25 @@
         height: 1px;
         width: 100%;
     }
+
+    .wrap_sheet {
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 
+<script>
+    var width = $("#wrap_sheet_estimate").width();
+    $(".sheet_cellheader").css("width", parseFloat(width - 17) + "px");
+
+    $(window).resize(function () {
+        //coordinate 100%
+        var temp = $("#wrap_sheet_estimate").width();
+        $(".sheet_cellheader").css("width", parseFloat(temp - 17) + "px");
+    });
+
+</script>
 
 <!--Right click and dropdown menu-->
 <ul id="dropdowncontext" class="dropdown-menu" style="cursor:pointer">
@@ -96,8 +111,8 @@
     <li><a ng-click="deleterow()">Xóa các dòng đã chọn</a></li>
 </ul>
 
-<div class="row" ng-controller="EstimateCtrl" ng-init="start=0;end=10;">
-    <div class="col-sm-12">
+<div class="row" ng-controller="EstimateCtrl" ng-init="start=0;end=10;" id="content_estimate">
+    <div class="col-md-12">
         <h3>Hướng dẫn sử dụng</h3>
         <p>
             - Double click bất kì ô nào trong cột Tên Công Việc để search công việc.
@@ -110,7 +125,7 @@
             cho các công việc tương ứng là 1, 2,...
         </p>
     </div>
-    <div class="col-sm-12">
+    <div class="col-md-12">
         <!--
         <div class="col-sm-12" style="margin-top:10px">
             <div class="input_zoomdata">
@@ -121,22 +136,22 @@
             </div>
         </div>
             -->
-        <div class="col-sm-12" style="height:30px">
-            <div class="col-sm-4">
+        <div class="col-md-12" style="height:30px">
+            <div class="col-md-4">
 
             </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
                 <span id="Message_saved" style="color:green" ng-show="message_save">
                     <i class="fa fa-circle-o-notch fa-spin" style="font-size:18px"></i>
                     Đang lưu vào hệ thống
                 </span>
             </div>
         </div>
-        <div class="col-sm-12" style="height:400px;" ng-click="remove_csspicked($event)">
-            <div style="width:100%; height:100%">
+        <div class="col-md-12" style="height:400px;" ng-click="remove_csspicked($event)">
+            <div id="wrap_sheet_estimate" class="wrap_sheet">
                 <!--row_header-->
-                <div class="sheet_cellheader" id="sheet_cellheader" ng-class="{'toggle_sheet': toggle_sheet}">
+                <div class="sheet_cellheader" ng-class="{'toggle_sheet': toggle_sheet}">
                     <div style="position: absolute; top: 0px; width: 100%; background-color: #eaeaea;">
                         <div style="left:0%;width:3%;top:0px;border-left: 1px solid #c6c6c6;" class="row_header"></div>
                         <div style="left:3%;width:4%;top:0px;" class="row_header">STT</div>
@@ -155,8 +170,8 @@
                 </div>
 
                 <!--Center-->
-                <div style="position: relative; width: 100%; height: 100%; max-height: inherit;">
-                    <div style="position: absolute; top: 0px; width: 100%; height: 70%; background-color: white; overflow-y:auto" id="sheet_cellcenter">
+                <div style="position: relative; width: 100%; height: 90%; max-height: inherit;">
+                    <div style="position: absolute; top: 0px; width: 100%; height: 90%; background-color: white; overflow-y: auto; border-bottom: 1px solid #c6c6c6" id="sheet_cellcenter">
                         <!--sheet-->
                         <div class="row_sheet" ng-repeat="work in works">
                             <div class="border-line"></div>
@@ -242,20 +257,20 @@
                             </table>
                         </div><!-- /.box-body -->
                     </div>
-                    <div class="col-sm-12" style="margin-top:5px">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3">
+                    <div class="col-md-12" style="margin-top:5px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
                             <button class="btn btn-block btn-primary" id="btn_search_normwork" ng-click="save_search_system()">Chọn</button>
                         </div>
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="user" style="height:395px">
-                    <div class="col-sm-12">
+                    <div class="col-md-12">
                         <input class="form-control" id="txt_search_user" ng-model="keysearch_user" autofocus placeholder="Nhập công việc cần tìm kiếm..." />
                     </div>
-                    <div class="col-sm-12" style="margin-top:10px;">
+                    <div class="col-md-12" style="margin-top:10px;">
                         <div class="box-body table-responsive no-padding" style="height:280px; overflow-y:auto">
                             <table class="table table-hover">
                                 <tbody id="table_search_normwork">
@@ -277,13 +292,13 @@
                             </table>
                         </div><!-- /.box-body -->
                     </div>
-                    <div class="col-sm-12" style="margin-top:5px">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3">
+                    <div class="col-md-12" style="margin-top:5px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
                             <button class="btn btn-block btn-primary" id="btn_search_usernormwork" ng-click="save_search_user()">Chọn</button>
                         </div>
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
             </div>

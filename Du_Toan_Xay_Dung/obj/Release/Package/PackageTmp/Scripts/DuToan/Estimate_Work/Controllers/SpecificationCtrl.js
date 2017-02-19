@@ -70,7 +70,7 @@ angular.module('app_work').controller('SpecificationCtrl', ['$scope', '$http', '
 
             });
 
-            for (var i = d; i < 10; i++) {
+            for (var i = d; i < 500; i++) {
                 $scope.specifications.push({ IndexSheet: i });
             }
 
@@ -80,8 +80,31 @@ angular.module('app_work').controller('SpecificationCtrl', ['$scope', '$http', '
     }
     else {
         //create sheet
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 500; i++) {
             $scope.specifications.push({ IndexSheet: i });
+        }
+    }
+
+
+    $scope.location_focus = function ($event) {
+        //focus and get id sheet
+        var div = angular.element($event.currentTarget).parent().parent();
+        var column_header = div.find(".column_header input");
+        column_header.css({ "background-color": "#D4D4D4" });
+
+        var index_eq = angular.element($event.currentTarget).parent().index();
+        var row_header = angular.element("#sheet_cellheader");
+        row_header.find("div").eq(index_eq).css({ "background-color": "#D4D4D4" });
+
+        $scope.location_blur = function () {
+            //focus and get id sheet
+            div = angular.element($event.currentTarget).parent().parent();
+            column_header = div.find(".column_header input");
+            column_header.css({ "background-color": "#eaeaea" });
+
+            index_eq = angular.element($event.currentTarget).parent().index();
+            row_header = angular.element("#sheet_cellheader");
+            row_header.find("div").eq(index_eq).css({ "background-color": "#eaeaea" });
         }
     }
 

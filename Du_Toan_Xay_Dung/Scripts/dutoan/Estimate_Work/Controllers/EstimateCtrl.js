@@ -157,7 +157,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         $scope.divfocus = div;
 
         var index_eq = angular.element($event.currentTarget).parent().index();
-        var row_header = angular.element("#sheet_cellheader");
+        var row_header = angular.element("#sheet_cellheader_estimate");
         row_header.find("div").eq(index_eq).css({ "background-color": "#D4D4D4" });
 
         $scope.location_blur = function () {
@@ -167,7 +167,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             column_header.css({ "background-color": "#eaeaea" });
 
             index_eq = angular.element($event.currentTarget).parent().index();
-            row_header = angular.element("#sheet_cellheader");
+            row_header = angular.element("#sheet_cellheader_estimate");
             row_header.find("div").eq(index_eq).css({ "background-color": "#eaeaea" });
         }
     }

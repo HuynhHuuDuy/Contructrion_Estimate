@@ -243,7 +243,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <strong>Quản lý hình ảnh</strong>
-                                    <label for="gallery_upload" class="custom-file-upload" id="gallery_upload_choose">
+                                    <label for="gallery_upload" class="custom-file-upload btn btn-default" id="gallery_upload_choose">
                                         <i class="fa fa-cloud-upload"></i> Chọn ảnh
                                     </label>
                                     <input id="gallery_upload" type="file" name="file" onchange="angular.element(this).scope().uploadedFile(event)" multiple accept="image/*" style="display:none" />
@@ -308,17 +308,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="">Dropbox:</label>
-                        <div class="col-sm-10">
-                            <span class="btn btn-default dropbox-saver" id="btn_savetoDropbox" ng-click="savetodropbox()">
-                                <img style="width:25px;height:25px" src="~/Images/Bokehlicia-Alike-Dropbox.ico" />
-                                Save Images to Dropbox
-                            </span>
-                            <!--<a href="https://cf.dropboxstatic.com/static/images/developers/dropblox.png" id="btn_savetoDropbox" class="dropbox-saver dropbox-dropin-btn dropbox-dropin-default"><span class="dropin-btn-status"></span>Save Images to Dropbox</a>-->
                         </div>
                     </div>
                     <br />

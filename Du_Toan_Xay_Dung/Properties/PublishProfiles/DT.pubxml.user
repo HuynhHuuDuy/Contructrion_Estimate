@@ -16,7 +16,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:41</publishTime>
     </File>
     <File Include="bin/Du_Toan_Xay_Dung.dll">
-      <publishTime>10/11/2016 02:25:47</publishTime>
+      <publishTime>02/10/2017 16:11:11</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>09/05/2016 21:59:42</publishTime>
@@ -114,14 +114,29 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/WebGrease.dll">
       <publishTime>09/05/2016 21:59:47</publishTime>
     </File>
+    <File Include="Content/admin/css/bootstrap.min.css">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
     <File Include="Content/admin/css/buttons.bootstrap.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
+    </File>
+    <File Include="Content/admin/css/custom.min.css">
+      <publishTime>02/02/2017 11:13:09</publishTime>
     </File>
     <File Include="Content/admin/css/dataTables.bootstrap.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
     </File>
     <File Include="Content/admin/css/fixedHeader.bootstrap.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
+    </File>
+    <File Include="Content/admin/css/font-awesome.min.css">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
+    <File Include="Content/admin/css/jquery.mCustomScrollbar.min.css">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
+    <File Include="Content/admin/css/nprogress.css">
+      <publishTime>02/02/2017 11:13:09</publishTime>
     </File>
     <File Include="Content/admin/css/prettify.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
@@ -142,10 +157,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:34</publishTime>
     </File>
     <File Include="Content/AdminLTE.css">
-      <publishTime>09/05/2016 21:59:34</publishTime>
+      <publishTime>11/11/2016 16:06:58</publishTime>
     </File>
     <File Include="Content/AdminLTE.min.css">
-      <publishTime>09/05/2016 21:59:34</publishTime>
+      <publishTime>02/10/2017 09:43:40</publishTime>
     </File>
     <File Include="Content/Bootstrap/bootstrap-progressbar-3.3.4.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
@@ -196,7 +211,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/29/2016 16:07:06</publishTime>
     </File>
     <File Include="Content/dutoan/estimate_work.css">
-      <publishTime>09/05/2016 22:00:19</publishTime>
+      <publishTime>02/10/2017 16:05:58</publishTime>
     </File>
     <File Include="Content/fileinput.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
@@ -313,49 +328,49 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/10/2016 17:30:08</publishTime>
     </File>
     <File Include="Content/fonts/fontawesome-webfont.eot">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/fontawesome-webfont.svg">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/fontawesome-webfont.ttf">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/fontawesome-webfont.woff">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/fontawesome-webfont.woff2">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/FontAwesome.otf">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.eot">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.svg">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.ttf">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.woff">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/fonts/glyphicons-halflings-regular.woff2">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/glyphicons-halflings-regular.eot">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/glyphicons-halflings-regular.svg">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/glyphicons-halflings-regular.ttf">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/glyphicons-halflings-regular.woff">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Content/green.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
@@ -365,6 +380,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Content/HangMuc/jquery.editable-select.min.css">
       <publishTime>09/05/2016 21:59:34</publishTime>
+    </File>
+    <File Include="Content/images/tải xuống.png">
+      <publishTime>02/02/2017 11:13:09</publishTime>
     </File>
     <File Include="Content/images/ui-bg_flat_0_aaaaaa_40x100.png">
       <publishTime>09/05/2016 21:59:34</publishTime>
@@ -439,22 +457,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:41</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.eot">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.svg">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.ttf">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.woff">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="fonts/fontawesome-webfont.woff2">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="fonts/FontAwesome.otf">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>09/05/2016 21:59:41</publishTime>
@@ -469,7 +487,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:41</publishTime>
     </File>
     <File Include="fonts/glyphicons-halflings-regular.woff2">
-      <publishTime>09/05/2016 21:59:41</publishTime>
+      <publishTime>11/04/2016 15:13:14</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>09/05/2016 21:59:35</publishTime>
@@ -489,11 +507,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Images/engineer.jpg">
       <publishTime>09/05/2016 22:00:19</publishTime>
     </File>
+    <File Include="Images/Logo/homepage_construction_estimate.png">
+      <publishTime>02/10/2017 16:06:58</publishTime>
+    </File>
     <File Include="Images/new-construction-300x300.jpg">
       <publishTime>09/05/2016 22:00:19</publishTime>
     </File>
+    <File Include="Images/News/104847baoxaydung_image001.jpg">
+      <publishTime>02/10/2017 09:43:40</publishTime>
+    </File>
+    <File Include="Images/News/141452baoxaydung_image001.jpg">
+      <publishTime>02/10/2017 09:43:40</publishTime>
+    </File>
+    <File Include="Images/News/142552baoxaydung_image001.jpg">
+      <publishTime>02/10/2017 09:43:40</publishTime>
+    </File>
     <File Include="Models/DataDTXD.dbml">
-      <publishTime>10/10/2016 23:31:32</publishTime>
+      <publishTime>02/02/2017 16:04:17</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>09/05/2016 22:00:22</publishTime>
@@ -567,6 +597,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/Admin/build/admin.js">
       <publishTime>09/05/2016 22:00:20</publishTime>
     </File>
+    <File Include="Scripts/Admin/build/custom.min.js">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
     <File Include="Scripts/Admin/build/jszip.min.js">
       <publishTime>09/05/2016 22:00:20</publishTime>
     </File>
@@ -630,8 +663,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/Admin/jquery/jquery.vmap.sampledata.js">
       <publishTime>09/05/2016 22:00:22</publishTime>
     </File>
+    <File Include="Scripts/Admin/vendors/bootstrap.min.js">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
+    <File Include="Scripts/Admin/vendors/fastclick.js">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
     <File Include="Scripts/Admin/vendors/jquery.dataTables.min.js">
       <publishTime>09/05/2016 22:00:22</publishTime>
+    </File>
+    <File Include="Scripts/Admin/vendors/jquery.mCustomScrollbar.concat.min.js">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
+    <File Include="Scripts/Admin/vendors/jquery.min.js">
+      <publishTime>02/02/2017 11:13:09</publishTime>
+    </File>
+    <File Include="Scripts/Admin/vendors/nprogress.js">
+      <publishTime>02/02/2017 11:13:09</publishTime>
     </File>
     <File Include="Scripts/Angular/angular-ui-router.min.js">
       <publishTime>09/05/2016 21:59:36</publishTime>
@@ -715,22 +763,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/29/2016 16:08:33</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/App_work.js">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 10:21:56</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/Controllers/EstimateCtrl.js">
-      <publishTime>10/11/2016 00:59:55</publishTime>
+      <publishTime>02/05/2017 10:19:26</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/Controllers/MaterialCtrl.js">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 10:21:43</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/Controllers/SpecificationCtrl.js">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 10:21:35</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/JQuery/sheet_mainwork.js">
       <publishTime>09/05/2016 21:59:36</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/services/dataService.js">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/05/2017 10:19:26</publishTime>
     </File>
     <File Include="Scripts/DuToan/Estimate_Work/vendor/wijmo.angular.min.js">
       <publishTime>09/05/2016 21:59:37</publishTime>
@@ -772,7 +820,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:38</publishTime>
     </File>
     <File Include="Scripts/DuToan/Layout_Ctrl.js">
-      <publishTime>10/08/2016 14:39:39</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Scripts/jquery/jquery-3.0.0.js">
       <publishTime>09/05/2016 21:59:38</publishTime>
@@ -826,10 +874,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:38</publishTime>
     </File>
     <File Include="Views/Admin/danhsachdongia.cshtml">
-      <publishTime>09/05/2016 22:00:22</publishTime>
+      <publishTime>02/10/2017 09:43:38</publishTime>
     </File>
     <File Include="Views/Admin/Index.cshtml">
-      <publishTime>09/05/2016 21:59:38</publishTime>
+      <publishTime>02/02/2017 11:13:09</publishTime>
     </File>
     <File Include="Views/Admin/nhapdinhmuc.cshtml">
       <publishTime>09/05/2016 22:00:22</publishTime>
@@ -841,22 +889,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 22:00:22</publishTime>
     </File>
     <File Include="Views/Admin/suaxoanguoidung.cshtml">
-      <publishTime>09/05/2016 22:00:22</publishTime>
+      <publishTime>02/10/2017 09:43:38</publishTime>
     </File>
     <File Include="Views/Admin/themnguoidung.cshtml">
       <publishTime>09/05/2016 22:00:22</publishTime>
     </File>
     <File Include="Views/Admin/timkiem.cshtml">
-      <publishTime>09/05/2016 22:00:22</publishTime>
+      <publishTime>02/10/2017 09:43:39</publishTime>
     </File>
     <File Include="Views/Admin/timkiemnguoidung.cshtml">
-      <publishTime>09/05/2016 22:00:22</publishTime>
+      <publishTime>02/10/2017 09:43:39</publishTime>
     </File>
     <File Include="Views/Admin/upload.cshtml">
       <publishTime>09/05/2016 22:00:22</publishTime>
     </File>
     <File Include="Views/Admin/uploadinhmuc.cshtml">
       <publishTime>09/05/2016 22:00:22</publishTime>
+    </File>
+    <File Include="Views/CongTrinh/BuildingItem.cshtml">
+      <publishTime>02/10/2017 10:09:10</publishTime>
     </File>
     <File Include="Views/CongTrinh/ChiTiet_CongTrinh.cshtml">
       <publishTime>10/10/2016 23:17:43</publishTime>
@@ -865,7 +916,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/15/2016 19:31:02</publishTime>
     </File>
     <File Include="Views/CongTrinh/Index.cshtml">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 10:04:18</publishTime>
     </File>
     <File Include="Views/CongTrinh/ThemCongTrinh.cshtml">
       <publishTime>10/08/2016 14:39:39</publishTime>
@@ -874,10 +925,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/08/2016 14:39:39</publishTime>
     </File>
     <File Include="Views/CongTrinh/UpdateCongTrinh.cshtml">
-      <publishTime>10/10/2016 17:30:10</publishTime>
+      <publishTime>11/04/2016 15:13:13</publishTime>
     </File>
     <File Include="Views/CongTrinh/UpdateHangMuc.cshtml">
-      <publishTime>09/15/2016 19:31:02</publishTime>
+      <publishTime>11/25/2016 08:56:41</publishTime>
+    </File>
+    <File Include="Views/ContactUs/Index.cshtml">
+      <publishTime>02/10/2017 09:55:55</publishTime>
     </File>
     <File Include="Views/HangMuc/ChiTietHangMuc.cshtml">
       <publishTime>09/05/2016 21:59:39</publishTime>
@@ -886,13 +940,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:39</publishTime>
     </File>
     <File Include="Views/HangMuc/Estimate_Work.cshtml">
-      <publishTime>10/10/2016 23:25:54</publishTime>
+      <publishTime>02/10/2017 15:38:50</publishTime>
     </File>
     <File Include="Views/HangMuc/Index.cshtml">
-      <publishTime>10/10/2016 17:30:10</publishTime>
+      <publishTime>11/25/2016 08:56:39</publishTime>
     </File>
     <File Include="Views/HangMuc/Index_2.cshtml">
-      <publishTime>09/05/2016 21:59:39</publishTime>
+      <publishTime>11/25/2016 08:56:33</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>09/05/2016 21:59:39</publishTime>
@@ -901,16 +955,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:39</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>10/06/2016 18:07:31</publishTime>
+      <publishTime>10/28/2016 15:55:08</publishTime>
+    </File>
+    <File Include="Views/News/Index.cshtml">
+      <publishTime>02/10/2017 09:43:40</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>09/05/2016 21:59:39</publishTime>
     </File>
     <File Include="Views/Shared/_Admin.cshtml">
-      <publishTime>09/05/2016 22:00:22</publishTime>
+      <publishTime>02/10/2017 09:43:39</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/11/2016 00:41:12</publishTime>
+      <publishTime>02/10/2017 16:10:42</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>09/05/2016 21:59:39</publishTime>
@@ -919,28 +976,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2016 21:59:39</publishTime>
     </File>
     <File Include="Views/UnitPrice/Index.cshtml">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/02/2017 11:13:10</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>09/05/2016 21:59:39</publishTime>
+    </File>
+    <File Include="Views/WorkTemporary/Index.cshtml">
+      <publishTime>02/06/2017 13:44:36</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>09/05/2016 21:59:39</publishTime>
     </File>
     <File Include="Views_Angularjs/Estimate.htm">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 15:55:43</publishTime>
     </File>
     <File Include="Views_Angularjs/General.htm">
-      <publishTime>09/05/2016 21:59:39</publishTime>
+      <publishTime>02/10/2017 09:43:39</publishTime>
     </File>
     <File Include="Views_Angularjs/Material.htm">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 10:29:37</publishTime>
     </File>
     <File Include="Views_Angularjs/Specification.htm">
-      <publishTime>10/10/2016 17:30:08</publishTime>
+      <publishTime>02/10/2017 10:29:21</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/11/2016 02:21:40</publishTime>
+      <publishTime>02/10/2017 13:46:09</publishTime>
     </File>
   </ItemGroup>
 </Project>

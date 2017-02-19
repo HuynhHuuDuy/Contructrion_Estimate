@@ -4,17 +4,177 @@
     ViewBag.Title = "suaxoanguoidung";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+<script>
 
-<div class="right_col" role="main">
+</script>
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Bảng danh sách người dùng</h3>
+                <h3>Quản lí người dùng</h3>
             </div>
+            <!-- Button trigger modal -->
+            <button style="margin-left:500px" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal_them">
+                Thêm
+            </button>
+            <!-- Modal Thêm người dùng -->
+            <div class="modal fade" id="myModal_them" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Thêm người dùng</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Tên người dùng <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Mật khẩu <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Họ tên lót
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Tên <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="name" name="name" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Số điện thoại <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="phone" name="phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Nơi làm việc <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="placework" name="placework" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Thành phố <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="city" name="city" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+
+                            </form>
+                           
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Model sửa người dùng--> 
+            <div class="modal fade" id="myModal_sua" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Sửa người dùng</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Tên người dùng <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Mật khẩu <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Họ tên lót
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Tên <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="name" name="name" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Số điện thoại <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="phone" name="phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Nơi làm việc <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="placework" name="placework" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                        Thành phố <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="city" name="city" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Tìm kiếm-->
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                     <form action="/Admin/timkiemnguoidung" method="post">
-                        <div class="input-group">
+                        <div style="width:500px" class="input-group">
                             <input type="text" name="txttimkiem" class="form-control" placeholder="Tìm kiếm..." required>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit">Thực hiện!</button>
@@ -27,6 +187,7 @@
 
                 </div>
             </div>
+            
         </div>
         <div class="clearfix"></div>
         <div class="row">
@@ -56,8 +217,7 @@
                                     <th>Số điện thoại</th>
                                     <th>Nơi làm việc</th>
                                     <th>Thành phố</th>
-                                    <th>Mật khẩu</th>
-                                    <th>Quyền</th>
+                                    <th>Điều khiển</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,11 +230,13 @@
                                     <td>@Model[i].Phone</td>
                                     <td>@Model[i].Workplace</td>
                                     <td>@Model[i].City</td>
-                                    <td>@Model[i].Password</td>
-                                    <td>@Model[i].</td>
-                                    <td><a href="/Admin/suanguoidung?Email=@Model[i].Email">Sửa</a></td>
-                                    <td>@Html.ActionLink("Xóa", "Delete","Admin", new { @Email = Model[i].Email }, new { @onclick = "return deleteconfirm()" })                                        
-                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal_sua">
+                                            Sửa
+                                        </button>
+                                     
+                                        <a href="/Admin/xemchitiet">Công trình</a>
+                                     </td>
                                 </tr>
                                 }
                             </tbody>
@@ -85,17 +247,5 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    $(document).ready(function () {
-        function deleteconfirm() {
-            if (confirm("Khi bạn xóa, các công trình người dùng này đã tạo cũng sẽ xóa!!!!!"))
-                return true;
-            else
-                return false;
-        }
-        FocusEvent = false;
-        checked = false;
-    });
-</script>
+
 

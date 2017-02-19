@@ -8,7 +8,7 @@
 @section Scripts{
 
     <!--Bootstrap angular-->
-    <script src="~/Scripts/Angular/ui-bootstrap-tpls-2.0.0.min.js"></script>
+    @*<script src="~/Scripts/Angular/ui-bootstrap-tpls-2.0.0.min.js"></script>*@
 
     <!--App script-->
     <script src="~/Scripts/DuToan/Estimate_Work/App_work.js"></script>
@@ -30,6 +30,7 @@
     <link href="~/Content/loading.css" rel="stylesheet" />
 }
 
+
 <script>
     $(document).ready(function () {
         $("#body_content").removeClass("container");
@@ -41,36 +42,15 @@
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar" style="height: auto;">
             <div class="sidebar-menu">
-                <!--building-->
-                @*<div class="wrap-treeview">
-                    <div class="treeview" ng-click="treeview($event)">
-                        <span>
-                            <i class="fa fa-pie-chart"></i>
-                            <span>Công Trình</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </div>
-                    <div class="treeview-menu" style="display:none; margin-left:10px">
-                        <div style="margin-top:10px">
-                            <select name="" id=""
-                                    ng-options="option.Name for option in Buildings.availableOptions track by option.ID"
-                                    ng-model="Buildings.selectedOption"
-                                    ng-change="change_building(Buildings.selectedOption.ID)"
-                                    class="form-control"
-                                    style="width:200px">
-                            </select>
-                        </div>
-                        <div ng-show="show_cbb_buildingitem" style="margin-top:20px;">
-                            <select name="" id=""
-                                    ng-options="option.Name for option in BuildingItems.availableOptions track by option.ID"
-                                    ng-model="BuildingItems.selectedOption"
-                                    ng-change="change_buildingitem(BuildingItems.selectedOption.ID)"
-                                    class="form-control"
-                                    style="width:200px"></select>
-                        </div>
-                    </div>
-                </div>*@
                 <!--Price-->
+
+                <div class="menu-header-estimate">
+                    <div class="treeview">
+                        <strong style="margin-left: 20px">Hổ trợ dự toán</strong>
+                        <span style="float: right"><i class="fa fa-fw fa-navicon"></i></span>
+                    </div>
+                </div>
+
                 <div class="wrap-treeview">
                     <div class="treeview" ng-click="treeview($event)">
                         <span>
@@ -122,11 +102,11 @@
 
     <div class="content-wrapper" style="" id="content_wrapper" ng-class="{'active_contentwrapper': active_contentwrapper}">
         <!-- Content Header (Page header) -->
-        <section class="content-header col-sm-12">
-            <div class="col-sm-4">
+        <section class="content-header col-sm-12" style="margin-top:20px">
+            <div class="col-md-4">
                 <span class="btn btn-default" id="menu-toggle" ng-click="menu_toggle($event)">Thu / Mở rộng trang tính</span>
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8">
                 <!--title building/ building_item-->
 
                 <h4>{{infortitle.BuildingName}} / {{infortitle.BuildingItemName}}</h4>
@@ -143,10 +123,10 @@
             </div>
         </section>
         <!-- Main content -->
-        <section class="content col-sm-12" style="margin-top:15px">
+        <section class="content col-md-12" style="margin-top:15px">
             <!-- Main row -->
             <div class="row">
-                <div class="col-sm-12" style="margin-top:20px">
+                <div class="col-md-12" style="margin-top:20px">
                     <uib-tabset active="active">
                         <uib-tab index="0" heading="Dự toán" ui-sref="DuToan">
                         </uib-tab>
@@ -154,11 +134,11 @@
                         </uib-tab>
                         <uib-tab index="2" heading="Phân Tích" ui-sref="PhanTich">
                         </uib-tab>
-                        <uib-tab index="3" heading="Tổng Hợp" ui-sref="TongHop">                                
+                        <uib-tab index="3" heading="Tổng Hợp" ui-sref="TongHop">
                         </uib-tab>
                     </uib-tabset>
                 </div>
-                <div class="col-sm-12 content_page" ui-view>
+                <div class="col-md-12 content_wrap_page" ui-view   id="content_wrap_page">
 
                 </div>
             </div><!-- /.row (main row) -->
