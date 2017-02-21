@@ -118,7 +118,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
             params: { id: id },
             headers: { 'Content-Type': 'application/json' }
         })
-                .success(function (response) {
+                .then(function (response) {
                     //display message
                     $scope.infortitle = response;
                     //$scope.showloading = false;

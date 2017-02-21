@@ -19,9 +19,9 @@ namespace Du_Toan_Xay_Dung
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                        "~/Scripts/Angular/angular.js",
-                        "~/Scripts/Angular/angular-ui-router.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+            //            "~/Scripts/Angular/angular.js",
+            //            "~/Scripts/Angular/angular-ui-router.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/Bootstrap/bootstrap.js",

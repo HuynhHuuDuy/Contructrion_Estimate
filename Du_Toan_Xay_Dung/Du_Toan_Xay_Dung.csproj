@@ -257,8 +257,71 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Antlr3.Runtime.dll" />
+    <Content Include="bin\Antlr3.Runtime.pdb" />
+    <Content Include="bin\DocumentFormat.OpenXml.dll" />
     <Content Include="bin\Du_Toan_Xay_Dung.dll" />
     <Content Include="bin\Du_Toan_Xay_Dung.pdb" />
+    <Content Include="bin\EntityFramework.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\EPPlus.dll" />
+    <Content Include="bin\EPPlus.xml" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Core.xml" />
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.xml" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.dll" />
+    <Content Include="bin\Microsoft.AspNet.Identity.Owin.xml" />
+    <Content Include="bin\Microsoft.Owin.dll" />
+    <Content Include="bin\Microsoft.Owin.Host.SystemWeb.dll" />
+    <Content Include="bin\Microsoft.Owin.Host.SystemWeb.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.Cookies.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.Cookies.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.Facebook.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.Facebook.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.Google.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.Google.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.MicrosoftAccount.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.MicrosoftAccount.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.OAuth.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.OAuth.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.Twitter.dll" />
+    <Content Include="bin\Microsoft.Owin.Security.Twitter.xml" />
+    <Content Include="bin\Microsoft.Owin.Security.xml" />
+    <Content Include="bin\Microsoft.Owin.xml" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\Owin.dll" />
+    <Content Include="bin\PagedList.dll" />
+    <Content Include="bin\PagedList.Mvc.dll" />
+    <Content Include="bin\PagedList.Mvc.xml" />
+    <Content Include="bin\PagedList.xml" />
+    <Content Include="bin\Synvata.MsOfficeFileGenerator.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Helpers.xml" />
+    <Content Include="bin\System.Web.Http.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Http.xml" />
+    <Content Include="bin\System.Web.Mvc.dll" />
+    <Content Include="bin\System.Web.Mvc.xml" />
+    <Content Include="bin\System.Web.Optimization.dll" />
+    <Content Include="bin\System.Web.Optimization.xml" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />
+    <Content Include="bin\WebGrease.dll" />
     <Content Include="Content\AdminLTE.css" />
     <Content Include="Content\AdminLTE.min.css" />
     <Content Include="Content\admin\css\bootstrap.min.css" />
@@ -276,11 +339,6 @@
     <Content Include="Content\CongTrinh\bootstrap-combined.min.css" />
     <Content Include="Content\CongTrinh\bootstrap.min.css" />
     <Content Include="Content\CongTrinh\congtrinh.css" />
-    <Content Include="Content\CongTrinh_css\bootstrap-theme.min.css" />
-    <Content Include="Content\CongTrinh_css\bootstrap.min.css" />
-    <Content Include="Content\CongTrinh_css\ces-frontpage.css" />
-    <Content Include="Content\CongTrinh_css\dataTables.bootstrap4.min.css" />
-    <Content Include="Content\CongTrinh_css\font-awesome.min.css" />
     <Content Include="Content\custom.min.css" />
     <Content Include="Content\dutoan\Bootstrap_UploadFile.css" />
     <Content Include="Content\dutoan\estimate_work.css" />
@@ -293,8 +351,6 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\glyphicons-halflings-regular.svg" />
     <Content Include="Content\green.css" />
-    <Content Include="Content\HangMuc\jquery.editable-select.css" />
-    <Content Include="Content\HangMuc\jquery.editable-select.min.css" />
     <Content Include="Content\images\tải xuống.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -376,15 +432,11 @@
     <Content Include="obj\Release\Package\PackageTmp\bin\WebGrease.dll" />
     <Content Include="obj\Release\Package\PackageTmp\Content\AdminLTE.css" />
     <Content Include="obj\Release\Package\PackageTmp\Content\AdminLTE.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\buttons.bootstrap.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\dataTables.bootstrap.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\fixedHeader.bootstrap.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\prettify.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\responsive.bootstrap.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\scroller.bootstrap.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\select2.min.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\starrr.css" />
-    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\switchery.min.css" />
+    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\bootstrap.min.css" />
+    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\custom.min.css" />
+    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\font-awesome.min.css" />
+    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\jquery.mCustomScrollbar.min.css" />
+    <Content Include="obj\Release\Package\PackageTmp\Content\admin\css\nprogress.css" />
     <Content Include="obj\Release\Package\PackageTmp\Content\Bootstrap\bootstrap-progressbar-3.3.4.min.css" />
     <Content Include="obj\Release\Package\PackageTmp\Content\Bootstrap\bootstrap-select.css" />
     <Content Include="obj\Release\Package\PackageTmp\Content\Bootstrap\bootstrap-select.min.css" />
@@ -412,6 +464,7 @@
     <Content Include="obj\Release\Package\PackageTmp\Content\green.css" />
     <Content Include="obj\Release\Package\PackageTmp\Content\HangMuc\jquery.editable-select.css" />
     <Content Include="obj\Release\Package\PackageTmp\Content\HangMuc\jquery.editable-select.min.css" />
+    <Content Include="obj\Release\Package\PackageTmp\Content\images\tải xuống.png" />
     <Content Include="obj\Release\Package\PackageTmp\Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="obj\Release\Package\PackageTmp\Content\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="obj\Release\Package\PackageTmp\Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -444,52 +497,18 @@
     <Content Include="obj\Release\Package\PackageTmp\Images\Bokehlicia-Alike-Dropbox.ico" />
     <Content Include="obj\Release\Package\PackageTmp\Images\ec300.jpg" />
     <Content Include="obj\Release\Package\PackageTmp\Images\engineer.jpg" />
+    <Content Include="obj\Release\Package\PackageTmp\Images\Logo\homepage_construction_estimate.png" />
     <Content Include="obj\Release\Package\PackageTmp\Images\new-construction-300x300.jpg" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\autosize.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\bootstrap-progressbar.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\bootstrap-wysiwyg.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\bootstrap.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\buttons.bootstrap.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\buttons.flash.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\buttons.html5.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\buttons.print.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\Chart.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\custom.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\fastclick.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\gauge.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\icheck.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\moment.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\nprogress.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\parsley.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\pdfmake.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\responsive.bootstrap.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\select2.full.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\skycons.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\starrr.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\switchery.min.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Images\News\104847baoxaydung_image001.jpg" />
+    <Content Include="obj\Release\Package\PackageTmp\Images\News\141452baoxaydung_image001.jpg" />
+    <Content Include="obj\Release\Package\PackageTmp\Images\News\142552baoxaydung_image001.jpg" />
     <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\build\admin.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\build\jszip.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatable.net-bs\dataTables.bootstrap.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\dataTables.bootstrap.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\dataTables.buttons.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\dataTables.fixedHeader.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\dataTables.keyTable.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\dataTables.responsive.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\dataTables.scroller.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\daterangepicker.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.autocomplete.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.dataTables.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.flot.pie.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.flot.resize.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.flot.stack.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.flot.time.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.hotkeys.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.tagsinput.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.vmap.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.vmap.min.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\jquery.vmap.sampledata.js" />
-    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\vendors\jquery.dataTables.min.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\build\custom.min.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\vendors\bootstrap.min.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\vendors\fastclick.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\vendors\jquery.mCustomScrollbar.concat.min.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\vendors\jquery.min.js" />
+    <Content Include="obj\Release\Package\PackageTmp\Scripts\Admin\vendors\nprogress.js" />
     <Content Include="obj\Release\Package\PackageTmp\Scripts\Angular\angular-ui-router.min.js" />
     <Content Include="obj\Release\Package\PackageTmp\Scripts\Angular\angular.min.js" />
     <Content Include="obj\Release\Package\PackageTmp\Scripts\Angular\bootstrap.min.js" />
@@ -562,22 +581,12 @@
     <Content Include="Scripts\Admin\vendors\jquery.min.js" />
     <Content Include="Scripts\Admin\vendors\nprogress.js" />
     <Content Include="Scripts\Angular\angular-ui-router.min.js" />
-    <Content Include="Scripts\Angular\angular.js" />
     <Content Include="Scripts\Angular\angular.min.js" />
-    <Content Include="Scripts\Angular\bootstrap.min.js" />
-    <Content Include="Scripts\Angular\congtrinh.js" />
-    <Content Include="Scripts\Angular\ui-bootstrap-tpls-0.12.1.min.js" />
-    <Content Include="Scripts\Angular\ui-bootstrap-tpls-0.3.0.min.js" />
-    <Content Include="Scripts\Angular\ui-bootstrap-tpls-2.0.0.min.js" />
     <Content Include="Scripts\Bootstrap\bootstrap-select.js" />
     <Content Include="Scripts\Bootstrap\bootstrap-select.min.js" />
     <Content Include="Scripts\Bootstrap\bootstrap.js" />
     <Content Include="Scripts\Bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\Bootstrap\ui-bootstrap-tpls-2.5.0.min.js" />
-    <Content Include="Scripts\CongTrinh_js\bootstrap.min.js" />
-    <Content Include="Scripts\CongTrinh_js\dataTables.bootstrap4.min.js" />
-    <Content Include="Scripts\CongTrinh_js\jquery.dataTables.min.js" />
-    <Content Include="Scripts\CongTrinh_js\jquery.min.js" />
     <Content Include="Scripts\Difference\bootbox.min.js" />
     <Content Include="Scripts\Difference\canvas-to-blob.min.js" />
     <Content Include="Scripts\Difference\ChunkFive_400.font.js" />
@@ -727,13 +736,14 @@
     <Content Include="obj\Release\Package\PackageTmp\Views\Admin\timkiemnguoidung.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Admin\upload.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Admin\uploadinhmuc.cshtml" />
-    <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\ChiTiet_CongTrinh.cshtml" />
+    <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\BuildingItem.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\HinhAnhCT.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\Index.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\ThemCongTrinh.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\ThemHangMuc.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\UpdateCongTrinh.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\CongTrinh\UpdateHangMuc.cshtml" />
+    <Content Include="obj\Release\Package\PackageTmp\Views\ContactUs\Index.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\HangMuc\ChiTietHangMuc.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\HangMuc\ChiTiet_VL_NC_MTC.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\HangMuc\Estimate_Work.cshtml" />
@@ -742,6 +752,7 @@
     <Content Include="obj\Release\Package\PackageTmp\Views\Home\About.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Home\Contact.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Home\Index.cshtml" />
+    <Content Include="obj\Release\Package\PackageTmp\Views\News\Index.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Shared\Error.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Shared\_Admin.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Shared\_Layout.cshtml" />
@@ -749,14 +760,13 @@
     <Content Include="obj\Release\Package\PackageTmp\Views\Shared\_Menu_HangMuc.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\UnitPrice\Index.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\Web.config" />
+    <Content Include="obj\Release\Package\PackageTmp\Views\WorkTemporary\Index.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Views\_ViewStart.cshtml" />
     <Content Include="obj\Release\Package\PackageTmp\Web.config" />
     <Content Include="obj\Release\TransformWebConfig\assist\Web.config" />
     <Content Include="obj\Release\TransformWebConfig\original\Web.config" />
     <Content Include="obj\Release\TransformWebConfig\transformed\Web.config" />
-    <None Include="obj\Release\Package\PackageTmp\Models\DataDTXD.dbml.layout">
-      <DependentUpon>DataDTXD.dbml</DependentUpon>
-    </None>
+    <Content Include="bin\Du_Toan_Xay_Dung.dll.config" />
     <None Include="Properties\PublishProfiles\DT.pubxml" />
     <None Include="Scripts\Difference\_references.js" />
     <Content Include="Scripts\Dropbox_API\dropins.js" />
@@ -855,7 +865,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\CongTrinh\" />
-    <Folder Include="Upload\" />
+    <Folder Include="obj\Release\Package\PackageTmp\Scripts\Admin\bootstraps\" />
+    <Folder Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatable.net-bs\" />
+    <Folder Include="obj\Release\Package\PackageTmp\Scripts\Admin\datatables\" />
+    <Folder Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\" />
+    <Folder Include="obj\Release\ProfileTransformWebConfig\transformed\Views\" />
+    <Folder Include="obj\Release\TransformWebConfig\transformed\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -868,6 +883,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\DataDTXD.dbml.layout">
+      <DependentUpon>DataDTXD.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Release\Package\PackageTmp\Models\DataDTXD.dbml.layout">
       <DependentUpon>DataDTXD.dbml</DependentUpon>
     </None>
   </ItemGroup>
