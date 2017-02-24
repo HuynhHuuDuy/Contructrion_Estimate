@@ -806,9 +806,6 @@
     <Content Include="Scripts\jquery\jquery.validate.min.js" />
     <Content Include="Scripts\jquery\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Views\HangMuc\Index_2.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Views_Angularjs\Estimate.htm" />
     <Content Include="Views_Angularjs\General.htm" />
     <Content Include="Views_Angularjs\Specification.htm" />
@@ -834,14 +831,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\CongTrinh\Index.cshtml" />
-    <Content Include="Views\CongTrinh\ThemCongTrinh.cshtml" />
     <Content Include="Views\CongTrinh\UpdateCongTrinh.cshtml" />
     <Content Include="Views\CongTrinh\BuildingItem.cshtml" />
-    <Content Include="Views\HangMuc\Index.cshtml" />
-    <Content Include="Views\HangMuc\ChiTiet_VL_NC_MTC.cshtml" />
-    <Content Include="Views\CongTrinh\UpdateHangMuc.cshtml" />
-    <Content Include="Views\CongTrinh\ThemHangMuc.cshtml" />
-    <Content Include="Views\CongTrinh\HinhAnhCT.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\nhapdinhmuc.cshtml" />
     <Content Include="Views\Admin\suanguoidung.cshtml" />
@@ -850,7 +841,6 @@
     <Content Include="Views\Admin\uploadinhmuc.cshtml" />
     <Content Include="Views\Shared\_Admin.cshtml" />
     <Content Include="Views\Admin\upload.cshtml" />
-    <Content Include="Views\HangMuc\ChiTietHangMuc.cshtml" />
     <Content Include="Views\Admin\danhsachdongia.cshtml" />
     <Content Include="Views\Admin\timkiem.cshtml" />
     <Content Include="Views\Admin\timkiemnguoidung.cshtml" />

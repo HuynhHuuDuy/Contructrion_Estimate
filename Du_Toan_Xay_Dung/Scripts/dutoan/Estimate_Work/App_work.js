@@ -120,7 +120,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
         })
                 .then(function (response) {
                     //display message
-                    $scope.infortitle = response;
+                    $scope.infortitle = response.data;
                     //$scope.showloading = false;
                 });
     };

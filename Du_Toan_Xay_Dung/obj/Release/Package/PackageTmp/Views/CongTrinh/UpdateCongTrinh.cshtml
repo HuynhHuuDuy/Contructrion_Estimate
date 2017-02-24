@@ -84,8 +84,8 @@
                transformRequest: angular.identity,
                headers: { 'Content-Type': undefined }
            })
-                 .success(function (result) {
-                     if (result == "ok") {
+                 .then(function (result) {
+                     if (result.data == "ok") {
                          open_alert("success");
                          window.location.href = "/CongTrinh/Index";
                      } else {

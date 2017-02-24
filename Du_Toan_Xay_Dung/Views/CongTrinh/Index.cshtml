@@ -1,11 +1,6 @@
-﻿@*@using Du_Toan_Xay_Dung.Handlers
-    @using Du_Toan_Xay_Dung.Models
-    @model PagedList.IPagedList<Du_Toan_Xay_Dung.Models.Building>
-    @using PagedList.Mvc*@
-@{
+﻿@{
     ViewBag.Title = "Danh Sách Công Trình";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //var list_congtrinh = ViewData["List_CongTrinh"] as List<BuildingViewModel>;
 }
 <style>
     .custom-file-upload {
@@ -82,8 +77,30 @@
 
        //load list  chi tiết công trình
        $scope.list_buildings = [];
+
+       $scope.building_id = 0;
+
+       $scope.totalItems = 0;
+
+       $scope.filteredTodos = [],
+       $scope.currentPage = 1,
+       $scope.numPerPage = 5,
+       $scope.maxSize = 5;
+
        $http.get('/CongTrinh/Get_AllInfoBuildings').then(function (response) {
+
            $scope.list_buildings = response.data;
+           $scope.totalItems = ($scope.list_buildings.length * 2);
+
+           $scope.$watch('currentPage + numPerPage', function () {
+               var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+               , end = begin + $scope.numPerPage;
+
+               $scope.filteredTodos = $scope.list_buildings.slice(begin, end);
+           });
+
+
+
        }, function (response) {
            //Showing errors
        });
@@ -144,8 +161,8 @@
                    transformRequest: angular.identity,
                    headers: { 'Content-Type': undefined }
                })
-                 .success(function (result) {
-                     if (result == "ok") {
+                 .then(function (result) {
+                     if (result.data == "ok") {
                          open_alert("success");
                          location.reload();
                      } else {
@@ -217,35 +234,17 @@
                params: { building_id: id },
                headers: { 'Content-Type': 'application/json' }
            })
-               .success(function (result) {
-                   if (result == "ok") {
+               .then(function (result) {
+                   
+                   if (result.data == "ok") {
                        open_alert("success");
                        location.reload();
-
                    }
                    else {
                        open_alert("fail");
                    }
                });
        }
-
-
-       $scope.totalItems = 6*2;
-       $scope.currentPage = 2;
-
-       $scope.setPage = function (pageNo) {
-           $scope.currentPage = pageNo;
-       };
-
-       $scope.pageChanged = function () {
-           //$log.log('Page changed to: ' + $scope.currentPage);
-       };
-
-       $scope.maxSize = 5;
-       $scope.bigTotalItems = 175;
-       $scope.bigCurrentPage = 1;
-
-
 
    }]);
 </script>
@@ -266,7 +265,7 @@
         <div class="col-xs-12">
             <ul class="list-unstyled">
                 <!--for each in here-->
-                <li class="col-sm-4" ng-repeat="x in filterData = (list_buildings | filter : {itemName: filterText}) | limitTo:3:3*(page-1)">
+                <li class="col-sm-4" ng-repeat="x in filteredTodos">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
@@ -299,10 +298,12 @@
                 <!--// ket thuc vong lap ở đây-->
 
                 <li class="col-sm-4">
-                    <div class="panel panel-default" style=" margin: 50px 190px 50px 0px;">
-                        <a class="btn btn-app" style="margin:30px" data-toggle="modal" data-target="#modal_add_building">
-                            <i style="font-size: -webkit-xxx-large;" class="fa fa-fw fa-plus"></i>
-                        </a>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="btn btn-block" data-toggle="modal" data-target="#modal_add_building">
+                                <h3 style="color: darkblue; font-weight: bold;">Tạo mới</h3>
+                            </a>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -311,7 +312,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="text-center">
-                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>
+                    <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
                 </div>
             </div>
         </div>

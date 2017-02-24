@@ -8,7 +8,6 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
             params: { buildingitem_id: buildingitem_id }
         })
         .then(function (response) {
-            console.log(response.data);
             return response.data;
         }, function (response) {
             //showing errors
@@ -22,7 +21,6 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
             params: { buildingitem_id: buildingitem_id }
         })
           .then(function (response) {
-              console.log(response.data);
               return response.data;
           }, function (response) {
               //showing errors

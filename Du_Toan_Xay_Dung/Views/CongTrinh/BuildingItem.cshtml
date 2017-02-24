@@ -83,8 +83,8 @@
                          transformRequest: angular.identity,
                          headers: { 'Content-Type': undefined }
                      })
-                       .success(function (result) {
-                           if (result == "ok") {
+                       .then(function (result) {
+                           if (result.data == "ok") {
                                open_alert("success");
                                location.reload();
                            } else {
@@ -105,8 +105,8 @@
                  data: JSON.stringify($scope.list_temp_inf_edit),
                  dataType: "json",
              })
-                .success(function (result) {
-                    if (result == "ok") {
+                .then(function (result) {
+                    if (result.data == "ok") {
                         open_alert("success");
                         location.reload();
                     } else {

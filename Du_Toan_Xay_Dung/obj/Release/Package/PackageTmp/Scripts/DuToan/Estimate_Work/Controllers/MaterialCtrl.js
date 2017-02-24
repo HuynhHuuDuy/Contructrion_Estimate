@@ -106,7 +106,7 @@ angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataS
                 data: JSON.stringify(obj),
                 dataType: "json",
             })
-                .success(function (result) {
+                .then(function (result) {
                     //display message
                     window.setTimeout(function () { $scope.message_save = false; }, 100);
                 });

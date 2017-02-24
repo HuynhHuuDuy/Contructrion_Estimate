@@ -23,13 +23,14 @@ namespace Du_Toan_Xay_Dung.Controllers
         [PageLogin]
         public ActionResult Index()
         {
-            ////var model = ListAllPageging(page, pagesize);
-            
-            //ViewData["List_CongTrinh"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
-            ////ViewData["List_CongTrinh_Null"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email) && !i.BuildingItems.Any(o => o.ID.Equals(i.ID))).Select(i => i.ID).ToList();
-            ////ViewData["list_hinhanh"] = _db.Images_Urls.Select(i => new Images_CongTrinhViewModel(i)).ToList();
-
             return View();
+        }
+
+        [PageLogin]
+        public JsonResult Get_AllInfoBuildings()
+        {
+            var list = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).OrderByDescending(i=>i.ID).Select(i => new BuildingViewModel(i)).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
 
         [PageLogin]
@@ -45,37 +46,17 @@ namespace Du_Toan_Xay_Dung.Controllers
         public ActionResult BuildingItem()
         {
             ViewData["List_CongTrinh"] = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
-            //ViewData["List_HangMuc"] = _db.BuildingItems.Select(i => new BuildingItemViewModel(i)).ToList();
-
             return View();
         }
 
         public JsonResult Get_HangMuc(int id)
         {
-            //var list = _db.Buildings.Join(_db.BuildingItems, bid => bid.ID, biid => biid.Building_ID, (bid, biid) => new
-            //{
-            //    Building = bid,
-            //    BuildingItem = biid
-            //}).Where(i => i.Building.Email.Equals(SessionHandler.User.Email)).Select(i => new
-            //{
-            //    ID = i.BuildingItem.ID,
-            //    Building_ID = i.BuildingItem.Building_ID,
-            //    Name = i.BuildingItem.Name,
-            //    Description = i.BuildingItem.Description,
-            //    Sum = i.BuildingItem.Sum
-            //}).ToList();
-
             var list = _db.BuildingItems.Where(i => i.Building_ID.Equals(id)).Select(i => new BuildingItemViewModel(i)).ToList();
 
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        [PageLogin]
-        public JsonResult Get_AllInfoBuildings()
-        {
-            var list = _db.Buildings.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new BuildingViewModel(i)).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
+        
 
         [PageLogin]
         [HttpPost]
@@ -230,11 +211,15 @@ namespace Du_Toan_Xay_Dung.Controllers
 
                     string location = Server.MapPath(@"~/Images/CongTrinh/Building" + Convert.ToString(building_id) + "/");
                     DirectoryInfo directory = new DirectoryInfo(location);
-                    foreach (FileInfo file in directory.GetFiles())
+
+                    if (directory.Exists)
                     {
-                        file.Delete();
+                        foreach (FileInfo file in directory.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directory.Delete(true);
                     }
-                    directory.Delete(true);
 
                     if (hangmuc.Count != 0)
                     {
