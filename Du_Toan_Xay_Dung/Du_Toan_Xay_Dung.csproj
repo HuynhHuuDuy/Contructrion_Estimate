@@ -773,7 +773,7 @@
     <Content Include="Scripts\DuToan\Bootstrap_UploadFile.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\App_work.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\Controllers\EstimateCtrl.js" />
-    <Content Include="Scripts\DuToan\Estimate_Work\Controllers\general.js" />
+    <Content Include="Scripts\DuToan\Estimate_Work\Controllers\GeneralCtrl.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\Controllers\MaterialCtrl.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\Controllers\SpecificationCtrl.js" />
     <Content Include="Scripts\DuToan\Estimate_Work\JQuery\sheet_mainwork.js" />
@@ -871,6 +871,7 @@
     <Folder Include="obj\Release\Package\PackageTmp\Scripts\Admin\jquery\" />
     <Folder Include="obj\Release\ProfileTransformWebConfig\transformed\Views\" />
     <Folder Include="obj\Release\TransformWebConfig\transformed\Views\" />
+    <Folder Include="Upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

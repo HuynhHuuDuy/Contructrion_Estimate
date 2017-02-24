@@ -20,7 +20,8 @@
     <script src="~/Scripts/DuToan/Estimate_Work/Controllers/MaterialCtrl.js"></script>
 
     <script src="~/Scripts/DuToan/Estimate_Work/Controllers/SpecificationCtrl.js"></script>
-
+    
+    <script src="~/Scripts/DuToan/Estimate_Work/Controllers/GeneralCtrl.js"></script>
     @*<script src="~/Scripts/DuToan/Bootstrap_UploadFile.js"></script>*@
 }
 
@@ -108,7 +109,7 @@
             </div>
             <div class="col-md-8">
                 <!--title building/ building_item-->
-                
+
                 <h4>{{infortitle.BuildingName}} / {{infortitle.BuildingItemName}}</h4>
 
                 @if (SessionHandler.User != null)
@@ -138,7 +139,7 @@
                         </uib-tab>
                     </uib-tabset>
                 </div>
-                <div class="col-md-12 content_wrap_page" ui-view   id="content_wrap_page">
+                <div class="col-md-12 content_wrap_page" ui-view id="content_wrap_page">
 
                 </div>
             </div><!-- /.row (main row) -->

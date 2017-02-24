@@ -38,9 +38,6 @@ namespace Du_Toan_Xay_Dung.Controllers
             var data = _db.Images_Urls.Where(i => i.Building_ID.Equals(ID)).Select(i => i.Url).ToList();
             return Json(data);
         }
-
-
-
         [PageLogin]
         public ActionResult BuildingItem()
         {

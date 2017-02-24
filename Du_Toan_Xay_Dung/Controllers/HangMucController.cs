@@ -24,7 +24,6 @@ namespace Du_Toan_Xay_Dung.Controllers
 
             return View();
         }
-
         //....
         public JsonResult get_Buildings()
         {
@@ -66,9 +65,6 @@ namespace Du_Toan_Xay_Dung.Controllers
 
             return Json(list_normwork, JsonRequestBehavior.AllowGet);
         }
-
-
-
         //get Norm work (created by user)
         [PageLogin]
         public JsonResult getUser_Normworks()
@@ -76,7 +72,6 @@ namespace Du_Toan_Xay_Dung.Controllers
             var list = _db.User_NormWorks.Where(i => i.Email.Equals(SessionHandler.User.Email)).Select(i => new User_NormWorkViewModel(i)).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-
         //get NormWork resource (Default by System)
         public JsonResult GetDetailNormWork_Price(string area_id)
         {
@@ -202,7 +197,17 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error");
             }
         }
-
+        public JsonResult get_namebuilding(int id)
+        {
+            var idcongtrinh = _db.BuildingItems.Where(i => i.ID.Equals(id)).Select(i => i.Building_ID).FirstOrDefault();
+            var list = _db.Buildings.Where(i => i.ID.Equals(idcongtrinh)).Select(i => new BuildingViewModel(i)).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult get_namebuildingitem(int id)
+        {
+            var list = _db.BuildingItems.Where(i => i.ID.Equals(id)).Select(i => new BuildingItemViewModel(i)).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
         //.....
         //save data
         [HttpPost]
@@ -388,7 +393,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error");
             }
         }
-
+       
 
     }
 }

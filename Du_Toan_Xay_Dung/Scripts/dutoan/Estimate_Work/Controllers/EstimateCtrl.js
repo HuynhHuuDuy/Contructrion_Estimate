@@ -76,9 +76,6 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
     //        $scope.list_AllPrice = data;
     //    });
     //};
-
-
-
     function SaveWorktoDatabase(items) {
         if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
 

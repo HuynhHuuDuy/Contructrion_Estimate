@@ -1,8 +1,10 @@
 ﻿
-<div class="row" ng-controller="General" ng-init="start=0;end=10;">
+
+<div class="row" ng-controller="General_Ctrl" ng-init="start=0;end=10;">
     <h2 style="text-align:center">BẢNG TỔNG HỢP DỰ TOÁN HẠNG MỤC</h2>
-    <h4 ng-repeat="item in tencongtrinh" style="text-align:center">Tên công trình:{{item.name}}</h4>
-    <h4 ng-repeat="item in tenhangmuc" style="text-align:center">Tên hạng mục:{{item.name}}</h4>
+    <h4 style="text-align:center">
+    Tên công trình:{{namecongtrinh.Name}}</h4>
+    <h4 style="text-align:center">Tên hạng mục:{{namehangmuc.Name}}</h4>
     <table class="table table-bordered" style="width:1000px">
 
         <tr>
@@ -78,7 +80,7 @@
         <tr>
             <td></td>
             <td>Làm tròn</td>
-            <td ng-repeat="item in total">{{item.total}}</td>
+            <td>{{namehangmuc.Sum}}</td>
             <td></td>
             <td></td>
         </tr>
