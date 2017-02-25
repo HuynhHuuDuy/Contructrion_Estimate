@@ -142,6 +142,20 @@ namespace Du_Toan_Xay_Dung.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
+        [PageLogin]
+        public JsonResult Validation_ID(string id)
+        {
+            var item = _db.User_NormWorks.Where(i => i.NormWork_ID.Equals(id)).FirstOrDefault();
+            if (item != null)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("ok", JsonRequestBehavior.AllowGet);
+            }
+            
+        }
 
         [PageLogin]
         [HttpPost]

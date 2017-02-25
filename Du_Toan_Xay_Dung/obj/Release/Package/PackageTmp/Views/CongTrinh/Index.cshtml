@@ -142,8 +142,8 @@
                    transformRequest: angular.identity,
                    headers: { 'Content-Type': undefined }
                })
-                 .success(function (result) {
-                     if (result == "ok") {
+                 .then(function (result) {
+                     if (result.data == "ok") {
                          open_alert("success");
                          location.reload();
                      } else {
@@ -215,8 +215,8 @@
                params: { building_id: id },
                headers: { 'Content-Type': 'application/json' }
            })
-               .success(function (result) {
-                   if (result == "ok") {
+               .then(function (result) {
+                   if (result.data == "ok") {
                        open_alert("success");
                        location.reload();
 

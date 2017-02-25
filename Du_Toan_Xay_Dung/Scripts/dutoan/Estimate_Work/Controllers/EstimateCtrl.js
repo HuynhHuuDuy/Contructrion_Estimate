@@ -86,7 +86,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 data: JSON.stringify(items),
                 dataType: "json",
             })
-                .success(function (result) {
+                .then(function (result) {
                     //display message
                     window.setTimeout(function () { $scope.message_save = false; }, 100);
                 });
@@ -115,7 +115,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 data: JSON.stringify(obj),
                 dataType: "json",
             })
-                .success(function (result) {
+                .then(function (result) {
                     //display message
                     window.setTimeout(function () { $scope.message_save = false; }, 100);
                 });
@@ -136,7 +136,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 data: JSON.stringify(items),
                 dataType: "json",
             })
-                .success(function (result) {
+                .then(function (result) {
                     window.setTimeout(function () { $scope.message_save = false; }, 100);
                 });
         }

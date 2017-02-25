@@ -13,6 +13,8 @@
             $scope.list_UserNormWork = [];
             $scope.tempwork = [];
 
+            $scope.flag_validation = 0;
+
             $scope.show_Edit = true;
             //$scope.list_UserNormWorkDetail = [];
 
@@ -126,35 +128,40 @@
 
             $scope.save_tempWork = function () {
 
-                var data = {
-                    NormWork_ID: $scope.tempwork.ID,
-                    Name: $scope.tempwork.Name,
-                    Unit: $scope.tempwork.Unit,
-                    Norm_Details: $scope.list_UnitPrice,
-                };
+                if ($scope.flag_validation == 1) {
+                    var data = {
+                        NormWork_ID: $scope.tempwork.ID,
+                        Name: $scope.tempwork.Name,
+                        Unit: $scope.tempwork.Unit,
+                        Norm_Details: $scope.list_UnitPrice,
+                    };
 
-                $http({
-                    method: "post",
-                    url: "/WorkTemporary/post_saveUser_NormWork",
-                    data: JSON.stringify(data),
-                    dataType: "json",
-                })
-                 .then(function (result) {
-                     if (result.data == "ok") {
-                         open_alert("success");
-                         location.reload();
-                     }
-                 });
-
+                    $http({
+                        method: "post",
+                        url: "/WorkTemporary/post_saveUser_NormWork",
+                        data: JSON.stringify(data),
+                        dataType: "json",
+                    })
+                     .then(function (result) {
+                         if (result.data == "ok") {
+                             open_alert("success");
+                             location.reload();
+                         }
+                     });
+                }
             };
 
             $scope.clear_content = function () {
                 $scope.tempwork = [];
                 $scope.list_UnitPrice = [];
+                $scope.show_Edit = true;
+                $scope.show_DontEdit = false;
+                $scope.flag_validation = 0;
             };
 
             $scope.edit_UserNormWork = function (x) {
 
+                $scope.flag_validation = 1;
                 var id = x.NormWork_ID;
                 get_UserNormDeTail(id);
 
@@ -240,6 +247,30 @@
                 };
             };
 
+            $scope.validationID = function (id) {
+
+                return $http({
+                    method: "GET",
+                    url: "/WorkTemporary/Validation_ID",
+                    params: { id: id }
+                })
+                    .then(function (response) {
+
+                        if (response.data == "ok") {
+                            $scope.flag_validation = 1;
+                            $scope.warning_ID_error = false;
+                        }
+                        else {
+                            $scope.flag_validation = 0;
+                            $scope.warning_ID_error = true;
+                        }
+
+                    }, function (response) {
+                        //showing errors
+                    });
+
+            };
+
         }]);
 </script>
 
@@ -285,9 +316,12 @@
                                 <!-- ID -->
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="">Mã:</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-5">
                                         <span ng-show="show_DontEdit" id="show_DontEdit"></span>
-                                        <input type="text" ng-model="tempwork.ID" ng-show="show_Edit" class="form-control" id="ID_TempWork" name="ID_TempWork" placeholder="Nhập mã công việc tạm tính...">
+                                        <input type="text" ng-model="tempwork.ID" ng-show="show_Edit" ng-blur="validationID(tempwork.ID)" class="form-control" id="ID_TempWork" name="ID_TempWork" placeholder="Mã CV tạm tính...">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span ng-show="warning_ID_error" class="center"><i class="fa fa-fw fa-close" style="color:red"></i> Mã đã tồn tại</span>
                                     </div>
                                 </div>
                                 <!-- Name -->

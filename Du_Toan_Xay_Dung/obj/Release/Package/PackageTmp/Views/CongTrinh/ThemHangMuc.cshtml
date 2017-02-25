@@ -15,8 +15,8 @@
                  data: JSON.stringify($scope.master),
                  headers: { 'Content-Type': 'application/json' }
              })
-                 .success(function (result) {
-                     if (result == "ok") {
+                 .then(function (result) {
+                     if (result.data == "ok") {
                          open_alert("success");
 
                      } else {

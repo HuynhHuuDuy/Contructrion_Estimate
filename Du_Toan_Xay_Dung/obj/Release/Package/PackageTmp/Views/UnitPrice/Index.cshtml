@@ -54,7 +54,7 @@
                 data: JSON.stringify(obj),
                 dataType: "json",
             })
-             .success(function (result) {
+             .then(function (result) {
                  open_alert("success");
                  location.reload();
              });

@@ -18,5 +18,8 @@ namespace Du_Toan_Xay_Dung.Models
         public long ID { get; set; }
         public long Building_ID { get; set; }
         public string Url { get; set; }
+
+        public string src { get; set; }
+        public string name { get; set; }
     }
 }
