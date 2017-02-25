@@ -73,7 +73,7 @@
 <script>
 
     angular.module('postApp', ['ui.bootstrap'])
-   .controller('postController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+   .controller('postController', ['$scope', '$http', '$filter', '$q', function ($scope, $http, $filter, $q) {
 
        //load list  chi tiết công trình
        $scope.list_buildings = [];
@@ -134,11 +134,6 @@
                image.Size = (e.total / 1024).toFixed(2);
                image.Src = e.target.result;
                $scope.stepsModel.push(image);
-               var specify_image = {
-                   url: image.Src,
-                   filename: image.Name
-               };
-               $scope.listdropbox.push(specify_image);
            });
        }
 
@@ -171,35 +166,7 @@
                  });
            }
        };
-       // save dropbox
-       $scope.savetodropbox = function () {
-           var options = {
-               files: $scope.listdropbox,
 
-               // Success is called once all files have been successfully added to the user's
-               // Dropbox, although they may not have synced to the user's devices yet.
-               success: function () {
-                   // Indicate to the user that the files have been saved.
-                   alert("Success! Files saved to your Dropbox.");
-               },
-
-               // Progress is called periodically to update the application on the progress
-               // of the user's downloads. The value passed to this callback is a float
-               // between 0 and 1. The progress callback is guaranteed to be called at least
-               // once with the value 1.
-               progress: function (progress) { },
-
-               // Cancel is called if the user presses the Cancel button or closes the Saver.
-               cancel: function () { },
-
-               // Error is called in the event of an unexpected response from the server
-               // hosting the files, such as not being able to find a file. This callback is
-               // also called if there is an error on Dropbox or if the user is over quota.
-               error: function (errorMessage) {
-               }
-           };
-           Dropbox.save(options);
-       };
 
        // xóa hình đã thêm
        $scope.deleteTempImage = function (idx, x) {
@@ -235,7 +202,7 @@
                headers: { 'Content-Type': 'application/json' }
            })
                .then(function (result) {
-                   
+
                    if (result.data == "ok") {
                        open_alert("success");
                        location.reload();
@@ -245,6 +212,87 @@
                    }
                });
        }
+
+
+
+       // save dropbox
+       $scope.savetodropbox = function (id) {
+
+           var listdropbox = [];
+
+
+           function asyncGetImages(url) {
+
+               var deferred = $q.defer();
+
+               $http({
+                   method: "GET",
+                   url: url,
+                   params: { id: id }
+               })
+                     .then(function (response) {
+
+                         deferred.resolve(response.data);
+
+                     }, function (response) {
+                         //showing errors
+                         deferred.reject({ message: "Really bad" });
+                     });
+
+
+               return deferred.promise;
+           }
+
+           var promise = asyncGetImages("/CongTrinh/get_dataSavetoDropbox");
+
+           promise.then(function (greeting) {
+
+               angular.forEach(greeting, function (value, key) {
+
+                   var obj = {
+                       filename: value.name,
+                       url: value.src
+                   };
+
+                   listdropbox.push(obj);
+
+               });
+
+
+               var options = {
+
+                   files: listdropbox,
+
+                   // Success is called once all files have been successfully added to the user's
+                   // Dropbox, although they may not have synced to the user's devices yet.
+                   success: function () {
+                       // Indicate to the user that the files have been saved.
+                       alert("Success! Files saved to your Dropbox.");
+                   },
+
+                   // Progress is called periodically to update the application on the progress
+                   // of the user's downloads. The value passed to this callback is a float
+                   // between 0 and 1. The progress callback is guaranteed to be called at least
+                   // once with the value 1.
+                   progress: function (progress) { },
+
+                   // Cancel is called if the user presses the Cancel button or closes the Saver.
+                   cancel: function () { },
+
+                   // Error is called in the event of an unexpected response from the server
+                   // hosting the files, such as not being able to find a file. This callback is
+                   // also called if there is an error on Dropbox or if the user is over quota.
+                   error: function (errorMessage) {
+                   }
+               };
+
+               Dropbox.save(options);
+
+           });
+
+
+
+       };
 
    }]);
 </script>
@@ -285,10 +333,10 @@
                                 <div class="col-sm-12">
                                     <img src="~/Images/Awicons-Vista-Artistic-Office-building.ico" class="img-responsive" style="width:90%; height:90%" />
                                 </div>
-                                <p>{{list_buildings.Description}}...</p>
+                                <p>{{x.Description}}...</p>
                             </div>
                             <div>
-                                <span class="btn btn-block btn-social btn-dropbox" id="btn_savetoDropbox" ng-click="savetodropbox()">
+                                <span class="btn btn-block btn-social btn-dropbox" id="btn_savetoDropbox" ng-click="savetodropbox(x.ID)">
                                     <i class="fa fa-dropbox"></i> Save data to Dropbox
                                 </span>
                             </div>
