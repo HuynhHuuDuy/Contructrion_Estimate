@@ -20,7 +20,7 @@ using PagedList.Mvc;
 using PagedList;
 namespace Du_Toan_Xay_Dung.Controllers
 {
-    //[HandleError]
+    
     public class AdminController : Controller
     {
         DataDTXDDataContext _db = new DataDTXDDataContext();
@@ -44,16 +44,7 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
         public ActionResult suanguoidung(string Email)
         {
-            var nguoidung = _db.Users.Where(i => i.Email.Equals(Email)).Select(i => new UserViewModel(i)).FirstOrDefault();
-            if (SessionHandler.User != null)
-            {
-                var user = SessionHandler.User;
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            ViewBag.Title = "Dự toán xây dựng";
+            var nguoidung = _db.Users.Where(i => i.Email.Contains(Email)).Select(i => new UserViewModel(i)).FirstOrDefault();     
             return View(nguoidung);
         }
         [HttpPost]
@@ -385,35 +376,31 @@ namespace Du_Toan_Xay_Dung.Controllers
             return RedirectToAction("index");
          }
         [HttpPost]
-        public ActionResult Post_themnguoidung(FormCollection form)
+        public JsonResult Post_themnguoidung(UserViewModel obj)
         {
-            string ho_tenlot = form["middle-name"];
-            string ten = form["name"];
-            string email = form["email"];
-            string matkhau = form["password"];
-            string quyen = form["security"];
-            string sodienthoai = form["phone"];
-            string noilamviec = form["placework"];
-            string thanhpho = form["city"];
-            string hinhanh = form["image"];
-            User user = new User()
+           try
             {
-                Email = email,
-                Password = matkhau,
-                First_Name = ho_tenlot,
-                Last_Name = ten,
-                Role = quyen,
-                Workplace = noilamviec,
-                City = thanhpho,
-                Phone = sodienthoai,
-                Url_Image = hinhanh
-            };
-            _db.Users.InsertOnSubmit(user);
-            _db.SubmitChanges();
+                User user = new User()
+                {
+                    Email = obj.Email,
+                    Password = obj.Passwork,
+                    First_Name = obj.First_Name,
+                    Last_Name = obj.Last_Name,
+                    Role = "user",
+                    Workplace = obj.WorkPlace,
+                    City = obj.City,
+                    Phone = obj.Phone,
+                };
+                _db.Users.InsertOnSubmit(user);
+                _db.SubmitChanges();
+                return Json("ok");
 
-            return RedirectToAction("suaxoanguoidung", "Admin");
+           }
+           catch {
+                return Json("error");
+           }
+           
         }
-
         public ActionResult Delete(string email)
         {
 
@@ -559,17 +546,9 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
         public ActionResult suadongia(string MaVL_NC_MTC)
         {
-            ViewData["dongia"] = _db.UnitPrices.Where(i => i.ID.Equals(MaVL_NC_MTC)).Select(i => new DonGiaViewModel(i)).FirstOrDefault();
-            ViewData["dongia_khuvuc"] = _db.UnitPrice_Areas.Where(i => i.UnitPrice_ID.Equals(MaVL_NC_MTC)).Select(i => new UnitPrice_AreaViewModel(i)).FirstOrDefault();
-            if (SessionHandler.User != null)
-            {
-                var user = SessionHandler.User;
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            ViewBag.Title = "Dự toán xây dựng";
+            ViewData["dongia"] = _db.UnitPrices.Where(i => i.ID.Contains(MaVL_NC_MTC)).Select(i => new DonGiaViewModel(i)).FirstOrDefault();
+            ViewData["dongia_khuvuc"] = _db.UnitPrice_Areas.Where(i => i.UnitPrice_ID.Contains(MaVL_NC_MTC)).Select(i => new UnitPrice_AreaViewModel(i)).FirstOrDefault();
+           
             return View();
         }
         [HttpPost]
@@ -651,18 +630,16 @@ namespace Du_Toan_Xay_Dung.Controllers
             var model = _db.Buildings.Where(i => i.Email.Equals(email)).ToList();
             return View(model);
         }
-        public ActionResult quanlidinhmuc(int page=1, int pagesize=10)
-        {
-            ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
-            var model = ListAllPageging2(page, pagesize);
-            return View(model);
-        }
-        public IEnumerable<NormWork> ListAllPageging2(int page, int pagesize)
-        {
-            return _db.NormWorks.OrderByDescending(x => x.ID).ToPagedList(page, pagesize);
-        }
-
-
+        //public ActionResult quanlidinhmuc(int page=1, int pagesize=10)
+        //{
+        //    ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
+        //    var model = ListAllPageging2(page, pagesize);
+        //    return View(model);
+        //}
+        //public IEnumerable<NormWork> ListAllPageging2(int page, int pagesize)
+        //{
+        //    return _db.NormWorks.OrderByDescending(x => x.ID).ToPagedList(page, pagesize);
+        //}
     }
 }
 

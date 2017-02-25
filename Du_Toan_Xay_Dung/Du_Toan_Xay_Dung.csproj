@@ -846,7 +846,6 @@
     <Content Include="Views\Admin\nhapdinhmuc.cshtml" />
     <Content Include="Views\Admin\suanguoidung.cshtml" />
     <Content Include="Views\Admin\suaxoanguoidung.cshtml" />
-    <Content Include="Views\Admin\themnguoidung.cshtml" />
     <Content Include="Views\Admin\uploadinhmuc.cshtml" />
     <Content Include="Views\Shared\_Admin.cshtml" />
     <Content Include="Views\Admin\upload.cshtml" />
