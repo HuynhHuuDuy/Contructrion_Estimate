@@ -54,11 +54,244 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
 
         [PageLogin]
-        public JsonResult get_dataSavetoDropbox(string id)
+        public JsonResult get_dataSavetoDropbox(string ID)
         {
-            var list_temp = _db.Images_Urls.Where(i => i.Building_ID.Equals(id)).Select(i => new Images_CongTrinhViewModel(i)).ToList();
+            var list_temp = _db.Images_Urls.Where(i => i.Building_ID.Equals(ID)).Select(i => new Images_CongTrinhViewModel(i)).ToList();
 
             List<Images_CongTrinhViewModel> list_images = new List<Images_CongTrinhViewModel>();
+
+            string strbase64_excel = "";
+
+            //export excel
+            //get data cong trinh
+            var congtrinh = _db.Buildings.Where(i => i.ID.Equals(ID)).Select(i => new BuildingViewModel(i)).FirstOrDefault();
+
+
+            //get data hang muc
+            var hangmuc = _db.BuildingItems.Where(i => i.Building_ID.Equals(ID)).Select(i => new BuildingItemViewModel(i)).ToList();
+            var hangmuccount = hangmuc.Count;
+
+            //get data congviec
+            var list_mahangmuc = hangmuc.Select(i => i.ID).ToList();
+            var congviec = _db.UserWorks.Where(i => list_mahangmuc.Contains(i.BuildingItem_ID)).Select(i => new UserWorkViewModel(i)).ToList();
+            var congvieccount = congviec.Count;
+            //get data haophi
+            var haophi = _db.UserWork_Resources.Where(i => list_mahangmuc.Contains(i.BuildingItem_ID)).Select(i => new UserWorkResourceViewModel(i)).ToList();
+            var haophicout = haophi.Count;
+            ////var mahangmucs = _db.BuildingItems.Where(i => i.Building_ID.Equals(ID)).Select(i => i.ID).ToList();
+            //List<long> mahangmucs1 = _db.BuildingItems.Where(i => i.Building_ID.Equals(ID)).Select(i => i.ID).ToList();
+            //var congviec = _db.UserWorks.Where(i => mahangmucs1.Contains(i.BuildingItem_ID)).Select(i => new UserWorkViewModel(i)).ToList();
+            //List<string> macongviecs = _db.UserWorks.Where(i => mahangmucs1.Contains(i.BuildingItem_ID)).Select(i => i.NormWork_ID).ToList();
+            //var haophi = _db.NormDetails.Where(i => macongviecs.Contains(i.NormWork_ID)).Select(i => new DonGiaChiTiet_DM_ViewModel(i)).ToList();
+            ////var congtrinh = _db.CongTrinhs.Where(i => i.MaCT.Equals(ID)).Select(i => new CongTrinhViewModel(i)).FirstOrDefault();
+
+            ////var hangmuc = _db.HangMucs.Where(i => i.MaCT.Equals(ID)).Select(i => new HangMucViewModel(i)).ToList();
+            ////var mahangmucs = _db.HangMucs.Where(i => i.MaCT.Equals(ID)).Select(i => i.MaHM).ToList();
+            //var hangmuccout = hangmuc.Count;
+            ////var congviec = _db.CongViecs.Where(i =>i.HangMuc.Equals(mahangmucs)).Select(i => new CongViec_User_ViewModel(i)).ToList();
+            ////var macongviecs = _db.CongViecs.Where(i => i.HangMuc.Equals(mahangmucs)).Select(i => i.MaHieuCV_User).ToList();
+            //var congvieccout = congviec.Count;
+            ////var haophi = _db.ThanhPhanHaoPhis.Where(i =>i.MaHieuCV_User.Equals(macongviecs)).Select(i => new HaoPhi_User_ViewModel(i)).ToList();
+            //var haophicout = haophi.Count;
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Hạng mục");
+                ExcelWorksheet ws1 = pck.Workbook.Worksheets.Add("Công việc");
+                ExcelWorksheet ws2 = pck.Workbook.Worksheets.Add("Thành phần hao phí");
+
+                // ADD dữ liệu cho sheet hạng mục
+                ws.Cells["I5"].Value = "BẢNG DỰ TOÁN HẠNG MỤC CÔNG TRÌNH";
+                ws.Cells["J7"].Value = "Tên công trình;" + "   " + congtrinh.Name;
+
+                // table  
+                ws.Cells["B8"].Value = "Mã hạng mục";
+                ws.Cells["B8:D8"].Merge = true;
+
+                ws.Cells["E8"].Value = "Mã công trình";
+                ws.Cells["E8:G8"].Merge = true;
+
+                ws.Cells["H8"].Value = "Tên hạng mục";
+                ws.Cells["H8:M8"].Merge = true;
+
+                ws.Cells["N8"].Value = "Mô tả";
+                ws.Cells["N8:Q8"].Merge = true;
+
+                ws.Cells["R8"].Value = "Đơn giá";
+                ws.Cells["R8:T8"].Merge = true;
+                var dong = (hangmuccount + 3 + 8).ToString();
+                var dong1 = "H" + dong;
+                var dong2 = "I" + dong;
+
+                ws.Cells[dong1].Value = "Tổng tiền công trình";
+
+                //
+                var r = 9;
+                foreach (var row in hangmuc)
+                {
+
+                    var A = "A" + r;
+                    var B = "B" + r;
+                    var C = "C" + r;
+                    var D = "D" + r;
+                    var E = "E" + r;
+                    var F = "F" + r;
+                    var G = "G" + r;
+                    var H = "H" + r;
+                    var N = "N" + r;
+                    var R = "R" + r;
+                    var U = "U" + r;
+
+                    //  content
+
+                    ws.Cells[B].Value = row.ID;
+                    ws.Cells[E].Value = row.Building_ID;
+                    ws.Cells[H].Value = row.Name;
+                    ws.Cells[N].Value = row.Description;
+                    ws.Cells[R].Formula = "+SUMIFS('Công việc'!U9:U" + (congvieccount + 1 + 9) + ",'Công việc'!D9:D" + (congvieccount + 1 + 9) + ",B" + r + "" + ")";
+                    ws.Cells[dong2].Formula = "+SUM(R9:R" + (congvieccount + 1 + 9) + ")";
+                    r++;
+                }
+
+
+                var A2 = "A" + (r + 1);
+                var B2 = "B" + (r + 1);
+                var C2 = "A" + (r + 2);
+                var D2 = "B" + (r + 2);
+                // add dữ liệu cho sheet công việc
+                ws1.Cells["I6"].Value = "DANH SÁCH CÔNG VIỆC THUỘC HẠNG MỤC";
+                ws1.Cells["A8"].Value = "Mã công việc- người dùng";
+                ws1.Cells["A8:C8"].Merge = true;
+
+                ws1.Cells["D8"].Value = "Mã hạng mục";
+                ws1.Cells["D8:E8"].Merge = true;
+
+                ws1.Cells["F8"].Value = "Mã công việc- định mức";
+                ws1.Cells["F8:H8"].Merge = true;
+
+                ws1.Cells["I8"].Value = "Tên công việc";
+                ws1.Cells["I8:J8"].Merge = true;
+
+                ws1.Cells["K8"].Value = "Đơn vị";
+                ws1.Cells["K8:L8"].Merge = true;
+
+                ws1.Cells["M8"].Value = "Khối lượng";
+                ws1.Cells["M8:N8"].Merge = true;
+
+                ws1.Cells["O8"].Value = "Giá vật liệu";
+                ws1.Cells["O8:P8"].Merge = true;
+
+                ws1.Cells["Q8"].Value = "Giá nhân công";
+                ws1.Cells["Q8:R8"].Merge = true;
+
+                ws1.Cells["S8"].Value = "Giá máy thi công";
+                ws1.Cells["S8:T8"].Merge = true;
+
+
+                ws1.Cells["U8"].Value = "Thành tiền";
+                ws1.Cells["U8:V8"].Merge = true;
+                var r1 = 9;
+                foreach (var row in congviec)
+                {
+
+                    var A = "A" + r1;
+                    var B = "B" + r1;
+                    var C = "C" + r1;
+                    var D = "D" + r1;
+                    var E = "E" + r1;
+                    var F = "F" + r1;
+                    var G = "G" + r1;
+                    var H = "H" + r1;
+                    var I = "I" + r1;
+                    var K = "K" + r1;
+                    var L = "L" + r1;
+                    var N = "O" + r1;
+                    var M = "M" + r1;
+                    var O = "O" + r1;
+                    var P = "P" + r1;
+                    var Q = "Q" + r1;
+                    var R = "R" + r1;
+                    var S = "S" + r1;
+                    var T = "T" + r1;
+                    var U = "U" + r1;
+                    var V = "V" + r1;
+
+
+
+                    //  content
+
+                    ws1.Cells[A].Value = row.ID;
+                    ws1.Cells[D].Value = row.BuildingItem_ID;
+                    ws1.Cells[F].Value = row.NormWork_ID;
+                    ws1.Cells[I].Value = row.Name;
+                    ws1.Cells[K].Value = row.Unit;
+                    ws1.Cells[M].Value = row.Number;
+                    // chỉnh lại công thức excel
+                    ws1.Cells[O].Value = row.PriceMaterial * row.Area;
+                    ws1.Cells[Q].Value = row.PriceLabor * row.Area;
+                    ws1.Cells[S].Value = row.PriceMachine * row.Area;
+                    ws1.Cells[U].Formula = "+PRODUCT(SUM(O" + r1 + ":S" + r1 + "),M" + r1 + ")";
+                    r1++;
+                }
+                //add dữ liệu cho sheet thành phần hao phí
+                // table 
+                ws2.Cells["I5"].Value = "DANH MỤC THÀNH PHẦN HAO PHÍ";
+
+                ws2.Cells["E8"].Value = "Mã hiệu công việc- user";
+                ws2.Cells["E8:G8"].Merge = true;
+
+                ws2.Cells["H8"].Value = "Mã thành phần";
+                ws2.Cells["H8:M8"].Merge = true;
+
+                ws2.Cells["N8"].Value = "Số lượng";
+                ws2.Cells["N8:Q8"].Merge = true;
+
+                ws2.Cells["R8"].Value = "Đơn giá";
+                ws2.Cells["R8:T8"].Merge = true;
+
+                //
+                var r2 = 9;
+                foreach (var row in haophi)
+                {
+
+                    var A = "A" + r2;
+                    var B = "B" + r2;
+                    var C = "C" + r2;
+                    var D = "D" + r2;
+                    var E = "E" + r2;
+                    var F = "F" + r2;
+                    var G = "G" + r2;
+                    var H = "H" + r2;
+                    var N = "N" + r2;
+                    var R = "R" + r2;
+
+                    //  content
+
+
+                    ws2.Cells[E].Value = row.UserWork_ID;
+                    ws2.Cells[H].Value = row.Name;
+                    ws2.Cells[N].Value = row.Number_Norm;
+                    ws2.Cells[R].Value = row.Price;
+                    r2++;
+                }
+
+
+                Byte[] fileBytes = pck.GetAsByteArray();
+                //Response.Clear();
+                //Response.Buffer = true;
+                //Response.AddHeader("content-disposition", "attachment;filename=DuToanXayDung.xlsx");
+                //Response.Charset = "";
+                //Response.ContentType = "application/vnd.ms-excel";
+                //StringWriter sw = new StringWriter();
+                //Response.BinaryWrite(fileBytes);
+                //Response.End();
+
+                string base64ImageRepresentation = Convert.ToBase64String(fileBytes);
+
+                strbase64_excel = "data:excel/xlsx" + ";base64," + base64ImageRepresentation;
+
+            }
+
 
             foreach (var item in list_temp)
             {
@@ -73,6 +306,8 @@ namespace Du_Toan_Xay_Dung.Controllers
                 list_images.Add(new Images_CongTrinhViewModel() { name = Arr_temp[4], src = "data:image/" + Arr_name[1].ToLower() + ";base64," + base64ImageRepresentation });
 
             }
+
+            list_images.Add(new Images_CongTrinhViewModel() { name = "dutoanxaydung.xlsx", src = strbase64_excel });
 
             return Json(list_images, JsonRequestBehavior.AllowGet);
         }
@@ -358,227 +593,18 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
-        public ActionResult ExportToExcel(string ID)
-        {
+        //public JsonResult ExportToExcel(string ID)
+        //{
 
-            if (ID != null)
-            {
-                var congtrinh = _db.Buildings.Where(i => i.ID.Equals(ID)).Select(i => new BuildingViewModel(i)).FirstOrDefault();
-                var hangmuc = _db.BuildingItems.Where(i => i.Building_ID.Equals(ID)).Select(i => new BuildingItemViewModel(i)).ToList();
-                //var mahangmucs = _db.BuildingItems.Where(i => i.Building_ID.Equals(ID)).Select(i => i.ID).ToList();
-                List<long> mahangmucs1 = _db.BuildingItems.Where(i => i.Building_ID.Equals(ID)).Select(i => i.ID).ToList();
-                var congviec = _db.UserWorks.Where(i => mahangmucs1.Contains(i.BuildingItem_ID)).Select(i => new UserWorkViewModel(i)).ToList();
-                List<string> macongviecs = _db.UserWorks.Where(i => mahangmucs1.Contains(i.BuildingItem_ID)).Select(i => i.NormWork_ID).ToList();
-                var haophi = _db.NormDetails.Where(i => macongviecs.Contains(i.NormWork_ID)).Select(i => new DonGiaChiTiet_DM_ViewModel(i)).ToList();
-                //var congtrinh = _db.CongTrinhs.Where(i => i.MaCT.Equals(ID)).Select(i => new CongTrinhViewModel(i)).FirstOrDefault();
-
-                //var hangmuc = _db.HangMucs.Where(i => i.MaCT.Equals(ID)).Select(i => new HangMucViewModel(i)).ToList();
-                //var mahangmucs = _db.HangMucs.Where(i => i.MaCT.Equals(ID)).Select(i => i.MaHM).ToList();
-                var hangmuccout = hangmuc.Count;
-                //var congviec = _db.CongViecs.Where(i =>i.HangMuc.Equals(mahangmucs)).Select(i => new CongViec_User_ViewModel(i)).ToList();
-                //var macongviecs = _db.CongViecs.Where(i => i.HangMuc.Equals(mahangmucs)).Select(i => i.MaHieuCV_User).ToList();
-                var congvieccout = congviec.Count;
-                //var haophi = _db.ThanhPhanHaoPhis.Where(i =>i.MaHieuCV_User.Equals(macongviecs)).Select(i => new HaoPhi_User_ViewModel(i)).ToList();
-                var haophicout = haophi.Count;
-
-                using (ExcelPackage pck = new ExcelPackage())
-                {
-                    ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Hạng mục");
-                    ExcelWorksheet ws1 = pck.Workbook.Worksheets.Add("Công việc");
-                    ExcelWorksheet ws2 = pck.Workbook.Worksheets.Add("Thành phần hao phí");
-
-                    // ADD dữ liệu cho sheet hạng mục
-                    ws.Cells["I5"].Value = "BẢNG DỰ TOÁN HẠNG MỤC CÔNG TRÌNH";
-                    ws.Cells["J7"].Value = "Tên công trình;" + "   " + congtrinh.Name;
-
-                    // table  
-                    ws.Cells["B8"].Value = "Mã hạng mục";
-                    ws.Cells["B8:D8"].Merge = true;
-
-                    ws.Cells["E8"].Value = "Mã công trình";
-                    ws.Cells["E8:G8"].Merge = true;
-
-                    ws.Cells["H8"].Value = "Tên hạng mục";
-                    ws.Cells["H8:M8"].Merge = true;
-
-                    ws.Cells["N8"].Value = "Mô tả";
-                    ws.Cells["N8:Q8"].Merge = true;
-
-                    ws.Cells["R8"].Value = "Đơn giá";
-                    ws.Cells["R8:T8"].Merge = true;
-                    var dong = (hangmuccout + 3 + 8).ToString();
-                    var dong1 = "H" + dong;
-                    var dong2 = "I" + dong;
-
-                    ws.Cells[dong1].Value = "Tổng tiền công trình";
-
-                    //
-                    var r = 9;
-                    foreach (var row in hangmuc)
-                    {
-
-                        var A = "A" + r;
-                        var B = "B" + r;
-                        var C = "C" + r;
-                        var D = "D" + r;
-                        var E = "E" + r;
-                        var F = "F" + r;
-                        var G = "G" + r;
-                        var H = "H" + r;
-                        var N = "N" + r;
-                        var R = "R" + r;
-                        var U = "U" + r;
-
-                        //  content
-
-                        ws.Cells[B].Value = row.ID;
-                        ws.Cells[E].Value = row.Building_ID;
-                        ws.Cells[H].Value = row.Name;
-                        ws.Cells[N].Value = row.Description;
-                        ws.Cells[R].Formula = "+SUMIFS('Công việc'!U9:U" + (congvieccout + 1 + 9) + ",'Công việc'!D9:D" + (congvieccout + 1 + 9) + ",B" + r + "" + ")";
-                        ws.Cells[dong2].Formula = "+SUM(R9:R" + (hangmuccout + 1 + 9) + ")";
-                        r++;
-                    }
-
-
-                    var A2 = "A" + (r + 1);
-                    var B2 = "B" + (r + 1);
-                    var C2 = "A" + (r + 2);
-                    var D2 = "B" + (r + 2);
-                    // add dữ liệu cho sheet công việc
-                    ws1.Cells["I6"].Value = "DANH SÁCH CÔNG VIỆC THUỘC HẠNG MỤC";
-                    ws1.Cells["A8"].Value = "Mã công việc- người dùng";
-                    ws1.Cells["A8:C8"].Merge = true;
-
-                    ws1.Cells["D8"].Value = "Mã hạng mục";
-                    ws1.Cells["D8:E8"].Merge = true;
-
-                    ws1.Cells["F8"].Value = "Mã công việc- định mức";
-                    ws1.Cells["F8:H8"].Merge = true;
-
-                    ws1.Cells["I8"].Value = "Tên công việc";
-                    ws1.Cells["I8:J8"].Merge = true;
-
-                    ws1.Cells["K8"].Value = "Đơn vị";
-                    ws1.Cells["K8:L8"].Merge = true;
-
-                    ws1.Cells["M8"].Value = "Khối lượng";
-                    ws1.Cells["M8:N8"].Merge = true;
-
-                    ws1.Cells["O8"].Value = "Giá vật liệu";
-                    ws1.Cells["O8:P8"].Merge = true;
-
-                    ws1.Cells["Q8"].Value = "Giá nhân công";
-                    ws1.Cells["Q8:R8"].Merge = true;
-
-                    ws1.Cells["S8"].Value = "Giá máy thi công";
-                    ws1.Cells["S8:T8"].Merge = true;
-
-
-                    ws1.Cells["U8"].Value = "Thành tiền";
-                    ws1.Cells["U8:V8"].Merge = true;
-                    var r1 = 9;
-                    foreach (var row in congviec)
-                    {
-
-                        var A = "A" + r1;
-                        var B = "B" + r1;
-                        var C = "C" + r1;
-                        var D = "D" + r1;
-                        var E = "E" + r1;
-                        var F = "F" + r1;
-                        var G = "G" + r1;
-                        var H = "H" + r1;
-                        var I = "I" + r1;
-                        var K = "K" + r1;
-                        var L = "L" + r1;
-                        var N = "O" + r1;
-                        var M = "M" + r1;
-                        var O = "O" + r1;
-                        var P = "P" + r1;
-                        var Q = "Q" + r1;
-                        var R = "R" + r1;
-                        var S = "S" + r1;
-                        var T = "T" + r1;
-                        var U = "U" + r1;
-                        var V = "V" + r1;
-
-
-
-                        //  content
-
-                        ws1.Cells[A].Value = row.ID;
-                        ws1.Cells[D].Value = row.BuildingItem_ID;
-                        ws1.Cells[F].Value = row.NormWork_ID;
-                        ws1.Cells[I].Value = row.Name;
-                        ws1.Cells[K].Value = row.Unit;
-                        ws1.Cells[M].Value = row.Number;
-                        // chỉnh lại công thức excel
-                        ws1.Cells[O].Value = row.PriceMaterial * row.Area;
-                        ws1.Cells[Q].Value = row.PriceLabor * row.Area;
-                        ws1.Cells[S].Value = row.PriceMachine * row.Area;
-                        ws1.Cells[U].Formula = "+PRODUCT(SUM(O" + r1 + ":S" + r1 + "),M" + r1 + ")";
-                        r1++;
-                    }
-                    //add dữ liệu cho sheet thành phần hao phí
-                    // table 
-                    ws2.Cells["I5"].Value = "DANH MỤC THÀNH PHẦN HAO PHÍ";
-
-                    ws2.Cells["E8"].Value = "Mã hiệu công việc- user";
-                    ws2.Cells["E8:G8"].Merge = true;
-
-                    ws2.Cells["H8"].Value = "Mã thành phần";
-                    ws2.Cells["H8:M8"].Merge = true;
-
-                    ws2.Cells["N8"].Value = "Số lượng";
-                    ws2.Cells["N8:Q8"].Merge = true;
-
-                    ws2.Cells["R8"].Value = "Đơn giá";
-                    ws2.Cells["R8:T8"].Merge = true;
-
-                    //
-                    var r2 = 9;
-                    foreach (var row in haophi)
-                    {
-
-                        var A = "A" + r2;
-                        var B = "B" + r2;
-                        var C = "C" + r2;
-                        var D = "D" + r2;
-                        var E = "E" + r2;
-                        var F = "F" + r2;
-                        var G = "G" + r2;
-                        var H = "H" + r2;
-                        var N = "N" + r2;
-                        var R = "R" + r2;
-
-                        //  content
-
-
-                        ws2.Cells[E].Value = row.NormWork_ID;
-                        ws2.Cells[H].Value = row.ID;
-                        ws2.Cells[N].Value = row.Numbers;
-                        ws2.Cells[R].Value = row.UnitPrice_ID;
-                        r2++;
-                    }
-
-
-                    Byte[] fileBytes = pck.GetAsByteArray();
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.AddHeader("content-disposition", "attachment;filename=DuToanXayDung.xlsx");
-                    Response.Charset = "";
-                    Response.ContentType = "application/vnd.ms-excel";
-                    StringWriter sw = new StringWriter();
-                    Response.BinaryWrite(fileBytes);
-                    Response.End();
-                }
-
-                return RedirectToAction("Index");
-
-            }
-
-            return View();
-        }
+        //    if (ID != null)
+        //    {
+                
+                
+        //    }
+        //    else
+        //    {
+        //        return Json("error");
+        //    }
+        //}
     }
 }
