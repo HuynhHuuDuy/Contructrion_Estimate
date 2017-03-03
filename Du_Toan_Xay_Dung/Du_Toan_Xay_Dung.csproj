@@ -341,6 +341,7 @@
     <Content Include="Content\CongTrinh\congtrinh.css" />
     <Content Include="Content\custom.min.css" />
     <Content Include="Content\dutoan\Bootstrap_UploadFile.css" />
+    <Content Include="Content\dutoan\BuildingItem.css" />
     <Content Include="Content\dutoan\estimate_work.css" />
     <Content Include="Content\fileinput.min.css" />
     <Content Include="Content\font-awesome-4.6.3\css\font-awesome.css" />

@@ -2,48 +2,9 @@
     ViewBag.Title = "Danh Sách Công Trình";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    .custom-file-upload {
-        border: 1px solid #ccc;
-        display: inline-block;
-        padding: 6px 12px;
-        cursor: pointer;
-    }
 
-    .img_box {
-        list-style: none;
-        position: relative;
-        display: table;
-        margin: 8px;
-        height: 160px;
-        border: 1px solid #ddd;
-        box-shadow: 1px 1px 5px 0 #a2958a;
-        padding: 6px;
-        float: left;
-    }
+<link href="~/Content/dutoan/BuildingItem.css" rel="stylesheet" />
 
-    .icon-delete {
-        display: inherit;
-        margin: 20px 0px 0px 0px;
-    }
-
-    .glyphicon {
-        position: relative;
-        top: 1px;
-        display: inline-block;
-        font-family: 'Glyphicons Halflings';
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    .description_project {
-        height: 51px;
-        text-align: left;
-    }
-</style>
 <script>
 
     $(document).ready(function () {
@@ -77,6 +38,7 @@
 
        //load list  chi tiết công trình
        $scope.list_buildings = [];
+       $scope.list_tempbuildings = [];
 
        $scope.building_id = 0;
 
@@ -90,6 +52,7 @@
        $http.get('/CongTrinh/Get_AllInfoBuildings').then(function (response) {
 
            $scope.list_buildings = response.data;
+           
            $scope.totalItems = ($scope.list_buildings.length * 2);
 
            $scope.$watch('currentPage + numPerPage', function () {
@@ -97,9 +60,26 @@
                , end = begin + $scope.numPerPage;
 
                $scope.filteredTodos = $scope.list_buildings.slice(begin, end);
+
+               angular.forEach($scope.filteredTodos, function (value, key) {
+
+                   var d = value.Description.length;
+                   if (d > 75) {
+                       var s = value.Description.substring(0, 75);
+                       value.Description = s;
+                   }
+               });
+
            });
 
+       }, function (response) {
+           //Showing errors
+       });
 
+
+       $http.get('/CongTrinh/Get_AllInfoBuildings').then(function (response) {
+
+           $scope.list_tempbuildings = response.data;
 
        }, function (response) {
            //Showing errors
@@ -180,7 +160,7 @@
        //array did filter
        $scope.building_detail = [];
        $scope.btn_detail_building = function (id) {
-           angular.forEach($scope.list_buildings, function (value, key) {
+           angular.forEach($scope.list_tempbuildings, function (value, key) {
                if (value.ID == id) {
                    $scope.building_detail = value;
                    return;
@@ -217,53 +197,6 @@
 
        // save dropbox
        $scope.savetodropbox = function (id) {
-
-           //$http({
-           //    method: "GET",
-           //    url: "/CongTrinh/ExportToExcel",
-           //    params: { ID: id }
-           //})
-           //              .then(function (response) {
-
-           //                  var obj = {
-           //                      filename: "excel.xlsx",
-           //                      url: response.data
-           //                  };
-
-           //                  var options = {
-
-           //                      files: obj,
-
-           //                      // Success is called once all files have been successfully added to the user's
-           //                      // Dropbox, although they may not have synced to the user's devices yet.
-           //                      success: function () {
-           //                          // Indicate to the user that the files have been saved.
-           //                          alert("Success! Files saved to your Dropbox.");
-           //                      },
-
-           //                      // Progress is called periodically to update the application on the progress
-           //                      // of the user's downloads. The value passed to this callback is a float
-           //                      // between 0 and 1. The progress callback is guaranteed to be called at least
-           //                      // once with the value 1.
-           //                      progress: function (progress) { },
-
-           //                      // Cancel is called if the user presses the Cancel button or closes the Saver.
-           //                      cancel: function () { },
-
-           //                      // Error is called in the event of an unexpected response from the server
-           //                      // hosting the files, such as not being able to find a file. This callback is
-           //                      // also called if there is an error on Dropbox or if the user is over quota.
-           //                      error: function (errorMessage) {
-           //                      }
-           //                  };
-
-           //                  Dropbox.save(options);
-
-
-           //              }, function (response) {
-
-           //              });
-
 
            var listdropbox = [];
 
@@ -357,15 +290,15 @@
     <!--list cong trinh, copy ra 1 file rieng de de~
         phan biet voi cai file chung, copy het quang vo-->
     <div class="row">
-        <div class="col-xs-12">
-            <ul class="list-unstyled">
+        <div class="col-md-12">
+            <ul class="list-unstyled col-sm-12">
                 <!--for each in here-->
-                <li class="col-sm-4" ng-repeat="x in filteredTodos">
+                <li class="col-md-4" style="margin: 20px 0" ng-repeat="x in filteredTodos">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <a class="green-light">{{x.Name}}</a>
-                                <p class="text-danger">Giá tiền: <small class="badge font-orbitron">{{x.Sum}}</small></p>
+                                <p class="text-danger green-light">Giá tiền: <small class="badge font-orbitron">{{x.Sum}}</small></p>
                             </h3>
                             <button class="btn btn-primary btn-xs" ng-click="btn_detail_building(x.ID)" data-toggle="modal" data-target="#modal_info_building">
                                 Chi tiết
@@ -377,10 +310,10 @@
                         </div>
                         <div class="panel-body">
                             <div class="info-project">
-                                <div class="col-sm-12">
+                                <div class="col-md-12">
                                     <img src="~/Images/Awicons-Vista-Artistic-Office-building.ico" class="img-responsive" style="width:90%; height:90%" />
                                 </div>
-                                <p>{{x.Description}}...</p>
+                                <p class="description_building col-md-12" style="height:50px">{{x.Description}}...</p>
                             </div>
                             <div>
                                 <span class="btn btn-block btn-social btn-dropbox" id="btn_savetoDropbox" ng-click="savetodropbox(x.ID)">
@@ -392,7 +325,7 @@
                 </li>
                 <!--// ket thuc vong lap ở đây-->
 
-                <li class="col-sm-4">
+                <li class="col-md-4" style="margin: 20px 0">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <a class="btn btn-block" data-toggle="modal" data-target="#modal_add_building">
@@ -405,7 +338,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <div class="text-center">
                     <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
                 </div>
@@ -426,9 +359,9 @@
                 <div class="modal-body">
                     <br />
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-6" style="text-align:center">
+                        <div class="col-md-12">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6" style="text-align:center">
                                 <a href="/CongTrinh/BuildingItem/{{building_detail.ID}}">
                                     <span style="font-size: x-large; font-weight: bolder;">
                                         Xem hạng mục
@@ -436,12 +369,12 @@
                                     </span>
                                 </a>
                             </div>
-                            <div class="col-sm-3"></div>
+                            <div class="col-md-3"></div>
                         </div>
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-sm-offset-1 col-sm-11">
+                        <div class="col-md-offset-1 col-md-11">
                             <p><strong>Tên công trình :</strong> {{building_detail.Name}}</p>
                             <p><strong>Địa chỉ :</strong> {{building_detail.Address}}</p>
                             <p><strong>Mô tả :</strong> {{building_detail.Description}}</p>
@@ -450,7 +383,7 @@
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-md-12">
                             <center>
                                 <a class="btn btn-default btn-lg" href="/CongTrinh/UpdateCongTrinh/{{building_detail.ID}}">
                                     Sửa thông tin

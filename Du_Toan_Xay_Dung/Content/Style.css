@@ -55,10 +55,10 @@ a {
     background: #F1F2E9;
 }
 
-.container {
+/*.container {
     width: 1200px;
     margin: 0px auto;
-}
+}*/
 
 /* Header */
 
@@ -90,7 +90,7 @@ a {
 
 #logo {
     overflow: hidden;
-    height: 250px;
+    height: 200px;
 }
 
     #logo h1, #logo p {
@@ -98,7 +98,7 @@ a {
     }
 
     #logo h1 {
-        padding: 50px 0px 0px 0px;
+        padding: 20px 0px 0px 0px;
         letter-spacing: -6px;
         text-transform: lowercase;
         font-size: 100px;
@@ -564,3 +564,5 @@ a {
 #cbb_haophis_1 {
     width: 100%;
 }
+
+
