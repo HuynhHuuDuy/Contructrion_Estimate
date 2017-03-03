@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Forgot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Quên mật khẩu</h2>
+@Html.ValidationSummary()
+@using (Html.BeginForm("Forgot","Account",FormMethod.Post))
+{
+    <div class="form-group">
+        <label>Email</label>
+        @Html.TextBox("Email", null, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-default">Xác nhận</button>
+    </div>
+}
+
+
+

@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using Du_Toan_Xay_Dung.Models;
 using Du_Toan_Xay_Dung.Handlers;
 using Du_Toan_Xay_Dung.Helper;
+using Du_Toan_Xay_Dung.Utils;
 
 namespace Du_Toan_Xay_Dung.Controllers
 {
@@ -89,5 +90,29 @@ namespace Du_Toan_Xay_Dung.Controllers
             SessionHandler.User = null;
             return RedirectToAction("Login");
         }
+        public ActionResult Forgot()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Forgot(String Email)
+        {
+            var user = _db.Users.Where(n => n.Email.Equals(Email)).FirstOrDefault();
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Sai tên đăng nhập !");
+            }
+            else if (user.Email != Email)
+            {
+                ModelState.AddModelError("", "Sai tên địa chỉ email !");
+            }
+            else
+            {
+                Xmail.Send(Email, "Forgot password", UserHelper.Decrypt(user.Password));
+                ModelState.AddModelError("", "Mật khẩu đã được gửi qua email !");
+            }
+            return View();
+        }
+
     }
 }

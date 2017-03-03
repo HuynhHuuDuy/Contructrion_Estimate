@@ -33,7 +33,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
             else
             {
-                return Json("error");
+                return Json("error", JsonRequestBehavior.AllowGet);
             }
         }
 

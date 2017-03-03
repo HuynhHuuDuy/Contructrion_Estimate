@@ -44,7 +44,7 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
         public ActionResult suanguoidung(string Email)
         {
-            var nguoidung = _db.Users.Where(i => i.Email.Contains(Email)).Select(i => new UserViewModel(i)).FirstOrDefault();     
+            var nguoidung = _db.Users.Where(i => i.Email.Equals(Email)).Select(i => new UserViewModel(i)).FirstOrDefault();     
             return View(nguoidung);
         }
         [HttpPost]
