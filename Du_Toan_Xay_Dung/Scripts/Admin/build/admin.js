@@ -31,14 +31,28 @@ function add() {
     var arr = selectvatlieu.split(";");
     var rows = "";
     rows += "<td>"
+    + "<input type='button' onclick='xoadong(this)' value='Xóa'>" + "</td><td>"
     + arr[0] + "<input type='hidden' name='makhuvuc' value='" + arr[0] + "'>" + "</td><td>"
     + arr[1] + "<input type='hidden' name='mathanhphan' value='" + arr[1] + "'>" + "</td><td>"
     + haophi + "<input type='hidden' name='haophi1' value='" + haophi + "'>" + "</td><td>"
     +arr[2] + "<input type='hidden' name='ten' value='" + arr[2] + "'>" + "</td><td>"
-    + arr[3] + "<input type='hidden' name='donvithanhphan' value='" + arr[3] + "'>" + "</td><td>"
-    + arr[4] + "<input type='hidden' name='gia' value='" + arr[4] + "'>" + "</td>";
     var tbody = document.querySelector("#datatable tbody");
     var tr = document.createElement("tr");
     tr.innerHTML = rows;
     tbody.appendChild(tr);
+}
+function xoadong(r) {
+        var i = r.parentNode.parentNode.rowIndex;
+        //alert(tongtien1);
+
+        document.getElementById("datatable").deleteRow(i);
+        for (var j = i; j < table.rows.length; j++) {
+            table.rows[j].cells[0].firstChild.innerHTML = j - 1;
+        }
+
+
+        //document.getElementById("tongtien").innerHTML = tongtien1;  
+        // oFormObject = document.forms['congviec'];
+        //oFormObject.elements["txttongcong"].value = tongtien1.toString();       
+    
 }
