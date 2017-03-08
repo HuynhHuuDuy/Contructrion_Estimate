@@ -218,9 +218,24 @@ namespace Du_Toan_Xay_Dung.Controllers
             try
             {
                 var buildingitem = _db.BuildingItems.Where(i => i.ID.Equals(buildingitem_id)).FirstOrDefault();
+                var old_price = buildingitem.Sum;
+                
                 if (buildingitem != null)
                 {
-                    buildingitem.Sum = Convert.ToDecimal(price, CultureInfo.InvariantCulture);
+                    var building = _db.Buildings.Where(i => i.ID.Equals(buildingitem.Building_ID)).FirstOrDefault();
+
+                    if (old_price == 0)
+                    {
+                        buildingitem.Sum = Convert.ToDecimal(price, CultureInfo.InvariantCulture);
+
+                        building.Sum = Convert.ToDecimal(building.Sum + buildingitem.Sum, CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        buildingitem.Sum = Convert.ToDecimal(price, CultureInfo.InvariantCulture);
+
+                        building.Sum = Convert.ToDecimal(building.Sum - old_price + buildingitem.Sum, CultureInfo.InvariantCulture);
+                    }
 
                     _db.SubmitChanges();
 
