@@ -210,6 +210,34 @@ namespace Du_Toan_Xay_Dung.Controllers
         }
         //.....
         //save data
+
+
+        [HttpPost]
+        public JsonResult Save_SumAllWork(string price, int buildingitem_id)
+        {
+            try
+            {
+                var buildingitem = _db.BuildingItems.Where(i => i.ID.Equals(buildingitem_id)).FirstOrDefault();
+                if (buildingitem != null)
+                {
+                    buildingitem.Sum = Convert.ToDecimal(price, CultureInfo.InvariantCulture);
+
+                    _db.SubmitChanges();
+
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
+
         [HttpPost]
         public JsonResult Save_Resource(List<UnitPrice_AreaViewModel> list)
         {
@@ -393,7 +421,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                 return Json("error");
             }
         }
-       
+
 
     }
 }

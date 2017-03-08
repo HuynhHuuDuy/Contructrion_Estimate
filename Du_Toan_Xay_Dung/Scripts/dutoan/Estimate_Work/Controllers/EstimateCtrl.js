@@ -590,6 +590,8 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         var height = div.find("input").eq(7).val();
         var area = div.find("input").eq(8).val();
 
+        //var sum = angular.element("#sum_estimate").text();
+
         //mean work
         var regular_expression1 = /^\d+$/;
         if (regular_expression1.test(id)) {
@@ -606,12 +608,22 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             if (height == "") {
                 $rootScope.works[id_work].Height = 1;
             }
+
+            //sum price old work
+            var sum_oldwork = parseFloat($rootScope.works[id_work].SumMaterial) + parseFloat($rootScope.works[id_work].SumLabor) + parseFloat($rootScope.works[id_work].SumMachine);
+
+
             $rootScope.works[id_work].Area = ($rootScope.works[id_work].Number * $rootScope.works[id_work].Horizontal * $rootScope.works[id_work].Vertical * $rootScope.works[id_work].Height).toFixed(3);
 
             $rootScope.works[id_work].SumMaterial = (parseFloat($rootScope.works[id_work].PriceMaterial) * parseFloat($rootScope.works[id_work].Area)).toFixed(3);
             $rootScope.works[id_work].SumLabor = (parseFloat($rootScope.works[id_work].PriceLabor) * parseFloat($rootScope.works[id_work].Area)).toFixed(3);
             $rootScope.works[id_work].SumMachine = (parseFloat($rootScope.works[id_work].PriceMachine) * parseFloat($rootScope.works[id_work].Area)).toFixed(3);
 
+            //sum price new work
+            var sum_newwork = parseFloat($rootScope.works[id_work].SumMaterial) + parseFloat($rootScope.works[id_work].SumLabor) + parseFloat($rootScope.works[id_work].SumMachine);
+
+            $rootScope.sum_estimate = parseFloat($rootScope.sum_estimate) - parseFloat(sum_oldwork) + parseFloat(sum_newwork);
+            $rootScope.sum_estimate = $rootScope.sum_estimate.toFixed(3);
 
             //save work and check log in
             //UpdateWorktoDatabase($rootScope.works[id_work]);
@@ -657,18 +669,28 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             }
 
             if (id_meanwork != -1) {
-                var sum = 0;
+                var sum_area = 0;
                 var index_while = id_meanwork + 1;
                 while (substring_array($rootScope.works[index_while].ID, 0, d) == temp && $rootScope.works[index_while].ID != "") {
 
-                    sum = parseFloat(sum) + parseFloat($rootScope.works[index_while].Area);
+                    sum_area = parseFloat(sum_area) + parseFloat($rootScope.works[index_while].Area);
                     index_while = parseInt(index_while) + 1;
                 }
 
-                $rootScope.works[id_meanwork].Area = sum.toFixed(3);
+                //sum price old work
+                var sum_oldwork = parseFloat($rootScope.works[id_meanwork].SumMaterial) + parseFloat($rootScope.works[id_meanwork].SumLabor) + parseFloat($rootScope.works[id_meanwork].SumMachine);
+
+                $rootScope.works[id_meanwork].Area = sum_area.toFixed(3);
                 $rootScope.works[id_meanwork].SumMaterial = (parseFloat($rootScope.works[id_meanwork].PriceMaterial) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
                 $rootScope.works[id_meanwork].SumLabor = (parseFloat($rootScope.works[id_meanwork].PriceLabor) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
                 $rootScope.works[id_meanwork].SumMachine = (parseFloat($rootScope.works[id_meanwork].PriceMachine) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
+
+
+                //sum price new work
+                var sum_newwork = parseFloat($rootScope.works[id_meanwork].SumMaterial) + parseFloat($rootScope.works[id_meanwork].SumLabor) + parseFloat($rootScope.works[id_meanwork].SumMachine);
+                $rootScope.sum_estimate = parseFloat($rootScope.sum_estimate) - parseFloat(sum_oldwork) + parseFloat(sum_newwork);
+                $rootScope.sum_estimate = $rootScope.sum_estimate.toFixed(3);
+
 
                 //save work and check log in
                 //UpdateWorktoDatabase($rootScope.works[id_meanwork]);
@@ -678,6 +700,33 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         }
 
     };
+
+    $scope.btn_saveSumAllWork = function () {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                price: $rootScope.sum_estimate
+            }
+
+            $http({
+                method: "post",
+                url: "/HangMuc/Save_SumAllWork",
+                params: obj,
+                dataType: "json",
+            })
+                .then(function (result) {
+                    alert("Thanh cong");
+                });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    }
+
 
     $scope.pickingrow = function ($event) {
 

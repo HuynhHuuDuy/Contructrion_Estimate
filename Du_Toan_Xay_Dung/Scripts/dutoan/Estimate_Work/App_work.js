@@ -3,6 +3,7 @@
 app.run(function ($rootScope) {
     $rootScope.works = [];
     $rootScope.allmaterials = [];
+    $rootScope.sum_estimate = 0;
 });
 
 app.config(function ($stateProvider, $urlRouterProvider) {
@@ -186,6 +187,8 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
     if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
         dataService.getAllSheet(buildingItem_id).then(function (data) {
 
+            
+
             angular.forEach(data.sheets, function (value, key) {
 
                 var regular_expression = /^\d+$/;
@@ -209,9 +212,9 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                     var p_machine = 0;
                     var resourcework = $filter('filter')(data.userworkresource, { UserWork_ID: value.ID }, true);
 
-                    if (value.ID == 4) {
-                        console.log(resourcework);
-                    }
+                    //if (value.ID == 4) {
+                    //    console.log(resourcework);
+                    //}
 
                     angular.forEach(resourcework, function (v, k) {
 
@@ -225,7 +228,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                             p_machine = parseFloat(p_machine) + (parseFloat(v.Number_Norm) * parseFloat(v.Price));
                     });
 
-
+                    
 
                     $rootScope.works[value.IndexSheet].PriceMaterial = p_material;
                     $rootScope.works[value.IndexSheet].PriceLabor = p_labor;
@@ -234,8 +237,12 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                     $rootScope.works[value.IndexSheet].SumLabor = parseFloat(p_labor) * parseFloat(value.Area);
                     $rootScope.works[value.IndexSheet].SumMachine = parseFloat(p_machine) * parseFloat(value.Area);
 
+                    //sum price
+                    $rootScope.sum_estimate = parseFloat($rootScope.sum_estimate) + parseFloat($rootScope.works[value.IndexSheet].SumMaterial) + parseFloat($rootScope.works[value.IndexSheet].SumLabor) + parseFloat($rootScope.works[value.IndexSheet].SumMachine);
+                    $rootScope.sum_estimate = $rootScope.sum_estimate.toFixed(3);
 
                     $rootScope.index_work = parseInt($rootScope.index_work) + 1;
+
 
                 }
             });
