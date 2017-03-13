@@ -4,6 +4,7 @@ app.run(function ($rootScope) {
     $rootScope.works = [];
     $rootScope.allmaterials = [];
     $rootScope.sum_estimate = 0;
+    $rootScope.myContextDiv = '';
 });
 
 app.config(function ($stateProvider, $urlRouterProvider) {
@@ -159,7 +160,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
 
     //create list works
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 250; i++) {
         var item = {
             IndexSheet: i,
             ID: "",
@@ -187,7 +188,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
     if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
         dataService.getAllSheet(buildingItem_id).then(function (data) {
 
-            
+
 
             angular.forEach(data.sheets, function (value, key) {
 
@@ -228,7 +229,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                             p_machine = parseFloat(p_machine) + (parseFloat(v.Number_Norm) * parseFloat(v.Price));
                     });
 
-                    
+
 
                     $rootScope.works[value.IndexSheet].PriceMaterial = p_material;
                     $rootScope.works[value.IndexSheet].PriceLabor = p_labor;
@@ -282,49 +283,89 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
     };
     */
 
+    $rootScope.myContextDiv = '<!--Right click and dropdown menu-->' +
+        '<ul id="contextmenu-node" class="dropdown-menu" style="cursor:pointer; display:block; left: 10px; top: 30px">' +
+        '<li><a ng-click="insertabove()">Chèn dòng lên trên</a></li>' +
+        '<li><a ng-click="insertbelow()">Chèn dòng bên dưới</a></li>' +
+        '<li class="divider"></li>' +
+        '<li><a ng-click="deletecontent()">Xóa nội dung các dòng đã chọn</a></li>' +
+        '<li><a ng-click="deleterow()">Xóa các dòng đã chọn</a></li>' +
+        '</ul>';
+
 }]);
 
 
+//example
+app.directive("contextMenu", function ($compile) {
+    contextMenu = {};
+    contextMenu.restrict = "AE";
+    var div_rowsheet = null;
 
+    contextMenu.link = function (lScope, lElem, lAttr) {
+        lElem.on("contextmenu", function (e) {
+
+
+
+            e.preventDefault(); // default context menu is disabled
+            //  The customized context menu is defined in the main controller. To function the ng-click functions the, contextmenu HTML should be compiled.
+            div_rowsheet = angular.element(e.currentTarget).parent();
+            var contextmenu = angular.element(e.currentTarget);
+            if (contextmenu.find('ul').length == 0 && div_rowsheet.hasClass("picked")) {
+                lElem.append($compile(lScope[lAttr.contextMenu])(lScope));
+                // The location of the context menu is defined on the click position and the click position is catched by the right click event.
+                //$("#contextmenu-node").css("left", e.clientX+ 'px');
+                //$("#contextmenu-node").css("top", e.clientY + 'px');
+            }
+
+        });
+        lElem.on("mouseleave", function (e) {
+            //console.log("Leaved the div");
+            // on mouse leave, the context menu is removed.
+            if ($("#contextmenu-node"))
+                $("#contextmenu-node").remove();
+        });
+    };
+    return contextMenu;
+});
 
 //right click and show menu context
-app.directive('ngRightClick', [function () {
-    return {
-        restrict: 'AE',
-        scope: '@&',
-        compile: function compile(tElement, tAttrs, transclude) {
-            return {
-                post: function postLink(scope, iElement, iAttrs, controller) {
-                    var ul = $('#' + iAttrs.context),
-                        div_rowsheet = null;
+//app.directive('ngRightClick', [function () {
+//    return {
+//        restrict: 'AE',
+//        compile: function compile(tElement, tAttrs, transclude) {
+//            return {
+//                post: function postLink(scope, iElement, iAttrs, controller) {
 
-                    ul.css({
-                        'display': 'none'
-                    });
+//                    var ul = $('#' + iAttrs.context),
+//                        div_rowsheet = null;
 
-                    $(iElement).bind('contextmenu', function (event) {
+//                    ul.css({
+//                        'display': 'none'
+//                    });
 
-                        event.preventDefault();
+//                    $(iElement).bind('contextmenu', function (event) {
 
-                        //choose row
-                        div_rowsheet = angular.element(event.currentTarget).parent();
+//                        event.preventDefault();
 
-                        if (div_rowsheet.hasClass("picked")) {
-                            //show context menu
-                            ul.css({
-                                position: "fixed",
-                                display: "block",
-                                left: event.clientX + 'px',
-                                top: event.clientY + 'px'
-                            });
-                        }
-                    });
-                }
-            };
-        }
-    };
+//                        //choose row
+//                        div_rowsheet = angular.element(event.currentTarget).parent();
 
-}]);
+//                        if (div_rowsheet.hasClass("picked")) {
+//                            //show context menu
+//                            ul.css({
+//                                position: "fixed",
+//                                display: "block",
+//                                left: event.clientX + 'px',
+//                                top: event.clientY + 'px'
+//                            });
+//                        }
+//                    });
+//                }
+//            };
+//        }
+//    };
+
+//}]);
 
 //key press and move another textbox in sheet
 app.directive('movefocus', function () {

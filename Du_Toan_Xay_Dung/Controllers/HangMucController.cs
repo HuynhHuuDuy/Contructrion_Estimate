@@ -219,7 +219,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             {
                 var buildingitem = _db.BuildingItems.Where(i => i.ID.Equals(buildingitem_id)).FirstOrDefault();
                 var old_price = buildingitem.Sum;
-                
+
                 if (buildingitem != null)
                 {
                     var building = _db.Buildings.Where(i => i.ID.Equals(buildingitem.Building_ID)).FirstOrDefault();
@@ -437,6 +437,49 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult post_addrow(string buildingitem_id, string id_work, string flag)
+        {
+            try
+            {
+                if (flag.Equals("0"))
+                {
+                    var id = Convert.ToInt32(id_work);
+
+                    var list = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet >= id).ToList();
+
+                    if (list != null)
+                    {
+                        foreach (var item in list)
+                        {
+                            item.IndexSheet = item.IndexSheet + 1;
+                        }
+                        _db.SubmitChanges();
+                    }
+                }
+                if (flag.Equals("1"))
+                {
+                    var id = Convert.ToInt32(id_work);
+
+                    var list = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet > id).ToList();
+
+                    if (list != null)
+                    {
+                        foreach (var item in list)
+                        {
+                            item.IndexSheet = item.IndexSheet + 1;
+                        }
+                        _db.SubmitChanges();
+                    }
+                }
+
+                return Json("ok");
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
 
     }
 }

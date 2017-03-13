@@ -121,17 +121,8 @@
 
 </script>
 
-<!--Right click and dropdown menu-->
-<ul id="dropdowncontext" class="dropdown-menu" style="cursor:pointer">
-    <li><a ng-click="insertabove()">Chèn dòng lên trên</a></li>
-    <li><a ng-click="insertbelow()">Chèn dòng bên dưới</a></li>
-    <li class="divider"></li>
-    <li><a ng-click="deletecontent()">Xóa nội dung các dòng đã chọn</a></li>
-    <li><a ng-click="deleterow()">Xóa các dòng đã chọn</a></li>
-</ul>
-
 <div class="row" ng-controller="EstimateCtrl" ng-init="start=0;end=10;" id="content_estimate">
-    <div class="col-md-12">
+    <div class="col-md-12" >
         <h3>Hướng dẫn sử dụng</h3>
         <p>
             - Double click bất kì ô nào trong cột Tên Công Việc để search công việc.
@@ -194,7 +185,7 @@
                         <!--sheet-->
                         <div class="row_sheet" ng-repeat="work in works">
                             <div class="border-line"></div>
-                            <div style="left:0%;width:3%;border-left: 1px solid #c6c6c6;" class="column_header" ng-right-click context="dropdowncontext" movefocus ng-click="pickingrow($event)">
+                            <div style="left:0%;width:3%;border-left: 1px solid #c6c6c6;" class="column_header" context-menu="myContextDiv" movefocus ng-click="pickingrow($event)">
                                 <input type="text" readonly ng-model="work.IndexSheet" class="input_sheet inputsheet_columnheader" />
                             </div>
                             <div style="left:3%;width:4%" class="cell" movefocus>
