@@ -747,7 +747,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
             //remove $scope.rowpicked
             $scope.rowpicked = null;
-            //}
+
             //saving anything row user choose
             $scope.rowpicked = div_rowsheet;
 
@@ -872,12 +872,11 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 Sub_BuildingItem_ID: ""
             };
 
+            var n = parseInt($rootScope.works.length) + 1;
             $rootScope.works.splice(id, 0, item);
 
-            var n = parseInt($rootScope.works.length) - parseInt(id);
-
-            for (var i = parseInt(id) + 1 ; i <= n; i++) {
-                $rootScope.works[i].IndexSheet = $rootScope.works[i].IndexSheet + 1;
+            for (var i = parseInt(id) + 1; i < n; i++) {
+                $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) + 1;
             }
 
 
@@ -921,15 +920,95 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 Sub_BuildingItem_ID: ""
             };
 
+            var n = parseInt($rootScope.works.length) + 1;
+
             $rootScope.works.splice(parseInt(id) + 1, 0, item);
 
-            var n = parseInt($rootScope.works.length) - parseInt(parseInt(id) + 1);
-
-            for (var i = parseInt(id) + 2; i <= n; i++) {
-                $rootScope.works[i].IndexSheet = $rootScope.works[i].IndexSheet + 1;
+            for (var i = parseInt(id) + 2; i < n; i++) {
+                $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) + 1;
             }
 
             row.next().find(".border-line").css({ "background-color": "" });
+        }
+
+    };
+
+    $scope.deletecontent = function () {
+
+        var d = 0;
+        var flag = "content";
+
+        //console.log($scope.rowspicked);
+        var row = $scope.rowpicked;
+        var id = row.find(".column_header").find("input").val();
+
+        var regular_expression1 = /^\d+$/;
+        var regular_expression2 = /^\d+\.\d+$/;
+        if (regular_expression1.test(id)) {
+
+            var temp = $rootScope.works[id].ID;
+
+            if (regular_expression1.test(temp)) {
+
+                var conf = confirm("Bạn có thực sự muốn xóa công việc này...?");
+                if (conf == true) {
+                    delete_work(id, temp, flag);
+                }
+
+            }
+            else if (regular_expression2.test(temp)) {
+                delete_description(id, flag);
+            }
+            else {
+                delete_contentnull(id);
+            }
+        }
+
+    };
+
+    $scope.deleterow = function () {
+
+        var d = 0;
+        var flag = "row";
+
+        var row = $scope.rowpicked;
+        var id = row.find(".column_header").find("input").val();
+
+        var regular_expression1 = /^\d+$/;
+        var regular_expression2 = /^\d+\.\d+$/;
+        if (regular_expression1.test(id)) {
+
+            var temp = $rootScope.works[id].ID;
+
+            if (regular_expression1.test(temp)) {
+
+                var conf = confirm("Bạn có thực sự muốn xóa công việc này...?");
+                if (conf == true) {
+
+                    //update db first
+                    delete_work(id, temp, flag);
+                }
+
+            }
+            else if (regular_expression2.test(temp)) {
+
+                //update db first
+                delete_description(id);
+
+                
+
+            }
+            else {
+
+                //update db first
+                delete_row(id);
+
+                
+
+            }
+
+            
+
         }
 
     };
@@ -946,20 +1025,18 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
             $scope.message_save = true;
 
-            function asyncGetImages(url) {
+            function asyncGetResponse(url) {
 
                 var deferred = $q.defer();
 
                 $http({
-                    method: "post",
-                    url: "/HangMuc/post_addrow",
-                    params: obj,
-                    dataType: "json",
+                    method: "POST",
+                    url: url,
+                    params: obj
                 })
                       .then(function (response) {
 
                           deferred.resolve(response.data);
-
 
                       }, function (response) {
                           //showing errors
@@ -970,7 +1047,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 return deferred.promise;
             }
 
-            var promise = asyncGetImages("/CongTrinh/get_dataSavetoDropbox");
+            var promise = asyncGetResponse("/HangMuc/post_addrow");
 
             promise.then(function (greeting) {
 
@@ -986,5 +1063,391 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         }
 
     };
+
+    //deleting cong viec
+    function delete_work(id, userwork_id, flag) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+                userwork_id: userwork_id
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_work");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+
+                    if (flag == "content") {
+                        $rootScope.works[id].ID = "";
+                        $rootScope.works[id].NormWork_ID = "";
+                        $rootScope.works[id].Name = "";
+                        $rootScope.works[id].Unit = "";
+                        $rootScope.works[id].Number = "";
+                        $rootScope.works[id].Horizontal = "";
+                        $rootScope.works[id].Vertical = "";
+                        $rootScope.works[id].Height = "";
+                        $rootScope.works[id].Area = "";
+                        $rootScope.works[id].PriceMaterial = "";
+                        $rootScope.works[id].PriceLabor = "";
+                        $rootScope.works[id].PriceMachine = "";
+                        $rootScope.works[id].SumMaterial = "";
+                        $rootScope.works[id].SumLabor = "";
+                        $rootScope.works[id].SumMachine = "";
+                        $rootScope.works[id].BuildingItem_ID = buildingItem_id;
+                        $rootScope.works[id].Sub_BuildingItem_ID = "";
+                    }
+                    if (flag == "row") {
+
+                        $rootScope.works.splice(id, 1);
+
+                        var n = $rootScope.works.length;
+
+                        for (var i = id; i < n; i++) {
+                            $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) - 1;
+                        }
+
+                        var item = {
+                            IndexSheet: n,
+                            ID: "",
+                            NormWork_ID: "",
+                            Name: "",
+                            Unit: "",
+                            Number: "",
+                            Horizontal: "",
+                            Vertical: "",
+                            Height: "",
+                            Area: "",
+                            PriceMaterial: "",
+                            PriceLabor: "",
+                            PriceMachine: "",
+                            SumMaterial: "",
+                            SumLabor: "",
+                            SumMachine: "",
+                            BuildingItem_ID: buildingItem_id,
+                            Sub_BuildingItem_ID: ""
+                        };
+
+                        $rootScope.works.splice(n, 0, item);
+
+                        remove_css_deleting();
+                    }
+
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    };
+
+    //deleting description
+    function delete_description(id, flag) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_description");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+
+                    if (flag == "content") {
+                        $rootScope.works[id].ID = "";
+                        $rootScope.works[id].NormWork_ID = "";
+                        $rootScope.works[id].Name = "";
+                        $rootScope.works[id].Unit = "";
+                        $rootScope.works[id].Number = "";
+                        $rootScope.works[id].Horizontal = "";
+                        $rootScope.works[id].Vertical = "";
+                        $rootScope.works[id].Height = "";
+                        $rootScope.works[id].Area = "";
+                        $rootScope.works[id].PriceMaterial = "";
+                        $rootScope.works[id].PriceLabor = "";
+                        $rootScope.works[id].PriceMachine = "";
+                        $rootScope.works[id].SumMaterial = "";
+                        $rootScope.works[id].SumLabor = "";
+                        $rootScope.works[id].SumMachine = "";
+                        $rootScope.works[id].BuildingItem_ID = buildingItem_id;
+                        $rootScope.works[id].Sub_BuildingItem_ID = "";
+                    }
+
+                    if (flag == "row") {
+
+                        $rootScope.works.splice(id, 1);
+
+                        var n = $rootScope.works.length;
+
+                        for (var i = id; i < n; i++) {
+                            $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) - 1;
+                        }
+
+                        var item = {
+                            IndexSheet: n,
+                            ID: "",
+                            NormWork_ID: "",
+                            Name: "",
+                            Unit: "",
+                            Number: "",
+                            Horizontal: "",
+                            Vertical: "",
+                            Height: "",
+                            Area: "",
+                            PriceMaterial: "",
+                            PriceLabor: "",
+                            PriceMachine: "",
+                            SumMaterial: "",
+                            SumLabor: "",
+                            SumMachine: "",
+                            BuildingItem_ID: buildingItem_id,
+                            Sub_BuildingItem_ID: ""
+                        };
+
+                        $rootScope.works.splice(n, 0, item);
+                        remove_css_deleting();
+                    }
+
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    };
+
+    //deteling row isn't cong viec or description
+    function delete_row(id) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_row");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+
+                    //done splicing
+                    $rootScope.works.splice(id, 1);
+
+                    //elements in array changed
+                    var n = $rootScope.works.length;
+
+                    for (var i = id; i < n; i++) {
+                        $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) - 1;
+                    }
+
+                    var item = {
+                        IndexSheet: n,
+                        ID: "",
+                        NormWork_ID: "",
+                        Name: "",
+                        Unit: "",
+                        Number: "",
+                        Horizontal: "",
+                        Vertical: "",
+                        Height: "",
+                        Area: "",
+                        PriceMaterial: "",
+                        PriceLabor: "",
+                        PriceMachine: "",
+                        SumMaterial: "",
+                        SumLabor: "",
+                        SumMachine: "",
+                        BuildingItem_ID: buildingItem_id,
+                        Sub_BuildingItem_ID: ""
+                    };
+
+                    $rootScope.works.splice(n, 0, item);
+                    remove_css_deleting();
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    }
+
+    //deleting content isn't cong viec or description
+    function delete_contentnull(id) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_contentnull");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+
+                    $rootScope.works[id].NormWork_ID = "";
+                    $rootScope.works[id].Name = "";
+                    $rootScope.works[id].Unit = "";
+                    $rootScope.works[id].Number = "";
+                    $rootScope.works[id].Horizontal = "";
+                    $rootScope.works[id].Vertical = "";
+                    $rootScope.works[id].Height = "";
+                    $rootScope.works[id].Area = "";
+                    $rootScope.works[id].PriceMaterial = "";
+                    $rootScope.works[id].PriceLabor = "";
+                    $rootScope.works[id].PriceMachine = "";
+                    $rootScope.works[id].SumMaterial = "";
+                    $rootScope.works[id].SumLabor = "";
+                    $rootScope.works[id].SumMachine = "";
+                    $rootScope.works[id].BuildingItem_ID = buildingItem_id;
+                    $rootScope.works[id].Sub_BuildingItem_ID = "";
+
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    }
+
+    function remove_css_deleting() {
+
+        var ta = $scope.rowpicked.find("textarea");
+        var is = $scope.rowpicked.find("input");
+        ta.css({ "background-color": "" });
+        is.css({ "background-color": "" });
+        $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+        $scope.rowpicked.find(".border-line").css({ "background-color": "" });
+        $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
+        $scope.rowpicked.removeClass("picked");
+
+        //remove $scope.rowpicked
+        $scope.rowpicked = null;
+
+    }
 
 }])

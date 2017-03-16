@@ -481,5 +481,128 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult post_delete_work(string buildingitem_id, string id_work, string userwork_id)
+        {
+            try
+            {
+
+                var item = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet.Equals(id_work)).FirstOrDefault();
+                if (item != null)
+                {
+                    var list_resourse = _db.UserWork_Resources.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.UserWork_ID.Equals(userwork_id)).ToList();
+                    if (list_resourse != null)
+                    {
+                        _db.UserWork_Resources.DeleteAllOnSubmit(list_resourse);
+                        _db.UserWorks.DeleteOnSubmit(item);
+
+                    }
+                    else
+                    {
+                        _db.UserWorks.DeleteOnSubmit(item);
+                    }
+
+                    _db.SubmitChanges();
+
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
+
+        [HttpPost]
+        public JsonResult post_delete_description(string buildingitem_id, string id_work)
+        {
+            try
+            {
+
+                var item = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet.Equals(id_work)).FirstOrDefault();
+                if (item != null)
+                {
+                    _db.UserWorks.DeleteOnSubmit(item);
+                    _db.SubmitChanges();
+
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
+
+        [HttpPost]
+        public JsonResult post_delete_row(string buildingitem_id, string id_work)
+        {
+            try
+            {
+                //check if item exist, and then delete it.
+                var id = Convert.ToInt32(id_work);
+
+                var list = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet >= id).ToList();
+
+                var userwork = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet.Equals(id_work)).FirstOrDefault();
+
+                if (list != null)
+                {
+
+                    if (userwork != null)
+                    {
+                        _db.UserWorks.DeleteOnSubmit(userwork);
+                    }
+
+                    foreach (var item in list)
+                    {
+                        item.IndexSheet = item.IndexSheet - 1;
+                    }
+
+                    _db.SubmitChanges();
+
+                    return Json("ok");
+                }
+                else
+                {
+                    return Json("error");
+                }
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
+
+        [HttpPost]
+        public JsonResult post_delete_contentnull(string buildingitem_id, string id_work)
+        {
+            try
+            {
+                //check if item exist, and then delete it.
+                var userwork = _db.UserWorks.Where(i => i.BuildingItem_ID.Equals(buildingitem_id) && i.IndexSheet.Equals(id_work)).FirstOrDefault();
+
+                if (userwork != null)
+                {
+
+                    _db.UserWorks.DeleteOnSubmit(userwork);
+                    _db.SubmitChanges();
+                }
+                return Json("ok");
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+        }
+
     }
 }

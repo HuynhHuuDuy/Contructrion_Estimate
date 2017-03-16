@@ -160,7 +160,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
 
     //create list works
-    for (var i = 0; i < 250; i++) {
+    for (var i = 0; i < 30; i++) {
         var item = {
             IndexSheet: i,
             ID: "",
