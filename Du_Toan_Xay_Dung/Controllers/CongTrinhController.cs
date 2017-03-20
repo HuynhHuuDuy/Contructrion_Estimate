@@ -147,6 +147,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                     ws.Cells[B].Value = row.ID;
                     ws.Cells[E].Value = row.Building_ID;
                     ws.Cells[H].Value = row.Name;
+
                     ws.Cells[N].Value = row.Description;
                     ws.Cells[R].Formula = "+SUMIFS('Công việc'!U9:U" + (congvieccount + 1 + 9) + ",'Công việc'!D9:D" + (congvieccount + 1 + 9) + ",B" + r + "" + ")";
                     ws.Cells[dong2].Formula = "+SUM(R9:R" + (congvieccount + 1 + 9) + ")";
@@ -193,7 +194,6 @@ namespace Du_Toan_Xay_Dung.Controllers
                 var r1 = 9;
                 foreach (var row in congviec)
                 {
-
                     var A = "A" + r1;
                     var B = "B" + r1;
                     var C = "C" + r1;
@@ -203,6 +203,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                     var G = "G" + r1;
                     var H = "H" + r1;
                     var I = "I" + r1;
+                    var J = "J" + r1;
                     var K = "K" + r1;
                     var L = "L" + r1;
                     var N = "O" + r1;
@@ -216,21 +217,33 @@ namespace Du_Toan_Xay_Dung.Controllers
                     var U = "U" + r1;
                     var V = "V" + r1;
 
-
-
                     //  content
 
                     ws1.Cells[A].Value = row.ID;
                     ws1.Cells[D].Value = row.BuildingItem_ID;
                     ws1.Cells[F].Value = row.NormWork_ID;
                     ws1.Cells[I].Value = row.Name;
-                    ws1.Cells[K].Value = row.Unit;
-                    ws1.Cells[M].Value = row.Number;
+                    foreach(var row2 in haophi)
+                    {
+                        if(row2.UserWork_ID==row.ID)
+                        {
+                            r1 = r1 + 1;
+                            I = "I" + r1;
+                            J = "J" + r1;
+                            K = "K" + r1;
+                            ws1.Cells[I].Value = row2.Name;
+                            ws1.Cells[J].Value = row2.Number_Norm;
+                            ws1.Cells[K].Value = row2.Price;
+                        }
+                        
+                    }
+                    ws1.Cells[L].Value = row.Unit;
+                    ws1.Cells[N].Value = row.Number;
                     // chỉnh lại công thức excel
-                    ws1.Cells[O].Value = row.PriceMaterial * row.Area;
-                    ws1.Cells[Q].Value = row.PriceLabor * row.Area;
-                    ws1.Cells[S].Value = row.PriceMachine * row.Area;
-                    ws1.Cells[U].Formula = "+PRODUCT(SUM(O" + r1 + ":S" + r1 + "),M" + r1 + ")";
+                    ws1.Cells[P].Value = row.PriceMaterial * row.Area;
+                    ws1.Cells[R].Value = row.PriceLabor * row.Area;
+                    ws1.Cells[T].Value = row.PriceMachine * row.Area;
+                    ws1.Cells[V].Formula = "+PRODUCT(SUM(O" + r1 + ":S" + r1 + "),M" + r1 + ")";
                     r1++;
                 }
                 //add dữ liệu cho sheet thành phần hao phí
