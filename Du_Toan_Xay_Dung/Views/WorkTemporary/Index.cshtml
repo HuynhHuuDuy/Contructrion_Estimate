@@ -200,7 +200,7 @@
                                             <a class="btn btn-primary btn-flat btn-xs" title="xem" ng-click="edit_UserNormWork(x)">
                                                 <i class="fa fa-fw fa-edit"></i>sửa
                                             </a>
-                                            <a class="btn btn-danger btn-flat btn-xs" title="xem" ng-click="delete_UserNormWork(x)">
+                                            <a class="btn btn-danger btn-flat btn-xs" @*data-toggle="modal" data-target="#modal_delete_building"*@ title="xem" ng-click="delete_UserNormWork(x)">
                                                 <i class="fa fa-fw fa-remove"></i>xóa
                                             </a>
                                         </td>
@@ -257,6 +257,28 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+    <div id="modal_delete_building" class="modal fade">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
+                </div>
+
+                <div class="modal-body">
+                    <input type="text" ng-model="id" />
+                    <p>Bạn có chắn chắc muốn xóa</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <a class="btn btn-danger btn-ok" ng-click="submit_deletebuilding()">Xác nhận</a>
+                </div>
+            </div>
         </div>
     </div>
 </section>

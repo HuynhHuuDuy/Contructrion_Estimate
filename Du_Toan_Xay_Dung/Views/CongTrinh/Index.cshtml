@@ -118,9 +118,9 @@
                                 <a class="btn btn-default btn-lg" href="/CongTrinh/UpdateCongTrinh/{{building_detail.ID}}">
                                     Sửa thông tin
                                 </a>
-                                <a class="btn btn-default btn-lg" href="/CongTrinh/ExportToExcel/{{building_detail.ID}}">
+                                @*<a class="btn btn-default btn-lg" href="/CongTrinh/ExportToExcel/{{building_detail.ID}}">
                                     Export Excel
-                                </a>
+                                </a>*@
                             </center>
                         </div>
                     </div>
@@ -211,18 +211,17 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                    <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
                 </div>
 
                 <div class="modal-body">
-                    <p>You are about to delete one track, this procedure is irreversible.</p>
-                    <p>Do you want to proceed?</p>
+                    <p>Bạn có chắn chắc muốn xóa</p>
                     <p class="debug-url"></p>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok" ng-click="submit_deletebuilding(building_id)">Delete</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <a class="btn btn-danger btn-ok" ng-click="submit_deletebuilding(building_id)">Xác nhận</a>
                 </div>
             </div>
         </div>

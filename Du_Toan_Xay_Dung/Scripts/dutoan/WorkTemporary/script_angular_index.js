@@ -216,6 +216,28 @@
 
         };
 
+    
+        // xóa công trình
+        //$scope.submit_deletebuilding = function () {
+        //    var id = $scope.building_id
+        //    $http({
+        //        method: 'POST',
+        //        url: '/CongTrinh/Delete_CongTrinh',
+        //        params: { building_id: id },
+        //        headers: { 'Content-Type': 'application/json' }
+        //    })
+        //        .then(function (result) {
+
+        //            if (result.data == "ok") {
+        //                open_alert("success");
+        //                location.reload();
+        //            }
+        //            else {
+        //                open_alert("fail");
+        //            }
+        //        });
+        //}
+
         $scope.delete_UserNormWork = function (x) {
 
             var r = confirm("Bạn có thật sự muốn xóa...?");
@@ -239,6 +261,9 @@
 
             };
         };
+
+          //  };
+       // };
 
         $scope.validationID = function (id) {
 
