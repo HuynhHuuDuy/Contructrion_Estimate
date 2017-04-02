@@ -206,7 +206,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
+    <Compile Include="Controllers\DonGiaDTO.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NguoiDungDTO.cs" />
     <Compile Include="Controllers\UnitPriceController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />

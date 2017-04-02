@@ -52,6 +52,72 @@
                  }
              
          };
+         $scope.totalItems = 0;
+
+         $scope.filteredTodos = [],
+         $scope.currentPage = 1,
+         $scope.numPerPage = 5,
+         $scope.maxSize = 1;
+
+         $scope.get_nguoidung = function () {
+             $scope.list_nguoidung = [];
+            
+             return $http({
+                 method: "GET",
+                 url: "/Admin/get_alluser",
+               
+             })
+                 .then(function (response) {
+                     $scope.list_nguoidung = response.data;
+                   
+                     $scope.totalItems = $scope.list_nguoidung.length;
+                     $scope.$watch('currentPage + numPerPage', function () {
+                         var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                         , end = begin + $scope.numPerPage;
+
+
+                         $scope.filteredTodos = $scope.list_nguoidung.slice(begin, end);
+                     });
+
+                 }, function (response) {
+                     //showing errors
+                 });
+
+
+         };
+
+         $scope.get_nguoidung();
+
+         //array did filter
+         $scope.list_temp_inf_edit = [];
+         $scope.sua = function (data) {
+
+             $scope.list_temp_inf_edit = data;
+         };
+
+
+
+         //edit user
+         $scope.capnhat = function () {
+             console.log($scope.list_temp_inf_edit);
+             $http({
+                 method: "POST",
+                 url: "/Admin/post_suanguoidung",
+                 data: JSON.stringify($scope.list_temp_inf_edit),
+                 dataType: "json",
+             })
+                .then(function (result) {
+                    if (result.data == "ok") {
+                        alert("Sửa thành công");
+                        location.reload();
+                    } else {
+                        alert("Sửa thất bại");
+
+                    }
+                });
+         }
+
+
 
        
 
@@ -71,12 +137,12 @@
             <!--Tìm kiếm-->
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <form action="/Admin/timkiemnguoidung" method="post">
+                    <form @*action="/Admin/timkiemnguoidung" method="post"*@>
                         <div style="width:500px" class="input-group">
-                            <input type="text" name="txttimkiem" class="form-control" placeholder="Tìm kiếm..." required>
-                            <span class="input-group-btn">
+                            <input type="text" name="txttimkiem" ng-model="data_search" class="form-control" placeholder="Tìm kiếm..." required>
+                            @*<span class="input-group-btn">
                                 <button class="btn btn-default" type="submit">Thực hiện!</button>
-                            </span>
+                            </span>*@
                         </div>
                     </form>
 
@@ -111,27 +177,28 @@
                                     <th>Số điện thoại</th>
                                     <th>Nơi làm việc</th>
                                     <th>Thành phố</th>
-                                    <th>Điều khiển</th>
+                                    <th>Quyền</th>
+                                    <th>#</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.Count; i++)
-                                {
-                                    <tr>
-                                        <td>@Model[i].Email</td>
-                                        <td>@Model[i].First_Name</td>
-                                        <td>@Model[i].Last_Name</td>
-                                        <td>@Model[i].Phone</td>
-                                        <td>@Model[i].Workplace</td>
-                                        <td>@Model[i].City</td>
+                            <tbody>    
+                                    <tr ng-repeat="data in filteredTodos|filter: {Name:data_search} | limitTo:10 ">
+                                        <td>{{data.Email}}</td>
+                                        <td>{{data.First_Name}}</td>
+                                        <td>{{data.Last_Name}}</td>
+                                        <td>{{data.Phone}}</td>
+                                        <td>{{data.Workplace}}</td>
+                                        <td>{{data.City}}</td>
+                                        <td>{{data.Role}}</td>
                                         <td>
-                                            <a href="/Admin/suanguoidung?Email=@Model[i].Email">Sửa</a>
+                                          <button ng-click="sua(data)" data-toggle="modal" data-target="#myModal_sua" type="button" class="btn btn-default">Sửa</button>
                                         </td>
                                     </tr>
-                                }
                             </tbody>
                         </table>
-                        @Html.PagedListPager(Model, page => Url.Action("suaxoanguoidung", new { page }))
+                        <div class="col-sm-12">
+                            <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,45 +291,32 @@
                     <h4 class="modal-title" id="myModalLabel">Sửa người dùng</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                Tên người dùng <span class="required">*</span>
+                                Tên <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                <input type="hidden" ng-model="list_temp_inf_edit.Email" />
+                                <input type="text" id="password" name="password" ng-model="list_temp_inf_edit.First_Name" required="required" class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                Mật khẩu <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
-                            </div>
-                        </div>
+                      
                         <div class="form-group">
                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
                                 Họ tên lót
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                                <input id="middle-name" ng-model="list_temp_inf_edit.Last_Name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                Tên <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="name" name="name" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                            </div>
-                        </div>
+                      
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 Số điện thoại <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="phone" name="phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                <input id="phone" name="phone" ng-model="list_temp_inf_edit.Phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -270,7 +324,7 @@
                                 Nơi làm việc <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="placework" name="placework" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                <input id="placework" name="placework" ng-model="list_temp_inf_edit.Workplace" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
                             </div>
                         </div>
                         <div class="form-group">
@@ -278,7 +332,7 @@
                                 Thành phố <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="city" name="city" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                <input id="city" name="city" ng-model="list_temp_inf_edit.City" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
                             </div>
                         </div>
 
@@ -287,7 +341,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-primary" ng-click="capnhat()">Lưu</button>
                 </div>
             </div>
         </div>

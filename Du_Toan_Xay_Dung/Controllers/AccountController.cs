@@ -47,7 +47,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                     var userviewmodel = new UserViewModel(user);
                     userviewmodel.Passwork = string.Empty;
                     SessionHandler.User = userviewmodel;
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("suaxoanguoidung", "Admin");
                 }
             }
             else

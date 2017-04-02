@@ -4,8 +4,97 @@
     ViewBag.Title = "danhsachdongia";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+<script>
+    angular.module('postApp', ['ui.bootstrap'])
+   .controller('postController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+
+       //$scope.building_id = null;
+
+       $scope.totalItems = 0;
+
+       $scope.filteredTodos = [],
+       $scope.currentPage = 1,
+       $scope.numPerPage = 5,
+       $scope.maxSize = 1;
+     
+       $scope.get_dongia = function () {
+           $scope.list_dongia = [];
+           //$scope.list_dongia = [];
+           //get building_id form url;
+           //var url = window.location.pathname;
+           //var building_id = url.substring(url.lastIndexOf('/') + 1);
+           //var regular_expression = /^\d+$/;
+           //if (regular_expression.test(building_id)) {
+
+           //    //get building_id from url
+           //    $scope.building_id = building_id;
+
+               return $http({
+                   method: "GET",
+                   url: "/Admin/get_alldongia",
+                   //params: { id: building_id }
+               })
+                   .then(function (response) {
+                       $scope.list_dongia = response.data;
+                       //console.log($scope.list_dongia);
+                       $scope.totalItems = $scope.list_dongia.length;
+                       $scope.$watch('currentPage + numPerPage', function () {
+                           var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                           , end = begin + $scope.numPerPage;
+
+                           //$scope.setPage = function (pageNo) {
+                           //    $scope.currentPage = pageNo;
+                           //};
+
+                           $scope.filteredTodos = $scope.list_dongia.slice(begin, end);
+                       });
+
+                   }, function (response) {
+                       //showing errors
+                   });
+          
+
+       };
+
+       $scope.get_dongia();
+
+       //array did filter
+       $scope.list_temp_inf_edit = [];
+       $scope.sua = function (data) {
+
+           $scope.list_temp_inf_edit = data;
+       };
+
+      
+
+       //edit unitpice
+       $scope.capnhat = function () {
+           console.log($scope.list_temp_inf_edit);
+           $http({
+               method: "POST",
+               url: "/Admin/post_suadongia",
+               data: JSON.stringify($scope.list_temp_inf_edit),
+               dataType: "json",
+           })
+              .then(function (result) {
+                  if (result.data == "ok") {
+                      alert("Sửa thành công");
+                      location.reload();
+                  } else {
+                      alert("Sửa thất bại");
+
+                  }
+              });
+       }
+
+   
+
+   }]);
+
+</script>
+
 <!-- page content -->
-<div class="col-lg-12" role="main">
+<div class="col-lg-12" role="main" ng-app="postApp" ng-controller="postController">
     <div class="">
         <div class="page-title">
             <div class="title_left">
@@ -13,17 +102,17 @@
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <form action="/Admin/timkiem" method="post" id="input_form">
+                    <form  id="input_form">
                         <div class="input-group">
-                            <input type="text" name="txttimkiem" id="txttimkiem" class="form-control" placeholder="Tìm kiếm..." required>
-                            <span class="input-group-btn">
+                            <input type="text" name="txttimkiem" id="txttimkiem" ng-model="data_search" class="form-control" placeholder="Tìm kiếm..." required>
+                            @*<span class="input-group-btn">
                                 <button class="btn btn-default" type="submit">Thực hiện!</button>
-                            </span>
+                            </span>*@
                         </div>
                     </form>
-                    <script>
-                        $("#input_form").kiemtra();
-                    </script>
+                    @*<script>
+                        jQuery("#input_form").kiemtra();
+                    </script>*@
                 </div>
                 <div></div>
             </div>
@@ -49,31 +138,42 @@
                         </p>
                         <table id="datatable" class="table table-striped table-bordered">
                             <thead>
-                                <tr>                                   
+                                <tr>        
+                                    <th>STT</th>                           
                                     <th>Mã thành phần</th>
+                                    <th>Tên khu vực</th>
                                     <th>Tên</th>
                                     <th>Đơn vị</th>
+                                    <th>Giá</th>
+                                    <th>#</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (int i = 0; i < Model.Count; i++)
-                                {
-                                    <tr>
-                                        <td>@Model[i].ID</td>
-                                        <td>@Model[i].Name</td>
-                                        <td>@Model[i].Unit</td>
+                               
+                                    <tr ng-repeat="data in filteredTodos | filter: {Name:data_search} | limitTo:10">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{data.Ma}}</td>
+                                        <td>{{data.TenKhuVuc}}</td>
+                                        <td>{{data.Ten}}</td>
+                                        <td>{{data.DonVi}}</td>
+                                        <td>{{data.Gia}}</td>
                                         <td>
-                                           <a href="/Admin/suadongia?@Model[i].ID">Sửa</a>
+                                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal_sua" ng-click="sua(data)">Sửa</button>
+                                           @*<a href="/Admin/suadongia/@Model[i].ID">Sửa</a>*@
                                         </td>
                                     </tr>
-                                }
+                                
                             </tbody>
                         </table>
-                        @Html.PagedListPager(Model, page => Url.Action("danhsachdongia", new { page }))
+                        <div class="col-sm-12">
+                            <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+                        </div>
                     </div><!-- /content-panel -->
                     </div>
                 </div>
             </div>
+
+
         <!--Model sửa đơn giá-->
         <div class="modal fade" id="myModal_sua" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -89,15 +189,25 @@
                                     Tên đơn giá <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                    <input type="hidden" ng-model="list_temp_inf_edit.Ma" />
+                                    <input type="hidden" ng-model="list_temp_inf_edit.KhuVuc" />
+                                    <input type="text" id="password" ng-model="list_temp_inf_edit.Ten" name="password" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                    Đơn giá <span class="required">*</span>
+                                    Giá <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                    <input type="text" id="gia" name="gia" ng-model="list_temp_inf_edit.Gia" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                    Đơn vị <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="donvi" name="donvi" ng-model="list_temp_inf_edit.DonVi" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
                         </form>
@@ -105,7 +215,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary">Lưu</button>
+                        <button type="button" class="btn btn-primary"  ng-click="capnhat()">Lưu</button>
                     </div>
                 </div>
             </div>
