@@ -8,8 +8,6 @@
 @section Scripts{
 
     <!--Bootstrap angular-->
-    @*<script src="~/Scripts/Angular/ui-bootstrap-tpls-2.0.0.min.js"></script>*@
-
     <!--App script-->
     <script src="~/Scripts/DuToan/Estimate_Work/App_work.js"></script>
 
@@ -20,17 +18,14 @@
     <script src="~/Scripts/DuToan/Estimate_Work/Controllers/MaterialCtrl.js"></script>
 
     <script src="~/Scripts/DuToan/Estimate_Work/Controllers/SpecificationCtrl.js"></script>
-    
+
     <script src="~/Scripts/DuToan/Estimate_Work/Controllers/GeneralCtrl.js"></script>
-    @*<script src="~/Scripts/DuToan/Bootstrap_UploadFile.js"></script>*@
 }
 
 @section CSS{
     <link href="~/Content/dutoan/estimate_work.css" rel="stylesheet" />
-    @*<link href="~/Content/dutoan/Bootstrap_UploadFile.css" rel="stylesheet" />*@
-    <link href="~/Content/loading.css" rel="stylesheet" />
+    <link href="~/Content/dutoan/Loader.css" rel="stylesheet" />
 }
-
 
 <script>
     $(document).ready(function () {
@@ -39,6 +34,7 @@
 </script>
 
 <div class="body-estimate" ng-app="app_work" ng-controller="mainController" id="body_estimate">
+
     <aside class="left_menu" id="left_menu" ng-class="{'active_leftmenu': active_leftmenu}">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar" style="height: auto;">

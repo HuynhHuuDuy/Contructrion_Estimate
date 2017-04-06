@@ -10,7 +10,7 @@
     <meta name="author" content="Huynh Huu Duy, Thach Thi Kieu Linh">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="icon" type="image/gif/png" href="~/Images/Logo/homepage_construction_estimate.png">
     <link href="http://fonts.googleapis.com/css?family=Oxygen:400,700,300" rel="stylesheet" type="text/css">
     @*<link rel="stylesheet" href="~/Content/Style.css">
@@ -51,7 +51,14 @@
     </style>
 
 </head>
+
+@* set background-color: currentColor*@
+
 <body>
+
+    <div class="loader" id="loader" style="position: fixed; top: 200px;left: 600px;z-index: 99;opacity: 1;"></div>
+
+    @* set css opacity: 0.3, pointer-events: none; *@
     <div id="wrapper">
         <!--header-->
         <header>

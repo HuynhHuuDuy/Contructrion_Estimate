@@ -5,6 +5,7 @@ app.run(function ($rootScope) {
     $rootScope.allmaterials = [];
     $rootScope.sum_estimate = 0;
     $rootScope.myContextDiv = '';
+    $rootScope.loading = true;
 });
 
 app.config(function ($stateProvider, $urlRouterProvider) {
@@ -33,7 +34,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http', '$filter', function ($scope, $rootScope, dataService, $http, $filter) {
 
-    //$scope.showloading = false;
+    //show loading
+    var div_loading = document.getElementById("loader");
+    if ($rootScope.loading == true) {
+        div_loading.style.display = "";
+    }
+
+
 
     //<!-- Menu Toggle Script -->
     $scope.active_leftmenu = false;
@@ -73,6 +80,8 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
             angular.element(".sheet_cellheader").css("width", parseFloat(width_fullscreen - 250 - margin - 2 - 7 - 17) + "px");
         }
+
+        $rootScope.loading = true;
     }
 
     //check session and building id
@@ -124,6 +133,8 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                     //display message
                     $scope.infortitle = response.data;
                     //$scope.showloading = false;
+
+                    $rootScope.loading = true;
                 });
     };
 
@@ -135,18 +146,26 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
             };
             GetDetailNormWork_Price($scope.unitprice.selectedOption.ID);
             GetDetail_UserNormWork_Price($scope.unitprice.selectedOption.ID);
+
+            $rootScope.loading = true;
+
         });
     };
 
     function GetDetailNormWork_Price(area_id) {
         dataService.GetDetailNormWork_Price(area_id).then(function (data) {
             $rootScope.ListDetailNormWork_Price = data;
+
+            $rootScope.loading = true;
         });
     };
 
     function GetDetail_UserNormWork_Price(area_id) {
         dataService.GetDetail_UserNormWork_Price(area_id).then(function (data) {
             $rootScope.ListDetail_UserNormWork_Price = data;
+
+            $rootScope.loading = true;
+
         });
     };
 
@@ -248,40 +267,9 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
                 }
             });
         });
+
+        $rootScope.loading = false;
     }
-
-    /*
-    $scope.change_buildingitem = function (selection) {
-        if (typeof (session_user) != "undefined") {
-            dataService.getAllSheet(selection).then(function (data) {
-                angular.forEach(data, function (value, key) {
-                    $rootScope.works[value.IndexSheet].ID = value.ID;
-                    $rootScope.works[value.IndexSheet].NormWork_ID = value.NormWork_ID;
-                    $rootScope.works[value.IndexSheet].Name = value.Name;
-                    $rootScope.works[value.IndexSheet].Unit = value.Unit;
-                    $rootScope.works[value.IndexSheet].Number = value.Number;
-                    $rootScope.works[value.IndexSheet].Horizontal = value.Horizontal;
-                    $rootScope.works[value.IndexSheet].Vertical = value.Vertical;
-                    $rootScope.works[value.IndexSheet].Height = value.Height;
-                    $rootScope.works[value.IndexSheet].Area = value.Area;
-                    $rootScope.works[value.IndexSheet].PriceMaterial = value.PriceMaterial;
-                    $rootScope.works[value.IndexSheet].PriceLabor = value.PriceLabor;
-                    $rootScope.works[value.IndexSheet].PriceMachine = value.PriceMachine;
-                    $rootScope.works[value.IndexSheet].SumMaterial = value.SumMaterial;
-                    $rootScope.works[value.IndexSheet].SumLabor = value.SumLabor;
-                    $rootScope.works[value.IndexSheet].SumMachine = value.SumMachine;
-                    $rootScope.works[value.IndexSheet].BuildingItem_ID = value.BuildingItem_ID;
-                    $rootScope.works[value.IndexSheet].Sub_BuildingItem_ID = value.Sub_BuildingItem_ID;
-
-                    var regular_expression = /^\d+$/;
-                    if (regular_expression.test(value.ID)) {
-                        $rootScope.index_work = parseInt($rootScope.index_work) + 1;
-                    }
-                });
-            });
-        }
-    };
-    */
 
     $rootScope.myContextDiv = '<!--Right click and dropdown menu-->' +
         '<ul id="contextmenu-node" class="dropdown-menu" style="cursor:pointer; display:block; left: 10px; top: 30px">' +
@@ -291,6 +279,11 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
         '<li><a ng-click="deletecontent()">Xóa nội dung các dòng đã chọn</a></li>' +
         '<li><a ng-click="deleterow()">Xóa các dòng đã chọn</a></li>' +
         '</ul>';
+
+    
+    if ($rootScope.loading == false) {
+        div_loading.style.display = "none";
+    }
 
 }]);
 
@@ -327,45 +320,6 @@ app.directive("contextMenu", function ($compile) {
     };
     return contextMenu;
 });
-
-//right click and show menu context
-//app.directive('ngRightClick', [function () {
-//    return {
-//        restrict: 'AE',
-//        compile: function compile(tElement, tAttrs, transclude) {
-//            return {
-//                post: function postLink(scope, iElement, iAttrs, controller) {
-
-//                    var ul = $('#' + iAttrs.context),
-//                        div_rowsheet = null;
-
-//                    ul.css({
-//                        'display': 'none'
-//                    });
-
-//                    $(iElement).bind('contextmenu', function (event) {
-
-//                        event.preventDefault();
-
-//                        //choose row
-//                        div_rowsheet = angular.element(event.currentTarget).parent();
-
-//                        if (div_rowsheet.hasClass("picked")) {
-//                            //show context menu
-//                            ul.css({
-//                                position: "fixed",
-//                                display: "block",
-//                                left: event.clientX + 'px',
-//                                top: event.clientY + 'px'
-//                            });
-//                        }
-//                    });
-//                }
-//            };
-//        }
-//    };
-
-//}]);
 
 //key press and move another textbox in sheet
 app.directive('movefocus', function () {

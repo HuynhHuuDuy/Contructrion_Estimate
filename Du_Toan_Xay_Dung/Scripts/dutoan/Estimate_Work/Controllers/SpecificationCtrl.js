@@ -5,6 +5,13 @@ angular.module('app_work').controller('SpecificationCtrl', ['$scope', '$http', '
     $scope.specifications = [];
 
 
+    //fix header sheet
+    var wrapsheet = document.getElementById("wrapper");
+    var width_wrapsheet = wrapsheet.clientWidth;
+    var width_sheet = (parseInt(width_wrapsheet) - 336) + "px";
+    document.getElementById("sheet_cellheader").style.width = width_sheet;
+
+
     //check session and building id
     var buildingItem_id = angular.element("#txt_building_item").val();
     var session_user = angular.element("#txt_session_user").val();

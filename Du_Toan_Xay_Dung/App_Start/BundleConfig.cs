@@ -32,8 +32,8 @@ namespace Du_Toan_Xay_Dung
                       "~/Content/Style.css",
                       "~/Content/AdminLTE.css",
                       "~/Content/Bootstrap/bootstrap.css",
-                      "~/Content/Bootstrap/bootstrap-select.css",
-                      "~/Content/font-awesome-4.6.3/css/font-awesome.css"
+                      "~/Content/Bootstrap/bootstrap-select.css"
+                      //"~/Content/font-awesome-4.7.0/css/font-awesome.min.css"
                       ));
         }
     }
