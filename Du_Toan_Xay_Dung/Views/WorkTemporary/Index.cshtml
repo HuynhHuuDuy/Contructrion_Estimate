@@ -4,7 +4,13 @@
 }
 
 <script src="~/Scripts/DuToan/WorkTemporary/script_angular_index.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
     #table_worktemporary {
         counter-reset: serial-number; /* Set the serial number counter to 0 */
@@ -201,7 +207,7 @@
                                                 <i class="fa fa-fw fa-edit"></i>sửa
                                             </a>
                                             <a class="btn btn-danger btn-flat btn-xs" @*data-toggle="modal" data-target="#modal_delete_building"*@ title="xem" ng-click="delete_UserNormWork(x)">
-                                                <i class="fa fa-fw fa-remove"></i>xóa
+                                                <i class="glyphicon glyphicon-remove"></i>xóa
                                             </a>
                                         </td>
                                     </tr>
