@@ -61,7 +61,27 @@
     };
 
 
-    $scope.delete_unitPrice = function (id) {
+    $scope.delete_Area_UnitPrice = function (id) {
+
+        var r = confirm("Bạn có thật sự muốn xóa...?");
+        if (r == true) {
+            $http({
+                method: "post",
+                url: "/UnitPrice/Delete_Area",
+                params: { id: id },
+                dataType: "json",
+            })
+                .then(function (result) {
+                    if (result.data == "ok") {
+                        open_alert("success");
+                        location.reload();
+                    }
+                    else {
+                        open_alert("fail");
+                    }
+                });
+
+        };
 
     };
 
