@@ -67,7 +67,30 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult Delete_Area(string id)
+        {
 
+            var area = _db.Areas.Where(i => i.ID.Equals(id)).FirstOrDefault();
+            var list_unitprice_area = _db.UnitPrice_Areas.Where(i => i.Area_ID.Equals(id)).ToList();
+            if (area != null)
+            {
+                if (list_unitprice_area != null)
+                {
+                    _db.UnitPrice_Areas.DeleteAllOnSubmit(list_unitprice_area);
+
+                }
+                _db.Areas.DeleteOnSubmit(area);
+
+                _db.SubmitChanges();
+
+                return Json("ok");
+            }
+            else
+            {
+                return Json("error");
+            }
+        }
 
         [HttpPost]
         public JsonResult Save_Resource(List<UnitPrice_AreaViewModel> list)
@@ -120,5 +143,5 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
 
         }
-	}
+    }
 }
