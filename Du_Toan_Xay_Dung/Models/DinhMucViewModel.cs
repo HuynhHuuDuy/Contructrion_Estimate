@@ -19,6 +19,6 @@ namespace Du_Toan_Xay_Dung.Models
         public string ID { get; set; }
         public string Name { get; set; }
         public string Unit { get; set; }
-
+        public List<ChiTiet_DinhMucViewModel> Norm_Details { get; set; }
     }
 }

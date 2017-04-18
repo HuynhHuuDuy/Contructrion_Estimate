@@ -15,12 +15,16 @@ using System.Web;
 using System.Data;
 using System.Xml;
 using System.Data.OleDb;
+using LinqToExcel;
 //using CRUDDeom.Models;
 using PagedList.Mvc;
 using PagedList;
+using System.Data.Entity.Validation;
+using System.Globalization;
+
 namespace Du_Toan_Xay_Dung.Controllers
 {
-    
+
     public class AdminController : Controller
     {
         DataDTXDDataContext _db = new DataDTXDDataContext();
@@ -51,12 +55,12 @@ namespace Du_Toan_Xay_Dung.Controllers
                         on a.Area_ID equals b.ID
                         select new DonGiaDTO
                         {
-                            Ma=n.ID,
-                            TenKhuVuc=b.Name,
-                            Ten=n.Name,
-                            DonVi=n.Unit,
-                            Gia=a.Price,
-                            KhuVuc=a.Area_ID
+                            Ma = n.ID,
+                            TenKhuVuc = b.Name,
+                            Ten = n.Name,
+                            DonVi = n.Unit,
+                            Gia = a.Price,
+                            KhuVuc = a.Area_ID
                         }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
@@ -65,14 +69,14 @@ namespace Du_Toan_Xay_Dung.Controllers
             var list = (from n in _db.Users
                         select new NguoiDungDTO
                         {
-                            Email=n.Email,
-                            First_Name=n.First_Name,
-                            Last_Name=n.Last_Name,
-                            Phone=n.Phone,
-                            Password=n.Password,
-                            Workplace=n.Workplace,
-                            City=n.City,
-                            Role=n.Role
+                            Email = n.Email,
+                            First_Name = n.First_Name,
+                            Last_Name = n.Last_Name,
+                            Phone = n.Phone,
+                            Password = n.Password,
+                            Workplace = n.Workplace,
+                            City = n.City,
+                            Role = n.Role
                         }).ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
@@ -85,7 +89,7 @@ namespace Du_Toan_Xay_Dung.Controllers
         public JsonResult post_suanguoidung(NguoiDungDTO model)
         {
             var nguoidung = _db.Users.First(m => m.Email == model.Email);
-          
+
             // gán dữ liệu
             nguoidung.Email = model.Email;
             nguoidung.First_Name = model.First_Name;
@@ -118,7 +122,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             return View(model);
 
         }
-       
+
         public ActionResult upload()
         {
             if (SessionHandler.User != null)
@@ -201,13 +205,13 @@ namespace Du_Toan_Xay_Dung.Controllers
                 }
                 if (fileExtension.ToString().ToLower().Equals(".xml"))
                 {
-                    string fileLocation = Server.MapPath("~/Upload/") + Request.Files["FileUpload"].FileName;
+                    string fileLocation = Server.MapPath("~/Upload/") + Request.Files["file"].FileName;
                     if (System.IO.File.Exists(fileLocation))
                     {
                         System.IO.File.Delete(fileLocation);
                     }
 
-                    Request.Files["FileUpload"].SaveAs(fileLocation);
+                    Request.Files["file"].SaveAs(fileLocation);
                     XmlTextReader xmlreader = new XmlTextReader(fileLocation);
                     // DataSet ds = new DataSet();
                     ds.ReadXml(xmlreader);
@@ -216,17 +220,17 @@ namespace Du_Toan_Xay_Dung.Controllers
 
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    var khuvuc = new Area();
+                   
                     var dongia = new UnitPrice();
                     var dongia_khuvuc = new UnitPrice_Area();
-                    khuvuc.ID = Convert.ToInt64(ds.Tables[0].Rows[i][0].ToString());
-                    dongia.ID = ds.Tables[0].Rows[i][1].ToString();
-                    dongia_khuvuc.Area_ID = Convert.ToInt64(ds.Tables[0].Rows[i][0].ToString());
+                
+                  
+                    dongia_khuvuc.Area_ID = 1;
                     dongia_khuvuc.UnitPrice_ID = ds.Tables[0].Rows[i][1].ToString();
                     dongia.Name = ds.Tables[0].Rows[i][2].ToString();
                     dongia.Unit = ds.Tables[0].Rows[i][3].ToString();
                     dongia_khuvuc.Price = Convert.ToDecimal(ds.Tables[0].Rows[i][4].ToString());
-                    _db.Areas.InsertOnSubmit(khuvuc);
+                   
                     _db.UnitPrices.InsertOnSubmit(dongia);
                     _db.UnitPrice_Areas.InsertOnSubmit(dongia_khuvuc);
                 }
@@ -318,13 +322,13 @@ namespace Du_Toan_Xay_Dung.Controllers
                 }
                 if (fileExtension.ToString().ToLower().Equals(".xml"))
                 {
-                    string fileLocation = Server.MapPath("~/Upload/") + Request.Files["FileUpload"].FileName;
+                    string fileLocation = Server.MapPath("~/Upload/") + Request.Files["file"].FileName;
                     if (System.IO.File.Exists(fileLocation))
                     {
                         System.IO.File.Delete(fileLocation);
                     }
 
-                    Request.Files["FileUpload"].SaveAs(fileLocation);
+                    Request.Files["file"].SaveAs(fileLocation);
                     XmlTextReader xmlreader = new XmlTextReader(fileLocation);
                     // DataSet ds = new DataSet();
                     ds.ReadXml(xmlreader);
@@ -360,66 +364,66 @@ namespace Du_Toan_Xay_Dung.Controllers
             ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
             return View();
         }
-        [HttpPost]
-        public ActionResult post_nhapdinhmuc(FormCollection form)
-        {
-            try
-            {
-                // nhận dữ liệu từ form
-                var madinhmuc = form["madinhmuc"];
-                var tendinhmuc = form["tendinhmuc"];
-                var donvidinhmuc = form["donvi"];
-                var makhuvuc = form["makhuvuc"];
-                var mathanhphan = form["mathanhphan"];
-                string[] amathanhphan = mathanhphan.Split(new Char[] { ',' });
-                var tenthanhphan = form["ten"];
-                string[] atenthanhphan = tenthanhphan.Split(new Char[] { ',' });
-                var rangbuoc = form["rangbuoc"];
-                string[] arangbuoc = rangbuoc.Split(new Char[] { ',' });
-                var haophi = form["haophi1"];
-                string[] ahaophi = haophi.Split(new Char[] { ',' });
-                var donvithanhphan = form["donvithanhphan"];
-                string[] adonvithanhphan = donvithanhphan.Split(new Char[] { ',' });
-                for (var i = 0; i < amathanhphan.Length; i++)
-                {
-                    NormDetail dgia = new NormDetail()
-                    {
+        //public ActionResult post_nhapdinhmuc(FormCollection form)
+        //{
+        //   //try
+        //  // {
+        //        // nhận dữ liệu từ form
+        //        var madinhmuc = form["madinhmuc"];
+        //        var tendinhmuc = form["tendinhmuc"];
+        //        var donvidinhmuc = form["donvi"];
+        //        //var makhuvuc = form["makhuvuc"];
+        //        var mathanhphan = form["mathanhphan"];
+        //        string[] amathanhphan = mathanhphan.Split(new Char[] { ',' });
+        //        var tenthanhphan = form["ten"];
+        //        string[] atenthanhphan = tenthanhphan.Split(new Char[] { ',' });   
+        //        var haophi = form["haophi1"];
+        //        string[] ahaophi = haophi.Split(new Char[] { ',' });
+        //        var donvithanhphan = form["donvithanhphan"];
+        //        string[] adonvithanhphan = donvithanhphan.Split(new Char[] { ',' });
+        //        NormWork dmuc = new NormWork()
+        //        {
+        //            ID = madinhmuc,
+        //            Name = tendinhmuc,
+        //            Unit = donvidinhmuc,
+        //        };
+        //        _db.NormWorks.InsertOnSubmit(dmuc);
+        //        _db.SubmitChanges();
 
-                        NormWork_ID = madinhmuc,
-                        UnitPrice_ID = amathanhphan[i].ToString(),
-                        Numbers = Convert.ToDecimal(ahaophi[i].ToString()),
+        //        for (var i = 0; i < amathanhphan.Length; i++)
+        //            {
+        //                NormDetail dgia = new NormDetail()
+        //                {
 
-                    };
-                    _db.NormDetails.InsertOnSubmit(dgia);
-                    _db.SubmitChanges();
-                }
-                // nhập dữ liệu cho đối tượng
-                NormWork dmuc = new NormWork()
-                {
-                    ID = madinhmuc,
-                    Name = tendinhmuc,
-                    Unit = donvidinhmuc,
-                };
-                _db.NormWorks.InsertOnSubmit(dmuc);
-                _db.SubmitChanges();
+        //                    NormWork_ID = madinhmuc,
+        //                    UnitPrice_ID = amathanhphan[i].ToString(),
+        //                    Numbers = Convert.ToDecimal(ahaophi[i].ToString()),
 
-                ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
-                ModelState.AddModelError("", "Nhập thành công");
-                
-                
-            }
-            catch
-            {
-                ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
-                ModelState.AddModelError("", "Nhập thất bại");
-            }
-            return View();
+        //                };
+        //                _db.NormDetails.InsertOnSubmit(dgia);
+        //                _db.SubmitChanges();
+        //            }
 
-        }
+        //        ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
+        //    //ModelState.AddModelError("", "Nhập thành công");
+        //    ViewBag.ketqua = "Thêm thành công";
+
+
+        //   // }
+        // //  catch
+        // //  {
+        //       //ViewData["DSDonGia"] = _db.UnitPrices.Select(i => new DonGiaViewModel(i)).ToList();
+        //        //ModelState.AddModelError("", "Nhập thất bại");
+        //       // ViewBag.ketqua = "Thêm thất bại";
+
+        //  // }
+        //    return View();
+
+        //}
         [HttpPost]
         public JsonResult Post_themnguoidung(UserViewModel obj)
         {
-           try
+            try
             {
                 User user = new User()
                 {
@@ -436,11 +440,12 @@ namespace Du_Toan_Xay_Dung.Controllers
                 _db.SubmitChanges();
                 return Json("ok");
 
-           }
-           catch {
+            }
+            catch
+            {
                 return Json("error");
-           }
-           
+            }
+
         }
         public ActionResult Delete(string email)
         {
@@ -456,9 +461,9 @@ namespace Du_Toan_Xay_Dung.Controllers
             User nguoidung = new User();
             nguoidung = _db.Users.Where(i => i.Email.Equals(email)).FirstOrDefault();
             var congtrinh = _db.Buildings.Where(i => i.Email.Equals(email)).ToList();
-            if(congtrinh.Count>0)
+            if (congtrinh.Count > 0)
             {
-                for(var i=0;i<congtrinh.Count;i++)
+                for (var i = 0; i < congtrinh.Count; i++)
                 {
                     _db.Buildings.DeleteOnSubmit(congtrinh[i]);
                 }
@@ -589,16 +594,16 @@ namespace Du_Toan_Xay_Dung.Controllers
         {
             ViewData["dongia"] = _db.UnitPrices.Where(i => i.ID.Contains(MaVL_NC_MTC)).Select(i => new DonGiaViewModel(i)).FirstOrDefault();
             ViewData["dongia_khuvuc"] = _db.UnitPrice_Areas.Where(i => i.UnitPrice_ID.Contains(MaVL_NC_MTC)).Select(i => new UnitPrice_AreaViewModel(i)).FirstOrDefault();
-           
+
             return View();
         }
         [HttpPost]
         public JsonResult post_suadongia(DonGiaDTO model)
         {
-            
+
             var dongia = _db.UnitPrices.First(n => n.ID.Equals(model.Ma));
-            var dongia_khuvuc = _db.UnitPrice_Areas.First(i => i.UnitPrice_ID.Equals(model.Ma)&&i.Area_ID.Equals(model.KhuVuc));
-       
+            var dongia_khuvuc = _db.UnitPrice_Areas.First(i => i.UnitPrice_ID.Equals(model.Ma) && i.Area_ID.Equals(model.KhuVuc));
+
             // gán dữ liệu
             dongia_khuvuc.Price = model.Gia;
             dongia.Unit = model.DonVi;
@@ -610,11 +615,123 @@ namespace Du_Toan_Xay_Dung.Controllers
             _db.SubmitChanges();
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
-       
-      
-     
+        // up load don gia
+        public FileResult DownloadExcel()
+        {
+            string path = "~/Upload/don_gia.xlsx";
+            return File(path, "application/vnd.ms-excel", "don_gia.xlsx");
+        }
+
+        // nhập định mức
+        public JsonResult GetArea_UnitPrice()
+        {
+            //var admin = _db.Users.Where(i => i.Role.Equals("user")).FirstOrDefault();
+            //var list = _db.Areas.Where(i => i.Email.Equals(admin.Email) && i.Email.Equals(SessionHandler.User.Email)).Select(i => new AreaViewModel(i)).ToList();
+            var list = _db.Areas.Select(i => new AreaViewModel(i)).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Get_UnitPrice(string id)
+        {
+            if (SessionHandler.User != null)
+            {
+                var list = _db.UnitPrices.Join(_db.UnitPrice_Areas, up => up.ID, upa => upa.UnitPrice_ID, (up, upa) => new { Unit_Price = up, UnitPrice_Area = upa }).Where(i => i.UnitPrice_Area.Area_ID.Equals(id))
+                .Select(s => new
+                {
+                    Area_ID = s.UnitPrice_Area.Area_ID,
+                    UnitPrice_ID = s.Unit_Price.ID,
+                    Price = s.UnitPrice_Area.Price,
+                    Name = s.Unit_Price.Name,
+                    Unit = s.Unit_Price.Unit,
+                }).ToList();
+                return Json(list, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("error");
+            }
+
+        }
+        [PageLogin]
+        [HttpPost]
+        public JsonResult post_saveUser_NormWork(DinhMucViewModel model)
+        {
+            try
+            {
+                var list_nd = _db.NormDetails.Where(i => i.NormWork_ID.Equals(model.ID)).ToList();
+                var nw = _db.NormWorks.Where(i => i.ID.Equals(model.ID)).FirstOrDefault();
+
+                //update
+                if (list_nd.Count != 0 && nw != null)
+                {
+
+                    _db.NormDetails.DeleteAllOnSubmit(list_nd);
+                    _db.SubmitChanges();
+
+                    nw.ID = model.ID;
+                    nw.Name = model.Name;
+                    nw.Unit = model.Unit;
+
+                    foreach (var item in model.Norm_Details)
+                    {
+                        NormDetail nd = new NormDetail();
+                        nd.NormWork_ID = model.ID;
+                        nd.UnitPrice_ID = item.UnitPrice_ID;
+                        nd.Numbers = Convert.ToDecimal(item.Numbers, CultureInfo.InvariantCulture);
+                        nw.NormDetails.Add(nd);
+                    }
+                }
+                else
+                {
+                    nw = new NormWork();
+                    nw.ID = model.ID;
+                    nw.Name = model.Name;
+                    nw.Unit = model.Unit;
+
+                    _db.NormWorks.InsertOnSubmit(nw);
+
+                    foreach (var item in model.Norm_Details)
+                    {
+                        NormDetail nd = new NormDetail();
+                        nd.NormWork_ID = model.ID;
+                        nd.UnitPrice_ID = item.UnitPrice_ID;
+                        nd.Numbers = Convert.ToDecimal(item.Numbers, CultureInfo.InvariantCulture);
+                        nw.NormDetails.Add(nd);
+                    }
+                }
+
+                _db.SubmitChanges();
+
+                return Json("ok");
+            }
+            catch (Exception e)
+            {
+                return Json("error");
+            }
+
+        }
+        [PageLogin]
+        public JsonResult Validation_ID(string id)
+        {
+            var item = _db.NormWorks.Where(i => i.ID.Equals(id)).FirstOrDefault();
+            if (item != null)
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("ok", JsonRequestBehavior.AllowGet);
+            }
+
+        }
     }
 }
+       
+
+
+
+
+
 
 
 

@@ -204,4 +204,9 @@ C:\Users\Duy Huynh\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\bin\M
 C:\Users\Duy Huynh\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\obj\Debug\Du_Toan_Xay_Dung.csprojResolveAssemblyReference.cache
 C:\Users\Duy Huynh\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\obj\Debug\Du_Toan_Xay_Dung.dll
 C:\Users\Duy Huynh\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\obj\Debug\Du_Toan_Xay_Dung.pdb
+C:\Users\Administrator\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\bin\LinqToExcel.dll
+C:\Users\Administrator\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\bin\Remotion.Data.Linq.dll
+C:\Users\Administrator\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\bin\Remotion.dll
+C:\Users\Administrator\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\bin\Remotion.Interfaces.dll
+C:\Users\Administrator\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\bin\LinqToExcel.xml
 C:\Users\Administrator\Documents\GitHub\Contructrion_Estimate\Du_Toan_Xay_Dung\obj\Debug\Du_Toan_Xay_Dung.csprojResolveAssemblyReference.cache
