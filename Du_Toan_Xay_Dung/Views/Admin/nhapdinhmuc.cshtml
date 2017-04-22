@@ -3,10 +3,9 @@
 @{
     ViewBag.Title = "nhapdinhmuc";
     Layout = "~/Views/Shared/_Admin.cshtml";
-    var list_dongia = ViewData["DSDonGia"] as List<DonGiaViewModel>;
 }
 <script src="~/Scripts/Admin/build/admin.js"></script>
-<div class="col-lg-12" role="main">
+<div class="col-lg-12" role="main" ng-app="myApp" ng-controller="myCtrl">
     <div class="">
         <div class="page-title">
             <div class="title_left">
@@ -19,114 +18,125 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Thông tin công việc</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li>
-                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li>
-                                <a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
+                        
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <br />
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary()
-                        <form id="demo-form2" action="/Admin/post_nhapdinhmuc" method="post" data-parsley-validate class="form-horizontal form-label-left">
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
-                                    Mã công tác <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="madinhmuc" name="madinhmuc" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
-                                    Tên công tác <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="tendinhmuc" name="tendinhmuc" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                    Đơn vị <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="donvi" name="donvi" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group" id="tphp">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Thành phần hao phí</label>
-                                <div class="col-md-9 col-sm-9 col-xs-12" ng-controller="thanhphanhaophi">
-                                    <input id="txttimkiem" onkeyup="timkiem()" name="txttimkiem" class="date-picker form-control col-md-7 col-xs-12" type="text" />
-                                    <select size="10" class="select2_single form-control" tabindex="-1" id="select-tphp2" name="select-tphp2" ng-model="tphp"></select>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                            Hao phí <span class="required">*</span>
-                                        </label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="haophi" name="haophi" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                        </div>
+                      
+                        <form id="demo-form2"  data-parsley-validate class="form-horizontal form-label-left">
+                            <div class="col-sm-6">
+                                <!-- ID -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">Mã:</label>
+                                    <div class="col-sm-5">
+                                        <span ng-show="show_DontEdit" id="show_DontEdit"></span>
+                                        <input type="text" ng-model="tempwork.ID" ng-show="show_Edit" ng-blur="validationID(tempwork.ID)" class="form-control" id="ID_TempWork" name="ID_TempWork" placeholder="Mã CV tạm tính...">
                                     </div>
-                                    <button type="button" onclick="add()" class="btn btn-primary">Thêm</button>
+                                    <div class="col-sm-5">
+                                        <span ng-show="warning_ID_error" class="center"><i class="fa fa-fw fa-close" style="color:red"></i> Mã đã tồn tại</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <select size="15" id="select-tphp1" name="select-tphp1" style="display:none">
-                                @foreach (var k in list_dongia)
-                                {
-                                    <option value="@k.ID;@k.Name;@k.Unit">@k.Name</option>
-                                }
-                            </select>
+                                <!-- Name -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">Tên:</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" rows="3" ng-model="tempwork.Name" id="Name_TempWork" name="Name_TempWork" placeholder="Nhập tên công việc tạm tính..."></textarea>
+                                    </div>
+                                </div>
+                                <!-- Unit -->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="">Đơn vị:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" ng-model="tempwork.Unit" class="form-control" id="Unit_TempWork" name="Unit_TempWork" placeholder="Nhập đơn vị công việc tạm tính...">
+                                    </div>
+                                </div>
 
-                            <div class="ln_solid"></div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                    <button type="reset" class="btn btn-primary">Hủy</button>
-                                    <button type="submit" class="btn btn-success">Lưu</button>
+                                <!--Material-->
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-8" for="">Thành phần hao phí đã chọn:</label>
+                                    <div class="col-sm-4"></div>
                                 </div>
+
+                                <div class="box-body table-responsive no-padding" style="height:300px; overflow-y:auto">
+                                    <table class="table table-hover">
+                                        <tbody id="">
+                                            <tr>
+                                                <th>Mã</th>
+                                                <th>Tên</th>
+                                                <th>Đơn Vị</th>
+                                                <th>Định Mức</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr ng-repeat="x in list_UnitPrice">
+                                                <td>{{x.UnitPrice_ID}}</td>
+                                                <td>{{x.Name}}</td>
+                                                <td>{{x.Unit}}</td>
+                                                <td>
+                                                    <input type="text" ng-model="x.Number" size="4" />
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-danger btn-flat btn-xs" title="xem" ng-click="delete_unitPrice(x.UnitPrice_ID)">
+                                                        <i class="fa fa-fw fa-remove"></i>xóa
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.box-body -->
                             </div>
-                            <div class="page-title">
-                                <div class="title_left">
-                                    <h3>Bảng danh sách thành phần hao phí</h3>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="x_panel">
-                                        <div class="x_title">
-                                            <h2></h2>
-                                            <ul class="nav navbar-right panel_toolbox">
-                                                <li>
-                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a class="close-link"><i class="fa fa-close"></i></a>
-                                                </li>
-                                            </ul>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="x_content">
-                                            <p class="text-muted font-13 m-b-30">
-                                            </p>
-                                            <table id="datatable" class="table table-striped table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Mã thành phần</th>
-                                                        <th>Hao Phí</th>
-                                                        <th>Tên</th>
-                                                        <th>Đơn vị</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
+                            <div class="col-sm-6">
+                                <!-- Search -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <select name="" id=""
+                                                ng-options="option.Name for option in Area.availableOptions track by option.ID"
+                                                ng-model="Area.selectedOption"
+                                                ng-change="change_area(Area.selectedOption.ID)"
+                                                class="form-control"></select>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="txt_search_resource" ng-model="keysearch" autofocus placeholder="Nhập thành phần hao phí cần tìm kiếm..." />
+                                    </div>
+                                </div>
+                                <div class="box-body table-responsive no-padding" style="height:300px; overflow-y:auto">
+                                    <table class="table table-hover">
+                                        <tbody id="">
+                                            <tr>
+                                                <th></th>
+                                                <th>Mã</th>
+                                                <th>Tên</th>
+                                                <th>Đơn Vị</th>
+                                            </tr>
+                                            <tr ng-repeat="x in list_UnitPricePicked | filter: {Name:keysearch} | limitTo:100">
+                                                <td>
+                                                    <a class="btn btn-primary btn-flat btn-xs" title="Thêm" ng-click="add_unitPrice(x)">
+                                                        Thêm
+                                                    </a>
+                                                </td>
+                                                <td>{{x.UnitPrice_ID}}</td>
+                                                <td>{{x.Name}}</td>
+                                                <td>{{x.Unit}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.box-body -->
                             </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-block btn-primary btn-lg " ng-click="save_tempWork()">Lưu</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-block btn-danger btn-lg " ng-click="clear_content()">Hủy bỏ</button>
+                                </div>
+                                <div class="col-sm-3"></div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            
+                        
                         </form>
                     </div>
                 </div>

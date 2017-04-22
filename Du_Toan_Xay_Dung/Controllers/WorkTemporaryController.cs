@@ -66,7 +66,6 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
 
         }
-
         [PageLogin]
         [HttpPost]
         public JsonResult post_saveUser_NormWork(User_NormWorkViewModel model)
@@ -181,6 +180,6 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
 
         }
-
+        //
     }
 }

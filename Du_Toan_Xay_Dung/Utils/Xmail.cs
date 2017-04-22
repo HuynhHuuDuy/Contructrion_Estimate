@@ -17,7 +17,7 @@ namespace Du_Toan_Xay_Dung.Utils
         /// <param name="body">Nội dung mail</param>
         public static void Send(String to, String subject, String body)
         {
-            var from = "mvcpostoffice@gmail.com";
+            var from = "thachlinh11995@gmail.com";
             Send(from, to, subject, body);
         }
 
