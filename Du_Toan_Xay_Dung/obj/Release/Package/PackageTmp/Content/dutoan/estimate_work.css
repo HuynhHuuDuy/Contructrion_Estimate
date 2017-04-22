@@ -37,7 +37,7 @@
     position: absolute;
     background-color: #f1f1f1 !important;
     /*padding-top: 50px;*/
-    height: 1233px;
+    height: 1275px;
     width: 250px;
     z-index: 1000;
     -webkit-transition: -webkit-transform .3s ease-in-out,width .3s ease-in-out;
@@ -61,7 +61,7 @@
     margin-top: -15px;
 }
 
-.content_page {
+.content_wrap_page {
     border-radius: 3px 3px 3px 3px;
     -moz-border-radius: 3px 3px 3px 3px;
     -webkit-border-radius: 3px 3px 3px 3px;
@@ -70,3 +70,4 @@
     border-width: 0px 1px 1px 1px;
     background-color: white;
 }
+

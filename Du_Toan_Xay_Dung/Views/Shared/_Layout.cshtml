@@ -54,7 +54,7 @@
 
 @* set background-color: currentColor*@
 
-<body>
+<body id="body">
 
     <div class="loader" id="loader" style="position: fixed; top: 200px;left: 600px;z-index: 99;opacity: 1;"></div>
 
@@ -72,7 +72,7 @@
                         <li id="li_home_index"><a href="/Home/Index">Trang Chủ</a></li>
                         @if (SessionHandler.User != null)
                         {
-                            <li><a href="/CongTrinh/Index">Công Trình</a></li>
+                            <li id="li_congtrinh"><a href="/CongTrinh/Index">Công Trình</a></li>
                             <li><a href="/WorkTemporary/Index">Tạm Tính</a></li>
                             <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
                         }
@@ -105,7 +105,7 @@
             <br />
         </div>
 
-        
+
 
         <!--footer-->
 

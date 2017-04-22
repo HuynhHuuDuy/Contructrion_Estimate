@@ -1,7 +1,7 @@
 ﻿
 angular.module('app_work').factory('dataService', ['$http', function ($http) {
 
-
+    
     var getAllSheet = function (buildingitem_id) {
         return $http({
             method: "GET",
@@ -9,7 +9,7 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
             params: { buildingitem_id: buildingitem_id }
         })
             .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 return response.data;
             }, function (response) {
                 //showing errors
@@ -126,8 +126,6 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
                 //showing errors
             });
     };
-
-
     return {
         GetArea_Price: GetArea_Price,
         getAllResource: getAllResource,
@@ -140,6 +138,7 @@ angular.module('app_work').factory('dataService', ['$http', function ($http) {
         GetDetail_UserNormWork_Price: GetDetail_UserNormWork_Price,
         GetBuildings: GetBuildings,
         get_BuildingItems: get_BuildingItems,
+       
     };
 
 }]);

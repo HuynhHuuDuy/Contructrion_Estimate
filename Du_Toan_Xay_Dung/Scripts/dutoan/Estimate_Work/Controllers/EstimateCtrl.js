@@ -2,6 +2,7 @@
 
 angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$rootScope', 'dataService', '$filter', '$q', function ($scope, $http, $rootScope, dataService, $filter, $q) {
 
+    $rootScope.loading = true;
 
     //fix header sheet
     var wrapsheet = document.getElementById("wrapper");
@@ -55,6 +56,8 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 };
                 $scope.list_Normwork.push(eachItem);
             });
+
+            $rootScope.loading = true;
         });
     };
 
@@ -75,7 +78,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 });
             });
         }
-
+        $rootScope.loading = false;
     };
 
     //function getListPrice() {
@@ -1455,6 +1458,18 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         //remove $scope.rowpicked
         $scope.rowpicked = null;
 
+    }
+
+    if ($rootScope.loading == false) {
+        var div_loading = document.getElementById("loader");
+        div_loading.style.display = "none";
+
+        var div_wrap = document.getElementById("wrapper");
+        div_wrap.style.opacity = "";
+        div_wrap.style.pointerEvents = "";
+
+        var body = document.getElementById("body");
+        body.style.background = "";
     }
 
 }])

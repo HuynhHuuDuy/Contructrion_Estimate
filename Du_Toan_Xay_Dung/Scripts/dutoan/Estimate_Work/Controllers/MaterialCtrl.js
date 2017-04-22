@@ -1,6 +1,8 @@
 ﻿'use strict';
 
-angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataService', function ($scope, $http, dataService) {
+angular.module('app_work').controller('MaterialCtrl', ['$scope', '$rootScope', '$http', 'dataService', function ($scope, $rootScope, $http, dataService) {
+
+    $rootScope.loading = true;
 
     //fix header sheet
     var wrapsheet = document.getElementById("wrapper");
@@ -40,18 +42,18 @@ angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataS
 
                 });
 
-                for (var i = d; i < 10; i++) {
+                for (var i = d; i < 500; i++) {
                     $scope.materials.push({ IndexSheet: i });
                 }
-
             });
         }
         else {
             //create sheet
-            for (var i = 0; i < 10; i++) {
+            for (var i = 0; i < 500; i++) {
                 $scope.materials.push({ IndexSheet: i });
             }
         }
+        $rootScope.loading = false;
     };
 
     $scope.location_focus = function ($event) {
@@ -76,7 +78,7 @@ angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataS
         }
     }
 
-    
+
     $scope.focus = function (value_focus, $event) {
         var div = angular.element($event.currentTarget).parent().parent();
         var id = div.find(".column_header input").val();
@@ -123,5 +125,18 @@ angular.module('app_work').controller('MaterialCtrl', ['$scope', '$http', 'dataS
         }
 
     };
+
+
+    if ($rootScope.loading == false) {
+        var div_loading = document.getElementById("loader");
+        div_loading.style.display = "none";
+
+        var div_wrap = document.getElementById("wrapper");
+        div_wrap.style.opacity = "";
+        div_wrap.style.pointerEvents = "";
+
+        var body = document.getElementById("body");
+        body.style.background = "";
+    }
 
 }]);

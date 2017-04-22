@@ -38,6 +38,16 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
     var div_loading = document.getElementById("loader");
     if ($rootScope.loading == true) {
         div_loading.style.display = "";
+
+        var div_wrap = document.getElementById("wrapper");
+        div_wrap.style.opacity = "0.05";
+        div_wrap.style.pointerEvents = "none";
+
+        var body = document.getElementById("body");
+        body.style.background = "currentColor";
+
+        //var body = jQuery("body").css("background-color", "currentColor");
+        //console.log(body);
     }
 
 
@@ -179,7 +189,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
 
 
     //create list works
-    for (var i = 0; i < 30; i++) {
+    for (var i = 0; i < 300; i++) {
         var item = {
             IndexSheet: i,
             ID: "",
@@ -268,7 +278,7 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
             });
         });
 
-        $rootScope.loading = false;
+        $rootScope.loading = true;
     }
 
     $rootScope.myContextDiv = '<!--Right click and dropdown menu-->' +
@@ -280,10 +290,8 @@ app.controller("mainController", ['$scope', '$rootScope', 'dataService', '$http'
         '<li><a ng-click="deleterow()">Xóa các dòng đã chọn</a></li>' +
         '</ul>';
 
-    
-    if ($rootScope.loading == false) {
-        div_loading.style.display = "none";
-    }
+
+
 
 }]);
 

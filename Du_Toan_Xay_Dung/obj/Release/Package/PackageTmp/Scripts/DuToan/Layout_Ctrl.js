@@ -11,8 +11,12 @@ window.onload = function () {
 function geturl() {
     var path = window.location.pathname.split('/');
     var parent_url = path[1];
+
     if (parent_url == "") {
         $('#li_home_index').addClass('current_page_item');
+    }
+    else if (parent_url == "HangMuc") {
+        $('#li_congtrinh').addClass('current_page_item');
     }
     else {
         $('#main_menu ul li a').each(function () {

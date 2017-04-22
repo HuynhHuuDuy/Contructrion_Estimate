@@ -10,7 +10,7 @@
     <meta name="author" content="Huynh Huu Duy, Thach Thi Kieu Linh">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="icon" type="image/gif/png" href="~/Images/Logo/homepage_construction_estimate.png">
     <link href="http://fonts.googleapis.com/css?family=Oxygen:400,700,300" rel="stylesheet" type="text/css">
     @*<link rel="stylesheet" href="~/Content/Style.css">
@@ -27,11 +27,11 @@
     <!--angular-->
     <script src="~/Scripts/Angular/angular.min.js"></script>
     <script src="~/Scripts/Angular/angular-ui-router.min.js"></script>
-
+    <script src="~/Scripts/Bootstrap/ui-bootstrap-tpls-2.5.0.min.js"></script>
     <!--layout-->
     <script src="~/Scripts/DuToan/Layout_Ctrl.js"></script>
 
-    <script type="text/javascript" src="~/Scripts/Dropbox_API/dropins.js" id="dropboxjs" data-app-key="bvkiw5hqpxclgwz"></script>
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="bvkiw5hqpxclgwz"></script>
     <!--upload_file
     <link href="http://hayageek.github.io/jQuery-Upload-File/4.0.10/uploadfile.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -51,14 +51,20 @@
     </style>
 
 </head>
-<body>
+
+@* set background-color: currentColor*@
+
+<body id="body">
+
+    <div class="loader" id="loader" style="position: fixed; top: 200px;left: 600px;z-index: 99;opacity: 1;"></div>
+
+    @* set css opacity: 0.3, pointer-events: none; *@
     <div id="wrapper">
         <!--header-->
         <header>
             <div id="logo" class="container">
                 <h1><a href="#">Dự Toán Xây Dựng</a></h1>
-                <div class="clear"></div>
-                <p>Vươn lên tầm cao mới</p>
+                @*<p>Vươn lên tầm cao mới</p>*@
             </div>
             <div id="menu-wrapper" style="margin-bottom:0px">
                 <div id="main_menu" class="container main_menu">
@@ -66,7 +72,7 @@
                         <li id="li_home_index"><a href="/Home/Index">Trang Chủ</a></li>
                         @if (SessionHandler.User != null)
                         {
-                            <li><a href="/CongTrinh/Index">Công Trình</a></li>
+                            <li id="li_congtrinh"><a href="/CongTrinh/Index">Công Trình</a></li>
                             <li><a href="/WorkTemporary/Index">Tạm Tính</a></li>
                             <li><a href="/UnitPrice/Index">Đơn Giá</a></li>
                         }
@@ -99,7 +105,7 @@
             <br />
         </div>
 
-        
+
 
         <!--footer-->
 
@@ -119,8 +125,6 @@
                 <div class="col-sm-1"></div>
             </div>
         </footer>
-
-        <footer></footer>
     </div>
     @RenderSection("Scripts", required: false)
     @RenderSection("CSS", required: false)

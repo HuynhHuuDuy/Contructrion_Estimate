@@ -1,6 +1,14 @@
 ﻿'use strict';
 
-angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$rootScope', 'dataService', '$filter', function ($scope, $http, $rootScope, dataService, $filter) {
+angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$rootScope', 'dataService', '$filter', '$q', function ($scope, $http, $rootScope, dataService, $filter, $q) {
+
+    $rootScope.loading = true;
+
+    //fix header sheet
+    var wrapsheet = document.getElementById("wrapper");
+    var width_wrapsheet = wrapsheet.clientWidth;
+    var width_sheet = (parseInt(width_wrapsheet) - 336) + "px";
+    document.getElementById("sheet_cellheader").style.width = width_sheet;
 
     //...
     var buildingItem_id = angular.element("#txt_building_item").val();
@@ -48,6 +56,8 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 };
                 $scope.list_Normwork.push(eachItem);
             });
+
+            $rootScope.loading = true;
         });
     };
 
@@ -68,7 +78,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
                 });
             });
         }
-
+        $rootScope.loading = false;
     };
 
     //function getListPrice() {
@@ -76,9 +86,6 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
     //        $scope.list_AllPrice = data;
     //    });
     //};
-
-
-
     function SaveWorktoDatabase(items) {
         if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
 
@@ -157,7 +164,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         $scope.divfocus = div;
 
         var index_eq = angular.element($event.currentTarget).parent().index();
-        var row_header = angular.element("#sheet_cellheader");
+        var row_header = angular.element(".sheet_cellheader");
         row_header.find("div").eq(index_eq).css({ "background-color": "#D4D4D4" });
 
         $scope.location_blur = function () {
@@ -167,7 +174,7 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             column_header.css({ "background-color": "#eaeaea" });
 
             index_eq = angular.element($event.currentTarget).parent().index();
-            row_header = angular.element("#sheet_cellheader");
+            row_header = angular.element(".sheet_cellheader");
             row_header.find("div").eq(index_eq).css({ "background-color": "#eaeaea" });
         }
     }
@@ -593,6 +600,8 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         var height = div.find("input").eq(7).val();
         var area = div.find("input").eq(8).val();
 
+        //var sum = angular.element("#sum_estimate").text();
+
         //mean work
         var regular_expression1 = /^\d+$/;
         if (regular_expression1.test(id)) {
@@ -609,12 +618,22 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             if (height == "") {
                 $rootScope.works[id_work].Height = 1;
             }
+
+            //sum price old work
+            var sum_oldwork = parseFloat($rootScope.works[id_work].SumMaterial) + parseFloat($rootScope.works[id_work].SumLabor) + parseFloat($rootScope.works[id_work].SumMachine);
+
+
             $rootScope.works[id_work].Area = ($rootScope.works[id_work].Number * $rootScope.works[id_work].Horizontal * $rootScope.works[id_work].Vertical * $rootScope.works[id_work].Height).toFixed(3);
 
             $rootScope.works[id_work].SumMaterial = (parseFloat($rootScope.works[id_work].PriceMaterial) * parseFloat($rootScope.works[id_work].Area)).toFixed(3);
             $rootScope.works[id_work].SumLabor = (parseFloat($rootScope.works[id_work].PriceLabor) * parseFloat($rootScope.works[id_work].Area)).toFixed(3);
             $rootScope.works[id_work].SumMachine = (parseFloat($rootScope.works[id_work].PriceMachine) * parseFloat($rootScope.works[id_work].Area)).toFixed(3);
 
+            //sum price new work
+            var sum_newwork = parseFloat($rootScope.works[id_work].SumMaterial) + parseFloat($rootScope.works[id_work].SumLabor) + parseFloat($rootScope.works[id_work].SumMachine);
+
+            $rootScope.sum_estimate = parseFloat($rootScope.sum_estimate) - parseFloat(sum_oldwork) + parseFloat(sum_newwork);
+            $rootScope.sum_estimate = $rootScope.sum_estimate.toFixed(3);
 
             //save work and check log in
             //UpdateWorktoDatabase($rootScope.works[id_work]);
@@ -660,18 +679,28 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
             }
 
             if (id_meanwork != -1) {
-                var sum = 0;
+                var sum_area = 0;
                 var index_while = id_meanwork + 1;
                 while (substring_array($rootScope.works[index_while].ID, 0, d) == temp && $rootScope.works[index_while].ID != "") {
 
-                    sum = parseFloat(sum) + parseFloat($rootScope.works[index_while].Area);
+                    sum_area = parseFloat(sum_area) + parseFloat($rootScope.works[index_while].Area);
                     index_while = parseInt(index_while) + 1;
                 }
 
-                $rootScope.works[id_meanwork].Area = sum.toFixed(3);
+                //sum price old work
+                var sum_oldwork = parseFloat($rootScope.works[id_meanwork].SumMaterial) + parseFloat($rootScope.works[id_meanwork].SumLabor) + parseFloat($rootScope.works[id_meanwork].SumMachine);
+
+                $rootScope.works[id_meanwork].Area = sum_area.toFixed(3);
                 $rootScope.works[id_meanwork].SumMaterial = (parseFloat($rootScope.works[id_meanwork].PriceMaterial) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
                 $rootScope.works[id_meanwork].SumLabor = (parseFloat($rootScope.works[id_meanwork].PriceLabor) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
                 $rootScope.works[id_meanwork].SumMachine = (parseFloat($rootScope.works[id_meanwork].PriceMachine) * parseFloat($rootScope.works[id_meanwork].Area)).toFixed(3);
+
+
+                //sum price new work
+                var sum_newwork = parseFloat($rootScope.works[id_meanwork].SumMaterial) + parseFloat($rootScope.works[id_meanwork].SumLabor) + parseFloat($rootScope.works[id_meanwork].SumMachine);
+                $rootScope.sum_estimate = parseFloat($rootScope.sum_estimate) - parseFloat(sum_oldwork) + parseFloat(sum_newwork);
+                $rootScope.sum_estimate = $rootScope.sum_estimate.toFixed(3);
+
 
                 //save work and check log in
                 //UpdateWorktoDatabase($rootScope.works[id_meanwork]);
@@ -682,6 +711,32 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
 
     };
 
+    $scope.btn_saveSumAllWork = function () {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                price: $rootScope.sum_estimate
+            }
+
+            $http({
+                method: "post",
+                url: "/HangMuc/Save_SumAllWork",
+                params: obj,
+                dataType: "json",
+            })
+                .then(function (result) {
+                    alert("Thanh cong");
+                });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    }
+
     $scope.pickingrow = function ($event) {
 
         $event.stopPropagation();
@@ -691,94 +746,30 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         //removing row was picked by user
         if ($scope.rowpicked != null) {
 
-            if ($event.shiftKey) {
+            var ta = $scope.rowpicked.find("textarea");
+            var is = $scope.rowpicked.find("input");
+            ta.css({ "background-color": "" });
+            is.css({ "background-color": "" });
+            $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+            $scope.rowpicked.find(".border-line").css({ "background-color": "" });
+            $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
+            $scope.rowpicked.removeClass("picked");
 
-                var id_start = $scope.rowpicked.find("input").eq(0).val();
-                var id_end = div_rowsheet.find("input").eq(0).val();
+            //remove $scope.rowpicked
+            $scope.rowpicked = null;
 
-                if (id_start < id_end) {
-                    var i;
-                    var temp = $scope.rowpicked;
-                    for (i = id_start; i <= id_end; i++) {
-                        var ta = temp.find("textarea");
-                        var is = temp.find("input");
-                        ta.css({ "background-color": "#E2E8FA" });
-                        is.css({ "background-color": "#E2E8FA" });
-                        temp.find("input").eq(0).css({ "background-color": "#8eb0e7" });
-                        temp.find(".border-line").css({ "background-color": "blue" });
-                        temp.next().find(".border-line").css({ "background-color": "blue" });
-                        temp.addClass("picked");
-                        $scope.rowspicked.push(temp);
-                        temp = temp.next();
-                    }
-                    $scope.rowspicked.push(temp);
-                }
-                if (id_start > id_end) {
-                    var i;
-                    var temp = div_rowsheet;
-                    for (i = id_end; i <= id_start; i++) {
-                        var ta = temp.find("textarea");
-                        var is = temp.find("input");
-                        ta.css({ "background-color": "#E2E8FA" });
-                        is.css({ "background-color": "#E2E8FA" });
-                        temp.find("input").eq(0).css({ "background-color": "#8eb0e7" });
-                        temp.find(".border-line").css({ "background-color": "blue" });
-                        temp.next().find(".border-line").css({ "background-color": "blue" });
-                        temp.addClass("picked");
-                        $scope.rowspicked.push(temp);
-                        temp = temp.next();
-                    }
-                    $scope.rowspicked.push(temp);
-                }
+            //saving anything row user choose
+            $scope.rowpicked = div_rowsheet;
 
-
-            }
-            else {
-                var ul = angular.element("#dropdowncontext");
-                ul.css({
-                    'display': 'none'
-                });
-
-                if ($scope.rowspicked.length != 0) {
-                    angular.forEach($scope.rowspicked, function (value, key) {
-                        var ta = value.find("textarea");
-                        var is = value.find("input");
-                        ta.css({ "background-color": "" });
-                        is.css({ "background-color": "" });
-                        value.find("input").eq(0).css({ "background-color": "" });
-                        value.find(".border-line").css({ "background-color": "" });
-                        value.next().find(".border-line").css({ "background-color": "" });
-                        value.removeClass("picked");
-                    });
-
-                    $scope.rowspicked = [];
-                }
-                else {
-                    var ta = $scope.rowpicked.find("textarea");
-                    var is = $scope.rowpicked.find("input");
-                    ta.css({ "background-color": "" });
-                    is.css({ "background-color": "" });
-                    $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
-                    $scope.rowpicked.find(".border-line").css({ "background-color": "" });
-                    $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
-                    $scope.rowpicked.removeClass("picked");
-
-                    //remove $scope.rowpicked
-                    $scope.rowpicked = null;
-                }
-                //saving anything row user choose
-                $scope.rowpicked = div_rowsheet;
-
-                //set css
-                var textarea = div_rowsheet.find("textarea");
-                var input_sheet = div_rowsheet.find("input");
-                textarea.css({ "background-color": "#E2E8FA" });
-                input_sheet.css({ "background-color": "#E2E8FA" });
-                div_rowsheet.find("input").eq(0).css({ "background-color": "#8eb0e7" });
-                div_rowsheet.find(".border-line").css({ "background-color": "blue" });
-                div_rowsheet.next().find(".border-line").css({ "background-color": "blue" });
-                div_rowsheet.addClass("picked");
-            }
+            //set css
+            var textarea = div_rowsheet.find("textarea");
+            var input_sheet = div_rowsheet.find("input");
+            textarea.css({ "background-color": "#E2E8FA" });
+            input_sheet.css({ "background-color": "#E2E8FA" });
+            div_rowsheet.find("input").eq(0).css({ "background-color": "#8eb0e7" });
+            div_rowsheet.find(".border-line").css({ "background-color": "blue" });
+            div_rowsheet.next().find(".border-line").css({ "background-color": "blue" });
+            div_rowsheet.addClass("picked");
         }
         else {
             //saving anything row user choose
@@ -829,26 +820,656 @@ angular.module('app_work').controller('EstimateCtrl', ['$scope', '$http', '$root
         }
         if ($scope.rowpicked != null) {
 
-            var id = $scope.divfocus.find("input").eq(0).val();
-            var i = $scope.rowpicked.find("input").eq(0).val();
-            var ta = $scope.rowpicked.find("textarea");
-            var is = $scope.rowpicked.find("input");
-            ta.css({ "background-color": "" });
-            is.css({ "background-color": "" });
-            $scope.rowpicked.find(".border-line").css({ "background-color": "" });
-            $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
-            $scope.rowpicked.removeClass("picked");
+            if ($scope.divfocus != null) {
+                var id = $scope.divfocus.find("input").eq(0).val();
+                var i = $scope.rowpicked.find("input").eq(0).val();
+                var ta = $scope.rowpicked.find("textarea");
+                var is = $scope.rowpicked.find("input");
+                ta.css({ "background-color": "" });
+                is.css({ "background-color": "" });
+                $scope.rowpicked.find(".border-line").css({ "background-color": "" });
+                $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
+                $scope.rowpicked.removeClass("picked");
 
-            if (id === i) {
-                $scope.rowpicked.find("input").eq(0).css({ "background-color": "#D4D4D4" });
+                if (id === i) {
+                    $scope.rowpicked.find("input").eq(0).css({ "background-color": "#D4D4D4" });
+
+                }
+                else {
+                    $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+                }
+
+                //remove $scope.rowpicked
+                $scope.rowpicked = null;
+            }
+        }
+
+    }
+
+    $scope.insertabove = function () {
+
+        var d = 0;
+
+        //console.log($scope.rowspicked);
+        var row = $scope.rowpicked;
+        var id = row.find(".column_header").find("input").val();
+
+        var regular_expression1 = /^\d+$/;
+        if (regular_expression1.test(id)) {
+
+            insert_row(id, d);
+
+            //console.log($rootScope.works);
+
+            var item = {
+                IndexSheet: id,
+                ID: "",
+                NormWork_ID: "",
+                Name: "",
+                Unit: "",
+                Number: "",
+                Horizontal: "",
+                Vertical: "",
+                Height: "",
+                Area: "",
+                PriceMaterial: "",
+                PriceLabor: "",
+                PriceMachine: "",
+                SumMaterial: "",
+                SumLabor: "",
+                SumMachine: "",
+                BuildingItem_ID: buildingItem_id,
+                Sub_BuildingItem_ID: ""
+            };
+
+            var n = parseInt($rootScope.works.length) + 1;
+            $rootScope.works.splice(id, 0, item);
+
+            for (var i = parseInt(id) + 1; i < n; i++) {
+                $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) + 1;
+            }
+
+
+        }
+
+    };
+
+    $scope.insertbelow = function () {
+
+        var d = 1;
+
+        //console.log($scope.rowspicked);
+        var row = $scope.rowpicked;
+        var id = row.find(".column_header").find("input").val();
+
+        var regular_expression1 = /^\d+$/;
+        if (regular_expression1.test(id)) {
+
+            insert_row(id, d);
+
+            //console.log($rootScope.works);
+
+            var item = {
+                IndexSheet: parseInt(id) + 1,
+                ID: "",
+                NormWork_ID: "",
+                Name: "",
+                Unit: "",
+                Number: "",
+                Horizontal: "",
+                Vertical: "",
+                Height: "",
+                Area: "",
+                PriceMaterial: "",
+                PriceLabor: "",
+                PriceMachine: "",
+                SumMaterial: "",
+                SumLabor: "",
+                SumMachine: "",
+                BuildingItem_ID: buildingItem_id,
+                Sub_BuildingItem_ID: ""
+            };
+
+            var n = parseInt($rootScope.works.length) + 1;
+
+            $rootScope.works.splice(parseInt(id) + 1, 0, item);
+
+            for (var i = parseInt(id) + 2; i < n; i++) {
+                $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) + 1;
+            }
+
+            row.next().find(".border-line").css({ "background-color": "" });
+        }
+
+    };
+
+    $scope.deletecontent = function () {
+
+        var d = 0;
+        var flag = "content";
+
+        //console.log($scope.rowspicked);
+        var row = $scope.rowpicked;
+        var id = row.find(".column_header").find("input").val();
+
+        var regular_expression1 = /^\d+$/;
+        var regular_expression2 = /^\d+\.\d+$/;
+        if (regular_expression1.test(id)) {
+
+            var temp = $rootScope.works[id].ID;
+
+            if (regular_expression1.test(temp)) {
+
+                var conf = confirm("Bạn có thực sự muốn xóa công việc này...?");
+                if (conf == true) {
+                    delete_work(id, temp, flag);
+                }
+
+            }
+            else if (regular_expression2.test(temp)) {
+                delete_description(id, flag);
+            }
+            else {
+                delete_contentnull(id);
+            }
+        }
+
+    };
+
+    $scope.deleterow = function () {
+
+        var d = 0;
+        var flag = "row";
+
+        var row = $scope.rowpicked;
+        var id = row.find(".column_header").find("input").val();
+
+        var regular_expression1 = /^\d+$/;
+        var regular_expression2 = /^\d+\.\d+$/;
+        if (regular_expression1.test(id)) {
+
+            var temp = $rootScope.works[id].ID;
+
+            if (regular_expression1.test(temp)) {
+
+                var conf = confirm("Bạn có thực sự muốn xóa công việc này...?");
+                if (conf == true) {
+
+                    //update db first
+                    delete_work(id, temp, flag);
+                }
+
+            }
+            else if (regular_expression2.test(temp)) {
+
+                //update db first
+                delete_description(id);
+
+                
 
             }
             else {
-                $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+
+                //update db first
+                delete_row(id);
+
+                
+
             }
 
-            //remove $scope.rowpicked
-            $scope.rowpicked = null;
+            
+
         }
+
+    };
+
+    function insert_row(id, flag) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+                flag: flag
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_addrow");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    };
+
+    //deleting cong viec
+    function delete_work(id, userwork_id, flag) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+                userwork_id: userwork_id
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_work");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+
+                    if (flag == "content") {
+                        $rootScope.works[id].ID = "";
+                        $rootScope.works[id].NormWork_ID = "";
+                        $rootScope.works[id].Name = "";
+                        $rootScope.works[id].Unit = "";
+                        $rootScope.works[id].Number = "";
+                        $rootScope.works[id].Horizontal = "";
+                        $rootScope.works[id].Vertical = "";
+                        $rootScope.works[id].Height = "";
+                        $rootScope.works[id].Area = "";
+                        $rootScope.works[id].PriceMaterial = "";
+                        $rootScope.works[id].PriceLabor = "";
+                        $rootScope.works[id].PriceMachine = "";
+                        $rootScope.works[id].SumMaterial = "";
+                        $rootScope.works[id].SumLabor = "";
+                        $rootScope.works[id].SumMachine = "";
+                        $rootScope.works[id].BuildingItem_ID = buildingItem_id;
+                        $rootScope.works[id].Sub_BuildingItem_ID = "";
+                    }
+                    if (flag == "row") {
+
+                        $rootScope.works.splice(id, 1);
+
+                        var n = $rootScope.works.length;
+
+                        for (var i = id; i < n; i++) {
+                            $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) - 1;
+                        }
+
+                        var item = {
+                            IndexSheet: n,
+                            ID: "",
+                            NormWork_ID: "",
+                            Name: "",
+                            Unit: "",
+                            Number: "",
+                            Horizontal: "",
+                            Vertical: "",
+                            Height: "",
+                            Area: "",
+                            PriceMaterial: "",
+                            PriceLabor: "",
+                            PriceMachine: "",
+                            SumMaterial: "",
+                            SumLabor: "",
+                            SumMachine: "",
+                            BuildingItem_ID: buildingItem_id,
+                            Sub_BuildingItem_ID: ""
+                        };
+
+                        $rootScope.works.splice(n, 0, item);
+
+                        remove_css_deleting();
+                    }
+
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    };
+
+    //deleting description
+    function delete_description(id, flag) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_description");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+
+                    if (flag == "content") {
+                        $rootScope.works[id].ID = "";
+                        $rootScope.works[id].NormWork_ID = "";
+                        $rootScope.works[id].Name = "";
+                        $rootScope.works[id].Unit = "";
+                        $rootScope.works[id].Number = "";
+                        $rootScope.works[id].Horizontal = "";
+                        $rootScope.works[id].Vertical = "";
+                        $rootScope.works[id].Height = "";
+                        $rootScope.works[id].Area = "";
+                        $rootScope.works[id].PriceMaterial = "";
+                        $rootScope.works[id].PriceLabor = "";
+                        $rootScope.works[id].PriceMachine = "";
+                        $rootScope.works[id].SumMaterial = "";
+                        $rootScope.works[id].SumLabor = "";
+                        $rootScope.works[id].SumMachine = "";
+                        $rootScope.works[id].BuildingItem_ID = buildingItem_id;
+                        $rootScope.works[id].Sub_BuildingItem_ID = "";
+                    }
+
+                    if (flag == "row") {
+
+                        $rootScope.works.splice(id, 1);
+
+                        var n = $rootScope.works.length;
+
+                        for (var i = id; i < n; i++) {
+                            $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) - 1;
+                        }
+
+                        var item = {
+                            IndexSheet: n,
+                            ID: "",
+                            NormWork_ID: "",
+                            Name: "",
+                            Unit: "",
+                            Number: "",
+                            Horizontal: "",
+                            Vertical: "",
+                            Height: "",
+                            Area: "",
+                            PriceMaterial: "",
+                            PriceLabor: "",
+                            PriceMachine: "",
+                            SumMaterial: "",
+                            SumLabor: "",
+                            SumMachine: "",
+                            BuildingItem_ID: buildingItem_id,
+                            Sub_BuildingItem_ID: ""
+                        };
+
+                        $rootScope.works.splice(n, 0, item);
+                        remove_css_deleting();
+                    }
+
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    };
+
+    //deteling row isn't cong viec or description
+    function delete_row(id) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_row");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+
+                    //done splicing
+                    $rootScope.works.splice(id, 1);
+
+                    //elements in array changed
+                    var n = $rootScope.works.length;
+
+                    for (var i = id; i < n; i++) {
+                        $rootScope.works[i].IndexSheet = parseInt($rootScope.works[i].IndexSheet) - 1;
+                    }
+
+                    var item = {
+                        IndexSheet: n,
+                        ID: "",
+                        NormWork_ID: "",
+                        Name: "",
+                        Unit: "",
+                        Number: "",
+                        Horizontal: "",
+                        Vertical: "",
+                        Height: "",
+                        Area: "",
+                        PriceMaterial: "",
+                        PriceLabor: "",
+                        PriceMachine: "",
+                        SumMaterial: "",
+                        SumLabor: "",
+                        SumMachine: "",
+                        BuildingItem_ID: buildingItem_id,
+                        Sub_BuildingItem_ID: ""
+                    };
+
+                    $rootScope.works.splice(n, 0, item);
+                    remove_css_deleting();
+                }
+            });
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
     }
+
+    //deleting content isn't cong viec or description
+    function delete_contentnull(id) {
+
+        if (typeof (buildingItem_id) != "undefined" && typeof (session_user) != "undefined") {
+
+            var obj = {
+                buildingitem_id: buildingItem_id,
+                id_work: id,
+            };
+
+            $scope.message_save = true;
+
+            function asyncGetResponse(url) {
+
+                var deferred = $q.defer();
+
+                $http({
+                    method: "POST",
+                    url: url,
+                    params: obj
+                })
+                      .then(function (response) {
+
+                          deferred.resolve(response.data);
+
+                      }, function (response) {
+                          //showing errors
+                          deferred.reject({ message: "Really bad" });
+                      });
+
+
+                return deferred.promise;
+            }
+
+            var promise = asyncGetResponse("/HangMuc/post_delete_contentnull");
+
+            promise.then(function (greeting) {
+
+                //async, code at here
+                if (greeting == "ok") {
+
+                    $rootScope.works[id].NormWork_ID = "";
+                    $rootScope.works[id].Name = "";
+                    $rootScope.works[id].Unit = "";
+                    $rootScope.works[id].Number = "";
+                    $rootScope.works[id].Horizontal = "";
+                    $rootScope.works[id].Vertical = "";
+                    $rootScope.works[id].Height = "";
+                    $rootScope.works[id].Area = "";
+                    $rootScope.works[id].PriceMaterial = "";
+                    $rootScope.works[id].PriceLabor = "";
+                    $rootScope.works[id].PriceMachine = "";
+                    $rootScope.works[id].SumMaterial = "";
+                    $rootScope.works[id].SumLabor = "";
+                    $rootScope.works[id].SumMachine = "";
+                    $rootScope.works[id].BuildingItem_ID = buildingItem_id;
+                    $rootScope.works[id].Sub_BuildingItem_ID = "";
+
+                    window.setTimeout(function () { $scope.message_save = false; }, 50);
+                }
+            });
+
+        }
+        else {
+            $scope.message_save = true;
+            angular.element("#Message_saved").text("Bạn chưa đăng nhập...!!!");
+        }
+
+    }
+
+    function remove_css_deleting() {
+
+        var ta = $scope.rowpicked.find("textarea");
+        var is = $scope.rowpicked.find("input");
+        ta.css({ "background-color": "" });
+        is.css({ "background-color": "" });
+        $scope.rowpicked.find("input").eq(0).css({ "background-color": "" });
+        $scope.rowpicked.find(".border-line").css({ "background-color": "" });
+        $scope.rowpicked.next().find(".border-line").css({ "background-color": "" });
+        $scope.rowpicked.removeClass("picked");
+
+        //remove $scope.rowpicked
+        $scope.rowpicked = null;
+
+    }
+
+    if ($rootScope.loading == false) {
+        var div_loading = document.getElementById("loader");
+        div_loading.style.display = "none";
+
+        var div_wrap = document.getElementById("wrapper");
+        div_wrap.style.opacity = "";
+        div_wrap.style.pointerEvents = "";
+
+        var body = document.getElementById("body");
+        body.style.background = "";
+    }
+
 }])

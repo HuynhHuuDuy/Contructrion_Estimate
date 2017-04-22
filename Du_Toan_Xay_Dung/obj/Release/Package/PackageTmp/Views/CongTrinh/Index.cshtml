@@ -1,234 +1,13 @@
-﻿@using Du_Toan_Xay_Dung.Handlers
-@using Du_Toan_Xay_Dung.Models
-@model PagedList.IPagedList<Du_Toan_Xay_Dung.Models.Building>
-@using PagedList.Mvc
-@{
+﻿@{
     ViewBag.Title = "Danh Sách Công Trình";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    // var list_congtrinh = ViewData["List_CongTrinh"] as List<BuildingViewModel>;
 }
-<style>
-    .custom-file-upload {
-        border: 1px solid #ccc;
-        display: inline-block;
-        padding: 6px 12px;
-        cursor: pointer;
-    }
 
-    .img_box {
-        list-style: none;
-        position: relative;
-        display: table;
-        margin: 8px;
-        height: 160px;
-        border: 1px solid #ddd;
-        box-shadow: 1px 1px 5px 0 #a2958a;
-        padding: 6px;
-        float: left;
-    }
+<link href="~/Content/dutoan/BuildingItem.css" rel="stylesheet" />
 
-    .icon-delete {
-        display: inherit;
-        margin: 20px 0px 0px 0px;
-    }
+<script src="~/Scripts/DuToan/Building/script_angular_index.js"></script>
+<script src="~/Scripts/DuToan/Building/script_jquery_index.js"></script>
 
-    .glyphicon {
-        position: relative;
-        top: 1px;
-        display: inline-block;
-        font-family: 'Glyphicons Halflings';
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    .description_project {
-        height: 51px;
-        text-align: left;
-    }
-</style>
-<script>
-
-    $(document).ready(function () {
-        $('#container ').on('click', '.btn_getdata', function () {
-            var _txtID = $(this).attr("data-dropboxmact");
-            $("#btn_uploadimages").attr("data-mactupload", _txtID);
-            $("#btn_uploadfileexcel").attr("data-mactupload", _txtID);
-        });
-
-        $("#container").on('mouseover', '.each_project', function () {
-            var des = $(this).find(".description_project");
-            des.css("margin-top", "");
-            var but = $(this).find(".button-project");
-            but.css("display", "");
-        });
-        $("#container").on('mouseout', '.each_project', function () {
-            var des = $(this).find(".description_project");
-            des.css("margin-top", "25px");
-            var but = $(this).find(".button-project");
-            but.css("display", "none");
-        });
-
-    });
-</script>
-<script>
-    angular.module('postApp', [])
-   .controller('postController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
-
-
-       //load list  chi tiết công trình
-       $scope.list_buildings = [];
-       $http.get('/CongTrinh/Get_Allinf').then(function (response) {
-           $scope.list_buildings = response.data;
-       }, function (response) {
-           //Showing errors
-       });
-
-       // upload hình ảnh
-       $scope.stepsModel = [];
-       $scope.listdropbox = [];
-       $scope.listfile = [];//list file
-       var fd = new FormData();
-
-       $scope.uploadedFile = function (event) {
-           $scope.listfile = [];
-           $scope.$apply(function ($scope) {
-               $scope.files = event.files;
-           });
-           $scope.stepsModel = [];
-           var files = event.target.files; //FileList object
-           for (var i = 0; i < files.length; i++) {
-               var file = files[i];
-               var reader = new FileReader();
-               reader.onload = $scope.imageIsLoaded;
-               reader.readAsDataURL(file);
-               $scope.listfile.push(file);
-           }
-       }
-
-       $scope.imageIsLoaded = function (e) {
-           $scope.$apply(function () {
-               var image = {};
-               image.Name = e.target.fileName;
-               image.Size = (e.total / 1024).toFixed(2);
-               image.Src = e.target.result;
-               $scope.stepsModel.push(image);
-               var specify_image = {
-                   url: image.Src,
-                   filename: image.Name
-               };
-               $scope.listdropbox.push(specify_image);
-           });
-       }
-
-       // thêm công trình
-       $scope.submit = function () {
-           if ($scope.add.$valid) {
-               var tenct = document.getElementById("TenCT").value;
-               var mota = document.getElementById("MoTa").value;
-               var diachi = document.getElementById("DiaChi").value;
-               fd.append("Name", tenct);
-               fd.append("Description", mota);
-               fd.append("Address", diachi);
-               if ($scope.listfile) {
-                   for (var i = 0; i < $scope.listfile.length; i++) {
-
-                       fd.append("img_congtrinh", $scope.listfile[i]);
-                   }
-               }
-               $http.post('/CongTrinh/Post_ThemCongTrinh', fd, {
-                   transformRequest: angular.identity,
-                   headers: { 'Content-Type': undefined }
-               })
-                 .then(function (result) {
-                     if (result.data == "ok") {
-                         open_alert("success");
-                         location.reload();
-                     } else {
-                         open_alert("fail");
-                     }
-                 });
-           }
-       };
-       // save dropbox
-       $scope.savetodropbox = function () {
-           var options = {
-               files: $scope.listdropbox,
-
-               // Success is called once all files have been successfully added to the user's
-               // Dropbox, although they may not have synced to the user's devices yet.
-               success: function () {
-                   // Indicate to the user that the files have been saved.
-                   alert("Success! Files saved to your Dropbox.");
-               },
-
-               // Progress is called periodically to update the application on the progress
-               // of the user's downloads. The value passed to this callback is a float
-               // between 0 and 1. The progress callback is guaranteed to be called at least
-               // once with the value 1.
-               progress: function (progress) { },
-
-               // Cancel is called if the user presses the Cancel button or closes the Saver.
-               cancel: function () { },
-
-               // Error is called in the event of an unexpected response from the server
-               // hosting the files, such as not being able to find a file. This callback is
-               // also called if there is an error on Dropbox or if the user is over quota.
-               error: function (errorMessage) {
-               }
-           };
-           Dropbox.save(options);
-       };
-
-       // xóa hình đã thêm
-       $scope.deleteTempImage = function (idx, x) {
-           debugger;
-           var myEl = angular.element(document.querySelector('#img_box'));
-           myEl.remove();
-           $scope.listfile.splice(idx, 1);
-           fd.delete(idx, x);
-       }
-
-       //array did filter
-       $scope.building_detail = [];
-       $scope.btn_detail_building = function (id) {
-           angular.forEach($scope.list_buildings, function (value, key) {
-               if (value.ID == id) {
-                   $scope.building_detail = value;
-                   return;
-               }
-           });
-       };
-
-
-       $scope.delete = function (id) {
-           $scope.building_id = id;
-       }
-       // xóa công trình
-       $scope.submit_deletebuilding = function () {
-           var id = $scope.building_id
-           $http({
-               method: 'POST',
-               url: '/CongTrinh/Delete_CongTrinh',
-               params: { building_id: id },
-               headers: { 'Content-Type': 'application/json' }
-           })
-               .then(function (result) {
-                   if (result.data == "ok") {
-                       open_alert("success");
-                       location.reload();
-
-                   }
-                   else {
-                       open_alert("fail");
-                   }
-               });
-       }
-
-   }]);
-</script>
 <section class="content-header">
     <h3>Công trình <small class="label label-info">Danh sách</small></h3>
     <ol class="breadcrumb">
@@ -241,78 +20,57 @@
     <!--list cong trinh, copy ra 1 file rieng de de~
         phan biet voi cai file chung, copy het quang vo-->
     <div class="row">
-        <div class="col-xs-12">
-            <ul class="list-unstyled">
+        <div class="col-md-12">
+            <ul class="list-unstyled col-sm-12">
                 <!--for each in here-->
-                @if (Model != null)
-                {
-
-                    for (int i = 0; i < Model.Count; i++)
-                    {
-                        var d = 0;
-                        var description = "";
-                        if (Convert.ToString(@Model[i].Description).Length > 60)
-                        {
-                            description = Convert.ToString(@Model[i].Description).Substring(0, 60);
-                        }
-                        else
-                        {
-                            description = @Model[i].Description;
-                        }
-                        <li class="col-sm-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                        <a class="green-light">@Model[i].Name</a>
-                                        <p class="text-danger">Giá tiền: <small class="badge font-orbitron">@Model[i].Sum</small></p>
-                                    </h3>
-                                    <button class="btn btn-primary btn-xs" ng-click="btn_detail_building(@Model[i].ID)" data-toggle="modal" data-target="#modal_info_building">
-                                        Chi tiết
-                                    </button>
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal_delete_building" ng-click="delete(@Model[i].ID)">
-                                        Xóa
-                                    </button>
-                                    <input type="hidden" ng-model="building_id" />
+                <li class="col-md-4" style="margin: 20px 0" ng-repeat="x in filteredTodos">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a class="green-light">{{x.Name}}</a>
+                                <p class="text-danger green-light">Giá tiền: <small class="badge font-orbitron">{{x.Sum}}</small></p>
+                            </h3>
+                            <button class="btn btn-primary btn-xs" ng-click="btn_detail_building(x.ID)" data-toggle="modal" data-target="#modal_info_building">
+                                Chi tiết
+                            </button>
+                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal_delete_building" ng-click="delete(x.ID)">
+                                Xóa
+                            </button>
+                            <input type="hidden" ng-model="building_id" />
+                        </div>
+                        <div class="panel-body">
+                            <div class="info-project">
+                                <div class="col-md-12">
+                                    <img src="~/Images/Awicons-Vista-Artistic-Office-building.ico" class="img-responsive" style="width:90%; height:90%" />
                                 </div>
-                                <div class="panel-body">
-                                    <div class="info-project">
-                                        <div class="col-sm-12">
-                                            <img src="~/Images/Awicons-Vista-Artistic-Office-building.ico" class="img-responsive" style="width:90%; height:90%" />
-                                        </div>
-                                        <p>@description...</p>
-                                    </div>
-                                </div>
+                                <p class="description_building col-md-12" style="height:50px">{{x.Description}}...</p>
                             </div>
-                        </li>
-                    }
-                }
-
+                            <div>
+                                <span class="btn btn-block btn-social btn-dropbox" id="btn_savetoDropbox" ng-click="savetodropbox(x.ID)">
+                                    <i class="fa fa-dropbox"></i> Save data to Dropbox
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
                 <!--// ket thuc vong lap ở đây-->
 
-                <li class="col-sm-4">
-                    <div class="panel panel-default" style=" margin: 50px 190px 50px 0px;">
-                        <a class="btn btn-app" style="margin:30px" data-toggle="modal" data-target="#modal_add_building">
-                            <i style="font-size: -webkit-xxx-large;" class="fa fa-fw fa-plus"></i>
-                        </a>
+                <li class="col-md-4" style="margin: 20px 0">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="btn btn-block" data-toggle="modal" data-target="#modal_add_building">
+                                <h3 style="color: darkblue; font-weight: bold;">Tạo mới</h3>
+                            </a>
+                        </div>
                     </div>
                 </li>
             </ul>
         </div>
 
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <div class="text-center">
-                    <ul class="pagination">
-                        <li class="disabled"><a href="#"><small>«</small> First</a></li>
-                        <li class="disabled"><a href="#"><small>«</small> Previous</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">Next <small>»</small></a></li>
-                        <li><a href="#">Last <small>»</small></a></li>
-                    </ul>
+                    <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
                 </div>
             </div>
         </div>
@@ -331,9 +89,9 @@
                 <div class="modal-body">
                     <br />
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-6" style="text-align:center">
+                        <div class="col-md-12">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6" style="text-align:center">
                                 <a href="/CongTrinh/BuildingItem/{{building_detail.ID}}">
                                     <span style="font-size: x-large; font-weight: bolder;">
                                         Xem hạng mục
@@ -341,12 +99,12 @@
                                     </span>
                                 </a>
                             </div>
-                            <div class="col-sm-3"></div>
+                            <div class="col-md-3"></div>
                         </div>
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-md-offset-1 col-md-11">
                             <p><strong>Tên công trình :</strong> {{building_detail.Name}}</p>
                             <p><strong>Địa chỉ :</strong> {{building_detail.Address}}</p>
                             <p><strong>Mô tả :</strong> {{building_detail.Description}}</p>
@@ -355,14 +113,14 @@
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-md-12">
                             <center>
                                 <a class="btn btn-default btn-lg" href="/CongTrinh/UpdateCongTrinh/{{building_detail.ID}}">
                                     Sửa thông tin
                                 </a>
-                                <a class="btn btn-default btn-lg" href="/CongTrinh/ExportToExcel/{{building_detail.ID}}">
+                                @*<a class="btn btn-default btn-lg" href="/CongTrinh/ExportToExcel/{{building_detail.ID}}">
                                     Export Excel
-                                </a>
+                                </a>*@
                             </center>
                         </div>
                     </div>
@@ -376,7 +134,7 @@
         </div>
     </div>
     <div class="modal fade" id="modal_add_building" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -385,63 +143,57 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <form id="add" name="add" class="form-horizontal" role="form" method="post">
-                            <div class="form-group" style="margin-right:20px">
-                                <label class="control-label col-sm-2" for="">Tên công trình:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" ng-model="congtrinh.TenCT" class="form-control" id="TenCT" name="TenCT" placeholder="Tên công trình">
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-right:20px">
-                                <label class="control-label col-sm-2" for="">Mô tả:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" ng-model="congtrinh.MoTa" id="MoTa" name="MoTa" placeholder="Mô tả">
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-right:20px">
-                                <label class="control-label col-sm-2" for="">Địa chỉ:</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" ng-model="congtrinh.DiaChi" id="DiaChi" name="DiaChi" placeholder="Địa chỉ">
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-right:20px">
-                                <label class="control-label col-sm-2" style="margin-left:20px" for="Url_HinhAnh">Hình ảnh:</label>
-                                <div id="listImage" class="listImage_old col-sm-12" style="padding-left:80px">
-                                    <div id="Images_new" class="col-sm-11">
-                                        <!--<span class="closeall_images" id="closeall_images" style="padding-left:900px"><i class="fa fa-fw fa-remove"></i></span>-->
-                                        <div id="img_box" class="img_box" ng-repeat="x in stepsModel track by $index">
-                                            <div style="display:none">{{x.Name}}</div>
-                                            <div style="display:none">{{x.Size}}</div>
-                                            <img ng-src="{{x.Src}}" style="width:150px;height:150px">
-                                            <span class="image_name"></span>
-                                            <span class="icon-delete kv-file-zoom btn btn-xs btn-default" ng-click="deleteTempImage($index,x)">
-                                                <i class="fa fa-fw fa-trash-o" aria-hidden="true">
-                                                </i>
-                                            </span>
-                                        </div>
+                        <div class="col-sm-12">
+                            <form id="add" name="add" class="form-horizontal" role="form" method="post">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="">Tên công trình:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" ng-model="congtrinh.TenCT" class="form-control" id="TenCT" name="TenCT" placeholder="Tên công trình">
                                     </div>
                                 </div>
-                                <label style="margin-left:120px" for="gallery_upload" class="custom-file-upload" id="gallery_upload_choose">
-                                    <i class="fa fa-cloud-upload"></i> Chọn ảnh
-                                </label>
-                                <input id="gallery_upload" type="file" name="file" onchange="angular.element(this).scope().uploadedFile(event)" multiple accept="image/*" style="display:none" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="">Dropbox:</label>
-                                <div class="col-sm-10">
-                                    <span class="btn btn-default dropbox-saver" id="btn_savetoDropbox" ng-click="savetodropbox()">
-                                        <img style="width:25px;height:25px" src="~/Images/Bokehlicia-Alike-Dropbox.ico" />
-                                        Save Images to Dropbox
-                                    </span>
-                                    <!--<a href="https://cf.dropboxstatic.com/static/images/developers/dropblox.png" id="btn_savetoDropbox" class="dropbox-saver dropbox-dropin-btn dropbox-dropin-default"><span class="dropin-btn-status"></span>Save Images to Dropbox</a>-->
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="">Mô tả:</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" ng-model="congtrinh.MoTa" id="MoTa" name="MoTa" placeholder="Mô tả" rows="4" cols="100"></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-4 col-sm-4">
-                                    <button type="button" class="btn btn-block btn-primary btn-lg" id="btn_submit" ng-click="submit()" data-dismiss="modal">Lưu</button>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" for="">Địa chỉ:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" ng-model="congtrinh.DiaChi" id="DiaChi" name="DiaChi" placeholder="Địa chỉ">
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                                <div class="form-group">
+                                    <div id="listImage" class="listImage_old col-sm-12" style="margin-bottom:40px">
+                                        <div id="Images_new" class="col-sm-10">
+                                            <div id="img_box" class="img_box" ng-repeat="x in stepsModel track by $index">
+                                                <div style="display:none">{{x.Name}}</div>
+                                                <div style="display:none">{{x.Size}}</div>
+                                                <img ng-src="{{x.Src}}" style="width:150px;height:150px">
+                                                <span class="image_name"></span>
+                                                <span class="icon-delete kv-file-zoom btn btn-xs btn-default" ng-click="deleteTempImage($index,x)">
+                                                    <i class="fa fa-fw fa-trash-o" aria-hidden="true">
+                                                    </i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <label class="control-label col-sm-3" for="Url_HinhAnh">Hình ảnh:</label>
+                                    <div class="col-sm-offset-2 col-sm-3">
+                                        <label for="gallery_upload" class="custom-file-upload form-control btn btn-default" id="gallery_upload_choose">
+                                            <i class="fa fa-cloud-upload"></i> Chọn ảnh
+                                        </label>
+                                    </div>
+                                    <input id="gallery_upload" type="file" name="file" onchange="angular.element(this).scope().uploadedFile(event)" multiple accept="image/*" style="display:none" />
+                                </div>
+                                <div class="form-group" style="margin-top:50px">
+                                    <div class="col-sm-offset-4 col-sm-4">
+                                        <button type="button" class="btn btn-block btn-primary btn-lg" id="btn_submit" ng-click="submit()" data-dismiss="modal">Lưu</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -459,18 +211,17 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                    <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
                 </div>
 
                 <div class="modal-body">
-                    <p>You are about to delete one track, this procedure is irreversible.</p>
-                    <p>Do you want to proceed?</p>
+                    <p>Bạn có chắn chắc muốn xóa</p>
                     <p class="debug-url"></p>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok" ng-click="submit_deletebuilding(building_id)">Delete</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    <a class="btn btn-danger btn-ok" ng-click="submit_deletebuilding(building_id)">Xác nhận</a>
                 </div>
             </div>
         </div>

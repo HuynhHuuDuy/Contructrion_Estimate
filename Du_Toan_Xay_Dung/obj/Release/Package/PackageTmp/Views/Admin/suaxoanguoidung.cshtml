@@ -5,8 +5,125 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 <script>
+    angular.module('postApp',[])
+     .controller('postController', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {    
+         //Create building item
+         $scope.submit = function () {
+                 var fd = new FormData();
+                 if ($scope.add.$valid) {
+                     // mact = document.getElementById("MaCT").value;
+                     //console.log(mact);
+                     var tennguoidung = document.getElementById("ten").value;
+                     console.log(tennguoidung);
+                     var matkhau = document.getElementById("matkhau").value;
+                     console.log(matkhau);
+                     var hotenlot = document.getElementById("hotenlot").value;
+                     console.log(hotenlot);
+                     var ten = document.getElementById("ten1").value;
+                     console.log(ten);
+                     var sodienthoai = document.getElementById("sdt").value;
+                     console.log(sodienthoai);
+                     var thanhpho = document.getElementById("thanhpho").value
+                     console.log(thanhpho);
 
+                     var noilamviec = document.getElementById("noilamviec").value;
+                     console.log(noilamviec);
+                     fd.append("Email", tennguoidung);
+                     fd.append("Passwork", matkhau);
+                     fd.append("Last_Name", ten);
+                     fd.append("First_Name", hotenlot);
+                     fd.append("City",thanhpho);
+                     fd.append("WorkPlace",noilamviec);
+                     fd.append("Phone",sodienthoai);
+
+                     $http.post('/Admin/Post_themnguoidung', fd, {
+                         transformRequest: angular.identity,
+                         headers: { 'Content-Type': undefined }
+                     })
+                       .success(function (result) {
+                           if (result == "ok") {
+                               alert("Thêm thành công");
+                               location.reload();
+                           } else {
+                               alert("Thêm thất bại");
+
+                           }
+                       });
+                 }
+             
+         };
+         $scope.totalItems = 0;
+
+         $scope.filteredTodos = [],
+         $scope.currentPage = 1,
+         $scope.numPerPage = 5,
+         $scope.maxSize = 1;
+
+         $scope.get_nguoidung = function () {
+             $scope.list_nguoidung = [];
+            
+             return $http({
+                 method: "GET",
+                 url: "/Admin/get_alluser",
+               
+             })
+                 .then(function (response) {
+                     $scope.list_nguoidung = response.data;
+                   
+                     $scope.totalItems = $scope.list_nguoidung.length;
+                     $scope.$watch('currentPage + numPerPage', function () {
+                         var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                         , end = begin + $scope.numPerPage;
+
+
+                         $scope.filteredTodos = $scope.list_nguoidung.slice(begin, end);
+                     });
+
+                 }, function (response) {
+                     //showing errors
+                 });
+
+
+         };
+
+         $scope.get_nguoidung();
+
+         //array did filter
+         $scope.list_temp_inf_edit = [];
+         $scope.sua = function (data) {
+
+             $scope.list_temp_inf_edit = data;
+         };
+
+
+
+         //edit user
+         $scope.capnhat = function () {
+             console.log($scope.list_temp_inf_edit);
+             $http({
+                 method: "POST",
+                 url: "/Admin/post_suanguoidung",
+                 data: JSON.stringify($scope.list_temp_inf_edit),
+                 dataType: "json",
+             })
+                .then(function (result) {
+                    if (result.data == "ok") {
+                        alert("Sửa thành công");
+                        location.reload();
+                    } else {
+                        alert("Sửa thất bại");
+
+                    }
+                });
+         }
+
+
+
+       
+
+     }]);
 </script>
+<section ng-app="postApp" ng-controller="postController">
     <div class="">
         <div class="page-title">
             <div class="title_left">
@@ -16,178 +133,21 @@
             <button style="margin-left:500px" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal_them">
                 Thêm
             </button>
-            <!-- Modal Thêm người dùng -->
-            <div class="modal fade" id="myModal_them" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Thêm người dùng</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                        Tên người dùng <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                        Mật khẩu <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Họ tên lót
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Tên <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="name" name="name" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Số điện thoại <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="phone" name="phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Nơi làm việc <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="placework" name="placework" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Thành phố <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="city" name="city" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
 
-                            </form>
-                           
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-primary">Lưu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Model sửa người dùng--> 
-            <div class="modal fade" id="myModal_sua" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Sửa người dùng</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="demo-form2" action="/Admin/Post_themnguoidung" method="post" data-parsley-validate class="form-horizontal form-label-left">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                        Tên người dùng <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
-                                        Mật khẩu <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Họ tên lót
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Tên <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="name" name="name" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Số điện thoại <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="phone" name="phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Nơi làm việc <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="placework" name="placework" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                                        Thành phố <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input id="city" name="city" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
-
-                            </form>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-primary">Lưu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!--Tìm kiếm-->
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <form action="/Admin/timkiemnguoidung" method="post">
+                    <form @*action="/Admin/timkiemnguoidung" method="post"*@>
                         <div style="width:500px" class="input-group">
-                            <input type="text" name="txttimkiem" class="form-control" placeholder="Tìm kiếm..." required>
-                            <span class="input-group-btn">
+                            <input type="text" name="txttimkiem" ng-model="data_search" class="form-control" placeholder="Tìm kiếm..." required>
+                            @*<span class="input-group-btn">
                                 <button class="btn btn-default" type="submit">Thực hiện!</button>
-                            </span>
+                            </span>*@
                         </div>
                     </form>
-                    <script>
-                         $("#input_form").kiemtra();
-                    </script>
 
                 </div>
             </div>
-            
         </div>
         <div class="clearfix"></div>
         <div class="row">
@@ -209,7 +169,7 @@
                         <p class="text-muted font-13 m-b-30">
                         </p>
                         <table id="datatable" class="table table-striped table-bordered">
-                            <thead>                     
+                            <thead>
                                 <tr>
                                     <th>Email</th>
                                     <th>Họ tên lót</th>
@@ -217,35 +177,173 @@
                                     <th>Số điện thoại</th>
                                     <th>Nơi làm việc</th>
                                     <th>Thành phố</th>
-                                    <th>Điều khiển</th>
+                                    <th>Quyền</th>
+                                    <th>#</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @for(int i=0;i<Model.Count;i++)
-                                { 
-                                <tr>
-                                    <td>@Model[i].Email</td>
-                                    <td>@Model[i].First_Name</td>
-                                    <td>@Model[i].Last_Name</td>
-                                    <td>@Model[i].Phone</td>
-                                    <td>@Model[i].Workplace</td>
-                                    <td>@Model[i].City</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal_sua">
-                                            Sửa
-                                        </button>
-                                     
-                                        <a href="/Admin/xemchitiet">Công trình</a>
-                                     </td>
-                                </tr>
-                                }
+                            <tbody>    
+                                    <tr ng-repeat="data in filteredTodos|filter: {Name:data_search} | limitTo:10 ">
+                                        <td>{{data.Email}}</td>
+                                        <td>{{data.First_Name}}</td>
+                                        <td>{{data.Last_Name}}</td>
+                                        <td>{{data.Phone}}</td>
+                                        <td>{{data.Workplace}}</td>
+                                        <td>{{data.City}}</td>
+                                        <td>{{data.Role}}</td>
+                                        <td>
+                                          <button ng-click="sua(data)" data-toggle="modal" data-target="#myModal_sua" type="button" class="btn btn-default">Sửa</button>
+                                        </td>
+                                    </tr>
                             </tbody>
                         </table>
-                        @Html.PagedListPager(Model, page => Url.Action("suaxoanguoidung", new { page }))
+                        <div class="col-sm-12">
+                            <ul uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal Thêm người dùng -->
+    <div class="modal fade" id="myModal_them" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Thêm người dùng</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="add" name="add" class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Email <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="ten" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Mật khẩu <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="password" id="matkhau" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Họ tên lót
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="hotenlot" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Tên <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="ten1" name="name" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Số điện thoại <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="sdt" name="phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Nơi làm việc <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="noilamviec" name="placework" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Thành phố <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="thanhpho" name="city" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
 
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" ng-click="submit()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Model sửa người dùng-->
+    <div class="modal fade" id="myModal_sua" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Sửa người dùng</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Tên <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="hidden" ng-model="list_temp_inf_edit.Email" />
+                                <input type="text" id="password" name="password" ng-model="list_temp_inf_edit.First_Name" required="required" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                      
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Họ tên lót
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="middle-name" ng-model="list_temp_inf_edit.Last_Name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                            </div>
+                        </div>
+                      
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Số điện thoại <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="phone" name="phone" ng-model="list_temp_inf_edit.Phone" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Nơi làm việc <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="placework" name="placework" ng-model="list_temp_inf_edit.Workplace" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Thành phố <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="city" name="city" ng-model="list_temp_inf_edit.City" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" ng-click="capnhat()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

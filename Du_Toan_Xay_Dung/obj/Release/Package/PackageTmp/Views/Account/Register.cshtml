@@ -11,19 +11,22 @@
         <div class="register-box-body">
             <form action="/Account/Post_Register" method="post" enctype="multipart/form-data">
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" placeholder="First name" name="FirstName">
+                    <input type="text" class="form-control" placeholder="Họ" name="FirstName">
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" placeholder="Last name" name="LastName">
+                    <input type="text" class="form-control" placeholder="Tên" name="LastName">
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" placeholder="Email" name="Email">
+                    <input type="email" class="form-control" placeholder="Email" name="Email">
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="Password" name="Password">
+                    <input type="password" id="matkhau" class="form-control" placeholder="Mật khẩu" name="Password">
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="Retype password" name="Re-Password">
+                    <input type="password" id="matkhau1" class="form-control" onkeyup="ValidatePass()" placeholder="Nhập lại mật khẩu" name="Re-Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <span id="verify" class="text-danger"></span>
+                    <span id="verify1" class="text-success"></span>
                 </div>
                 <div class="row">
                     <div class="col-xs-4">
@@ -34,3 +37,18 @@
         </div><!-- /.form-box -->
     </div>
 </div>
+<script>
+    function ValidatePass() {
+        var pass1 = document.getElementById("matkhau").value;
+        var pass2 = document.getElementById("matkhau1").value;
+        if (pass1 != pass2) {
+            document.getElementById("verify").innerHTML = "Không khớp mật khẩu";
+            document.getElementById("verify1").innerHTML = "";
+        }
+        else {
+            document.getElementById("verify1").innerHTML = "Mật khẩu trùng khớp";
+            document.getElementById("verify").innerHTML = "";
+        }
+    }
+
+</script>

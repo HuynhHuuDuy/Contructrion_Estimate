@@ -8,8 +8,6 @@
 @section Scripts{
 
     <!--Bootstrap angular-->
-    <script src="~/Scripts/Angular/ui-bootstrap-tpls-2.0.0.min.js"></script>
-
     <!--App script-->
     <script src="~/Scripts/DuToan/Estimate_Work/App_work.js"></script>
 
@@ -21,13 +19,12 @@
 
     <script src="~/Scripts/DuToan/Estimate_Work/Controllers/SpecificationCtrl.js"></script>
 
-    <script src="~/Scripts/DuToan/Bootstrap_UploadFile.js"></script>
+    <script src="~/Scripts/DuToan/Estimate_Work/Controllers/GeneralCtrl.js"></script>
 }
 
 @section CSS{
     <link href="~/Content/dutoan/estimate_work.css" rel="stylesheet" />
-    <link href="~/Content/dutoan/Bootstrap_UploadFile.css" rel="stylesheet" />
-    <link href="~/Content/loading.css" rel="stylesheet" />
+    <link href="~/Content/dutoan/Loader.css" rel="stylesheet" />
 }
 
 <script>
@@ -37,6 +34,7 @@
 </script>
 
 <div class="body-estimate" ng-app="app_work" ng-controller="mainController" id="body_estimate">
+
     <aside class="left_menu" id="left_menu" ng-class="{'active_leftmenu': active_leftmenu}">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar" style="height: auto;">
@@ -102,10 +100,10 @@
     <div class="content-wrapper" style="" id="content_wrapper" ng-class="{'active_contentwrapper': active_contentwrapper}">
         <!-- Content Header (Page header) -->
         <section class="content-header col-sm-12" style="margin-top:20px">
-            <div class="col-sm-4">
+            <div class="col-md-4">
                 <span class="btn btn-default" id="menu-toggle" ng-click="menu_toggle($event)">Thu / Mở rộng trang tính</span>
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8">
                 <!--title building/ building_item-->
 
                 <h4>{{infortitle.BuildingName}} / {{infortitle.BuildingItemName}}</h4>
@@ -122,10 +120,10 @@
             </div>
         </section>
         <!-- Main content -->
-        <section class="content col-sm-12" style="margin-top:15px">
+        <section class="content col-md-12" style="margin-top:15px">
             <!-- Main row -->
             <div class="row">
-                <div class="col-sm-12" style="margin-top:20px">
+                <div class="col-md-12" style="margin-top:20px">
                     <uib-tabset active="active">
                         <uib-tab index="0" heading="Dự toán" ui-sref="DuToan">
                         </uib-tab>
@@ -133,11 +131,11 @@
                         </uib-tab>
                         <uib-tab index="2" heading="Phân Tích" ui-sref="PhanTich">
                         </uib-tab>
-                        <uib-tab index="3" heading="Tổng Hợp" ui-sref="TongHop">                                
+                        <uib-tab index="3" heading="Tổng Hợp" ui-sref="TongHop">
                         </uib-tab>
                     </uib-tabset>
                 </div>
-                <div class="col-sm-12 content_page" ui-view>
+                <div class="col-md-12 content_wrap_page" ui-view id="content_wrap_page">
 
                 </div>
             </div><!-- /.row (main row) -->

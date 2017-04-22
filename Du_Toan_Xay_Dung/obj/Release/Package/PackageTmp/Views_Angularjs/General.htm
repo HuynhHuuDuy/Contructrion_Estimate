@@ -1,16 +1,86 @@
-﻿<div>
-    <table class="table table-bordered">
+﻿
+
+<div class="row" ng-controller="General_Ctrl" ng-init="start=0;end=10;">
+    <h2 style="text-align:center">BẢNG TỔNG HỢP DỰ TOÁN HẠNG MỤC</h2>
+    <h4 style="text-align:center">
+    Tên công trình:{{namecongtrinh.Name}}</h4>
+    <h4 style="text-align:center">Tên hạng mục:{{namehangmuc.Name}}</h4>
+    <table class="table table-bordered" style="width:1000px">
+
         <tr>
-            <td>STT</td>
-            <td>Nội dung chi phí</td>
-            <td>Cách tính</td>
-            <td>Giá trị</td>
-            <td>Kí hiệu</td>
+            <th>STT</th>
+            <th>Nội dung chi phí</th>
+            <th>Cách tính</th>
+            <th>Giá trị</th>
+            <th>Kí hiệu</th>
         </tr>
         <tr>
             <td>I</td>
             <td>Chi phí trực tiếp</td>
             <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Chi phí vật liệu</td>
+            <td>VLG+CLVL</td>
+            <td></td>
+            <td>VL</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Đơn giá vật liệu gốc</td>
+            <td>Theo bảng tính toán đo bóc khối lượng công trình</td>
+            <td></td>
+            <td>NCG</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Chi phí nhân công</td>
+            <td>BNC</td>
+            <td></td>
+            <td>NC</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Đơn giá nhân công gốc</td>
+            <td>Theo bảng tính toán đo bóc khối lượng công trình</td>
+            <td></td>
+            <td>NCG</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Chi phí máy thi công</td>
+            <td>BM</td>
+            <td></td>
+            <td>M</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Đơn giá mày thi công gốc</td>
+            <td>Theo bảng tính đo bóc khối lượng công trình</td>
+            <td></td>
+            <td>MG</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Chi phí trực tiếp</td>
+            <td>VL+C+M</td>
+            <td></td>
+            <td>T</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Tổng cộng</td>
+            <td>Gxd</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Làm tròn</td>
+            <td>{{namehangmuc.Sum}}</td>
             <td></td>
             <td></td>
         </tr>

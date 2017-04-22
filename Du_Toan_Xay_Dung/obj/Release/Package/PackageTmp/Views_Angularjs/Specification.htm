@@ -1,6 +1,93 @@
 ﻿
+<style>
+    .input_zoomdata {
+        margin-bottom: 5px;
+        margin-right: 17px;
+        margin-left: 0px;
+        display: table;
+    }
+
+    .cell {
+        border-right: 1px solid #c6c6c6;
+        /*border-bottom: 1px solid #c6c6c6;*/
+        outline: none;
+        position: absolute;
+        height: 50px;
+    }
+
+    .row_sheet {
+        height: 51px;
+        width: 100%;
+    }
+
+    .row_header {
+        border-right: 1px solid #c6c6c6;
+        border-top: 1px solid #c6c6c6;
+        /*border-bottom: 1px solid #c6c6c6;*/
+        background: #eaeaea;
+        color: #222;
+        text-align: center;
+        font-weight: 700;
+        padding-top: 5px;
+        outline: none;
+        position: absolute;
+        height: 50px;
+    }
+
+    .column_header {
+        border-right: 1px solid #c6c6c6;
+        /*border-bottom: 1px solid #c6c6c6;*/
+        background: #eaeaea;
+        color: #222;
+        text-align: center;
+        font-weight: 700;
+        outline: none;
+        position: absolute;
+        height: 50px;
+    }
+
+    .sheet_cellheader {
+        position: relative;
+        height: 50px;
+        max-height: inherit;
+    }
+
+    .toggle_sheet {
+    }
+
+    .input_sheet {
+        width: 100%;
+        border: 0px;
+        height: 50px;
+        padding: 5px;
+        resize: none;
+    }
+
+    .inputsheet_columnheader {
+        background: #eaeaea;
+        text-align: center;
+        font-size: smaller;
+    }
+
+    .border-line {
+        background-color: #c6c6c6;
+        height: 1px;
+        width: 100%;
+    }
+</style>
+
+<script>
+
+    $(window).resize(function () {
+        //coordinate 100%
+        var temp = $("#wrap_sheet_specification").width();
+        $("#sheet_cellheader").css("width", parseFloat(temp - 17) + "px");
+    });
+
+</script>
+
 <div class="row" ng-controller="SpecificationCtrl" ng-init="start=0;end=10;">
-    <div class="col-sm-12">
+    <div class="col-md-12">
         <h3>Hướng dẫn sử dụng</h3>
         <p>
             - Double click bất kì ô nào trong cột Tên Công Việc để search công việc.
@@ -13,96 +100,21 @@
             cho các công việc tương ứng là 1, 2,...
         </p>
     </div>
-    <style>
-        .input_zoomdata {
-            margin-bottom: 5px;
-            margin-right: 17px;
-            margin-left: 0px;
-            display: table;
-        }
+    <div class="col-md-12">
+        <div class="col-md-12" style="height:30px">
+            <div class="col-md-4">
 
-        .cell {
-            border-right: 1px solid #c6c6c6;
-            /*border-bottom: 1px solid #c6c6c6;*/
-            outline: none;
-            position: absolute;
-            height: 50px;
-        }
-
-        .row_sheet {
-            height: 51px;
-            width: 100%;
-        }
-
-        .row_header {
-            border-right: 1px solid #c6c6c6;
-            border-top: 1px solid #c6c6c6;
-            /*border-bottom: 1px solid #c6c6c6;*/
-            background: #eaeaea;
-            color: #222;
-            text-align: center;
-            font-weight: 700;
-            padding-top: 5px;
-            outline: none;
-            position: absolute;
-            height: 50px;
-        }
-
-        .column_header {
-            border-right: 1px solid #c6c6c6;
-            /*border-bottom: 1px solid #c6c6c6;*/
-            background: #eaeaea;
-            color: #222;
-            text-align: center;
-            font-weight: 700;
-            outline: none;
-            position: absolute;
-            height: 50px;
-        }
-
-        .sheet_cellheader {
-            position: relative;
-            width: 98.35%;
-            height: 50px;
-            max-height: inherit;
-        }
-
-        .toggle_sheet {
-            width: 98.66%;
-        }
-
-        .input_sheet {
-            width: 100%;
-            border: 0px;
-            height: 50px;
-            padding: 5px;
-            resize: none;
-        }
-
-        .inputsheet_columnheader {
-            background: #eaeaea;
-            text-align: center;
-            font-size: smaller;
-        }
-
-        .border-line {
-            background-color: #c6c6c6;
-            height: 1px;
-            width: 100%;
-        }
-    </style>
-    
-    <div class="col-sm-12">
-        <div class="col-sm-12">
-            <div class="col-sm-4">
             </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <span id="Message_saved"></span>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <span id="Message_saved" style="color:green" ng-show="message_save">
+                    <i class="fa fa-circle-o-notch fa-spin" style="font-size:18px"></i>
+                    Đang lưu vào hệ thống
+                </span>
             </div>
         </div>
-        <div class="col-sm-12" style="height:1000px;">
-            <div style="width:100%; height:100%">
+        <div class="col-md-12" style="height:1000px;">
+            <div style="width:100%; height:100%" id="wrap_sheet_specification">
                 <!--row_header-->
                 <div class="sheet_cellheader" id="sheet_cellheader" ng-class="{'toggle_sheet': toggle_sheet}">
                     <div style="position: absolute; top: 0px; width: 100%; background-color: #eaeaea;">
@@ -122,8 +134,8 @@
                 </div>
 
                 <!--Center-->
-                <div style="position: relative; width: 100%; height: 100%; max-height: inherit;">
-                    <div style="position: absolute; top: 0px; width: 100%; height: 70%; background-color: white; overflow-y:auto" id="sheet_cellcenter">
+                <div style="position: relative; width: 100%; height: 90%; max-height: inherit;">
+                    <div style="position: absolute; top: 0px; width: 100%; height: 90%; background-color: white; overflow-y:auto" id="sheet_cellcenter">
                         <!--sheet-->
                         <div class="row_sheet" ng-repeat="specification in specifications">
                             <div class="border-line"></div>
@@ -165,6 +177,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-offset-7 col-md-5" style="top:-100px; height:42px">
+            <p>
+            </p>
         </div>
     </div>
 </div>

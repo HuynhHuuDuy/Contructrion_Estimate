@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!--bootstrap-->
-
+    @*<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>*@
     <link href="~/Content/AdminLTE.css" rel="stylesheet" />
     <link href="~/Content/Bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/Bootstrap/bootstrap-select.css" rel="stylesheet" />
@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dự toán xây dựng | </title>
+    <title>Dự toán xây dựng</title>
     <!-- Bootstrap -->
     <link href="~/Content/admin/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
@@ -23,6 +23,10 @@
     <link href="~/Content/admin/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
     <!-- Custom Theme Style -->
     <link href="~/Content/admin/css/custom.min.css" rel="stylesheet" />
+    <!--angular-->
+    <script src="~/Scripts/Angular/angular.min.js"></script>
+    <script src="~/Scripts/Angular/angular-ui-router.min.js"></script>
+    <script src="~/Scripts/Bootstrap/ui-bootstrap-tpls-2.5.0.min.js"></script>
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -51,11 +55,20 @@
                             <h3>Chức năng chung</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a><i class="fa fa-edit"></i>Quản lí <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-edit"></i>Bảng danh sách<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="/Admin/danhsachdongia">Đơn giá</a></li>
                                         <li><a href="/Admin/suaxoanguoidung">Người dùng</a></li>
-                                        <li><a href="/Admin/danhsachdinhmuc">Định mức</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-edit"></i>Form<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/Admin/upload">Upload đơn giá</a></li>
+                                        <li><a href="/Admin/uploadinhmuc">Upload định mức</a></li>
+                                        <li><a href="/Admin/nhapdinhmuc">Nhập định mức</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -81,8 +94,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;">Hồ sơ</a></li>
-                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i>Đăng xuất</a></li>
+                                    <li><a href="/Account/Logout"><i class="fa fa-sign-out pull-right"></i>Đăng xuất</a></li>
                                 </ul>
                             </li>
                         </ul>

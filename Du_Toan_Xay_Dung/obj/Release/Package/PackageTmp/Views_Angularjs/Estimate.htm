@@ -47,13 +47,11 @@
 
     .sheet_cellheader {
         position: relative;
-        width: 98.35%;
         height: 50px;
         max-height: inherit;
     }
 
     .toggle_sheet {
-        width: 98.67%;
     }
 
     .popupsearch {
@@ -84,21 +82,45 @@
         height: 1px;
         width: 100%;
     }
+
+    .wrap_sheet {
+        width: 100%;
+        height: 100%;
+    }
+
+    .btn_saveSumAllWork {
+        margin: 0px 15px 8px 0px;
+    }
+
+        .btn_saveSumAllWork .note_btn_savesumprice {
+            display: none;
+        }
+
+        .btn_saveSumAllWork:hover .note_btn_savesumprice {
+            position: absolute;
+            display: block;
+            top: 0px;
+            color: black;
+            border: 1px solid;
+            border-radius: inherit;
+            padding: 5px;
+            left: -370px;
+        }
 </style>
 
 
+<script>
 
-<!--Right click and dropdown menu-->
-<ul id="dropdowncontext" class="dropdown-menu" style="cursor:pointer">
-    <li><a ng-click="insertabove()">Chèn dòng lên trên</a></li>
-    <li><a ng-click="insertbelow()">Chèn dòng bên dưới</a></li>
-    <li class="divider"></li>
-    <li><a ng-click="deletecontent()">Xóa nội dung các dòng đã chọn</a></li>
-    <li><a ng-click="deleterow()">Xóa các dòng đã chọn</a></li>
-</ul>
+    $(window).resize(function () {
+        //coordinate 100%
+        var temp = $("#wrap_sheet_estimate").width();
+        $("#sheet_cellheader").css("width", parseFloat(temp - 17) + "px");
+    });
 
-<div class="row" ng-controller="EstimateCtrl" ng-init="start=0;end=10;">
-    <div class="col-sm-12">
+</script>
+
+<div class="row" ng-controller="EstimateCtrl" ng-init="start=0;end=10;" id="content_estimate">
+    <div class="col-md-12">
         <h3>Hướng dẫn sử dụng</h3>
         <p>
             - Double click bất kì ô nào trong cột Tên Công Việc để search công việc.
@@ -111,7 +133,7 @@
             cho các công việc tương ứng là 1, 2,...
         </p>
     </div>
-    <div class="col-sm-12">
+    <div class="col-md-12">
         <!--
         <div class="col-sm-12" style="margin-top:10px">
             <div class="input_zoomdata">
@@ -122,20 +144,20 @@
             </div>
         </div>
             -->
-        <div class="col-sm-12" style="height:30px">
-            <div class="col-sm-4">
+        <div class="col-md-12" style="height:30px">
+            <div class="col-md-4">
 
             </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
                 <span id="Message_saved" style="color:green" ng-show="message_save">
                     <i class="fa fa-circle-o-notch fa-spin" style="font-size:18px"></i>
                     Đang lưu vào hệ thống
                 </span>
             </div>
         </div>
-        <div class="col-sm-12" style="height:1000px;" ng-click="remove_csspicked($event)">
-            <div style="width:100%; height:100%">
+        <div class="col-md-12" style="height:1000px;" ng-click="remove_csspicked($event)">
+            <div id="wrap_sheet_estimate" class="wrap_sheet">
                 <!--row_header-->
                 <div class="sheet_cellheader" id="sheet_cellheader" ng-class="{'toggle_sheet': toggle_sheet}">
                     <div style="position: absolute; top: 0px; width: 100%; background-color: #eaeaea;">
@@ -161,7 +183,7 @@
                         <!--sheet-->
                         <div class="row_sheet" ng-repeat="work in works">
                             <div class="border-line"></div>
-                            <div style="left:0%;width:3%;border-left: 1px solid #c6c6c6;" class="column_header" ng-right-click context="dropdowncontext" movefocus ng-click="pickingrow($event)">
+                            <div style="left:0%;width:3%;border-left: 1px solid #c6c6c6;" class="column_header" context-menu="myContextDiv" movefocus ng-click="pickingrow($event)">
                                 <input type="text" readonly ng-model="work.IndexSheet" class="input_sheet inputsheet_columnheader" />
                             </div>
                             <div style="left:3%;width:4%" class="cell" movefocus>
@@ -205,7 +227,20 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+        </div>
+        <div class="col-md-offset-7 col-md-5" style="top:-100px">
+            <p>
+                <span class="btn btn-success btn-xs btn_saveSumAllWork" ng-click="btn_saveSumAllWork()">
+                    <i class="fa fa-save"></i>
+                    <span class="note_btn_savesumprice">Click để cập nhật lại tổng tiền các công việc cho hạng mục chính</span>
+                </span>
+                <strong style="font-size: x-large; font-family: inherit;">Tổng tiền : {{sum_estimate}}</strong>
+                <input type="hidden" ng-model="sum_estimate" />
+
+            </p>
+
         </div>
     </div>
     <div id="popupsearch" ng-show="popupsearch" ng-class="popupsearchclass" ng-style="popupsearchcss">
@@ -243,20 +278,20 @@
                             </table>
                         </div><!-- /.box-body -->
                     </div>
-                    <div class="col-sm-12" style="margin-top:5px">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3">
+                    <div class="col-md-12" style="margin-top:5px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
                             <button class="btn btn-block btn-primary" id="btn_search_normwork" ng-click="save_search_system()">Chọn</button>
                         </div>
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="user" style="height:395px">
-                    <div class="col-sm-12">
+                    <div class="col-md-12">
                         <input class="form-control" id="txt_search_user" ng-model="keysearch_user" autofocus placeholder="Nhập công việc cần tìm kiếm..." />
                     </div>
-                    <div class="col-sm-12" style="margin-top:10px;">
+                    <div class="col-md-12" style="margin-top:10px;">
                         <div class="box-body table-responsive no-padding" style="height:280px; overflow-y:auto">
                             <table class="table table-hover">
                                 <tbody id="table_search_normwork">
@@ -278,13 +313,13 @@
                             </table>
                         </div><!-- /.box-body -->
                     </div>
-                    <div class="col-sm-12" style="margin-top:5px">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3">
+                    <div class="col-md-12" style="margin-top:5px">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
                             <button class="btn btn-block btn-primary" id="btn_search_usernormwork" ng-click="save_search_user()">Chọn</button>
                         </div>
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
             </div>
