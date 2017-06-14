@@ -321,10 +321,17 @@
     <Content Include="Handlers\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Handlers\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Global.asax" />
+    <Content Include="Images\11.PNG" />
     <Content Include="Images\13434854_305599949784935_3434578791858611307_n.jpg" />
+    <Content Include="Images\2.PNG" />
+    <Content Include="Images\3.PNG" />
+    <Content Include="Images\4.PNG" />
+    <Content Include="Images\5.PNG" />
+    <Content Include="Images\6.PNG" />
     <Content Include="Images\Awicons-Vista-Artistic-Office-building.ico" />
     <Content Include="Images\Benjigarner-Softdimension-Excel.ico" />
     <Content Include="Images\Bokehlicia-Alike-Dropbox.ico" />
+    <Content Include="Images\construction-project.jpg" />
     <Content Include="Images\ec300.jpg" />
     <Content Include="Images\engineer.jpg" />
     <Content Include="Images\Logo\Building-Manager-Job-Description-Image.jpg" />
@@ -477,6 +484,7 @@
     <Content Include="Views\Account\ForGot.cshtml" />
     <Content Include="Upload\don_gia.xlsx" />
     <Content Include="Views\Admin\post_nhapdinhmuc.cshtml" />
+    <Content Include="Views\News\CES.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

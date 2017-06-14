@@ -53,6 +53,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [PageLogin]
         public JsonResult get_dataSavetoDropbox(string ID)
         {
@@ -223,9 +224,9 @@ namespace Du_Toan_Xay_Dung.Controllers
                     ws1.Cells[D].Value = row.BuildingItem_ID;
                     ws1.Cells[F].Value = row.NormWork_ID;
                     ws1.Cells[I].Value = row.Name;
-                    foreach(var row2 in haophi)
+                    foreach (var row2 in haophi)
                     {
-                        if(row2.UserWork_ID==row.ID)
+                        if (row2.UserWork_ID == row.ID)
                         {
                             r1 = r1 + 1;
                             I = "I" + r1;
@@ -235,7 +236,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                             ws1.Cells[J].Value = row2.Number_Norm;
                             ws1.Cells[K].Value = row2.Price;
                         }
-                        
+
                     }
                     ws1.Cells[L].Value = row.Unit;
                     ws1.Cells[N].Value = row.Number;
@@ -295,34 +296,40 @@ namespace Du_Toan_Xay_Dung.Controllers
                 //Response.AddHeader("content-disposition", "attachment;filename=DuToanXayDung.xlsx");
                 //Response.Charset = "";
                 //Response.ContentType = "application/vnd.ms-excel";
-                //StringWriter sw = new StringWriter();
+                ////StringWriter sw = new StringWriter();
                 //Response.BinaryWrite(fileBytes);
                 //Response.End();
 
                 string base64ImageRepresentation = Convert.ToBase64String(fileBytes);
 
-                strbase64_excel = "data:excel/xlsx" + ";base64," + base64ImageRepresentation;
+                string time = DateTime.Now.Date.Year.ToString() + DateTime.Now.Date.Month.ToString() + DateTime.Now.Date.Day.ToString();
+                time = time + DateTime.Now.Date.Hour.ToString() + DateTime.Now.Date.Minute.ToString() + DateTime.Now.Date.Second.ToString();
 
+                System.IO.File.WriteAllBytes(Server.MapPath(@"~/Images/DuToanXayDung" + time + ".xlsx"), Convert.FromBase64String(base64ImageRepresentation));
+
+                //strbase64_excel = "data:excel/xlsx" + ";base64," + base64ImageRepresentation;
+                strbase64_excel = @"/Images/DuToanXayDung" + time + ".xlsx";
             }
-
 
             foreach (var item in list_temp)
             {
-                string path = Server.MapPath(@"~" + item.Url);
+                //string path = Server.MapPath(@"~" + item.Url);
 
-                byte[] imageArray = System.IO.File.ReadAllBytes(path);
-                string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                //byte[] imageArray = System.IO.File.ReadAllBytes(path);
+                //string base64ImageRepresentation = Convert.ToBase64String(imageArray);
 
                 var Arr_temp = item.Url.Split('/');
-                var Arr_name = Arr_temp[4].Split('.');
+                //var Arr_name = Arr_temp[4].Split('.');
 
-                list_images.Add(new Images_CongTrinhViewModel() { name = Arr_temp[4], src = "data:image/" + Arr_name[1].ToLower() + ";base64," + base64ImageRepresentation });
+                //list_images.Add(new Images_CongTrinhViewModel() { name = Arr_temp[4], src = "data:image/" + Arr_name[1].ToLower() + ";base64," + base64ImageRepresentation });
+
+                list_images.Add(new Images_CongTrinhViewModel() { name = Arr_temp[4], src = item.Url });
 
             }
 
             list_images.Add(new Images_CongTrinhViewModel() { name = "dutoanxaydung.xlsx", src = strbase64_excel });
 
-            return Json(list_images, JsonRequestBehavior.AllowGet);
+            return Json(list_images);
         }
 
 
@@ -351,7 +358,7 @@ namespace Du_Toan_Xay_Dung.Controllers
                             //them image vao database
                             Images_Url image = new Images_Url();
                             image.Building_ID = congtrinh.ID;
-                            image.Url = "/Images/CongTrinh/Building" + congtrinh.ID + "/" + file.FileName;
+                            image.Url = @"/Images/CongTrinh/Building" + congtrinh.ID + "/" + file.FileName;
                             congtrinh.Images_Urls.Add(image);
                         }
                     }
@@ -611,8 +618,8 @@ namespace Du_Toan_Xay_Dung.Controllers
 
         //    if (ID != null)
         //    {
-                
-                
+
+
         //    }
         //    else
         //    {

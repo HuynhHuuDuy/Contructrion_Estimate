@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "CES";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h3>Giới thiệu CES</h3>
+    <ol class="breadcrumb">
+        <li><a href="/News/Index">Tin Tức</a></li>
+        <li class="active">CES</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div id="container" class="container" style="margin-top:100px" ng-app="unitprice" ng-controller="UnitPrice_Controller">
+        <div class="row col-sm-12">
+            <div class="row general-features">
+                <div class="large-11 large-centered columns">
+                    <div class="row">
+                        <h2>Tạo công trình cho riêng mình</h2>
+                        <div class="col-md-6" style="margin-top:100px">
+                            <p style="font-size: large">
+                                Để dự toán chi phí và thêm các thông tin cần thiết, bạn cần phải tạo công trình. Gồm có các thông tin : Tên, Mô Tả, Địa Chỉ,...
+                                Ngoài ra, bạn cũng có thể tài lên các hình ảnh liên quan như: bản vẽ, hợp đồng gói thầu,...
+                            </p>
+                            <p style="font-size: large">
+                                Mỗi công trình là những hạng mục nhỏ khác nhau, có rất nhiều hạng mục cho một công trình nào đó.
+                                Hệ thống hổ trợ bạn tạo ra các hạng mục để chia nhỏ công việc cho công trình của mình.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="~/Images/11.PNG" class="col-md-12 img-responsive img-thumbnail" />
+                            <img src="~/Images/4.PNG" class="col-md-12 img-responsive img-thumbnail" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row data-binding">
+                        <h2>Dự toán</h2>
+                        <div class="col-md-6">
+                            <img src="~/Images/5.PNG" class="col-md-12 img-responsive img-thumbnail" />
+                            <img src="~/Images/6.PNG" class="col-md-12 img-responsive img-thumbnail" />
+                        </div>
+                        <div class="col-md-6" style="margin-top:70px">
+                            
+                            <p style="font-size: large">
+                                Đây là công việc quan trọng nhất để dự toán một công trình, tìm kiếm, chọn hoặc tự tạo ra các công việc
+                                nhỏ trong từng hạng mục mà bạn đã tạo trước đó.
+                                Với chức năng này, bạn có thể tùy thích sử dụng nó gần giống như excel, mỗi công việc sẽ gồm có các
+                                dữ liệu cần thiết và chỉ cần điền các số liệu để tính toán ra giá của từng công việc đó.
+                                Hệ thống có thể tự động tính được giá tiền dựa theo định mức và đơn giá mà bạn đã chọn trước đó.
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <h2>Hổ trợ lập dự toán</h2>
+                        <div class="col-md-6">
+                            <p style="font-size: large">
+                                Ngoài ra, để việc dự toán đạt như mong muốn của bạn. Bạn có thể tạo thêm các định mức và đơn giá cho
+                                riêng mình.
+                            </p>
+                            <img src="~/Images/3.PNG" class="col-md-12 img-responsive img-thumbnail" />
+                        </div>
+                        <div class="col-md-6">
+                            <img src="~/Images/2.PNG" class="col-md-12 img-responsive img-thumbnail" />
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

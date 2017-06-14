@@ -14,5 +14,10 @@ namespace Du_Toan_Xay_Dung.Controllers
         {
             return View();
         }
+
+        public ActionResult CES()
+        {
+            return View();
+        }
 	}
 }

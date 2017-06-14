@@ -47,6 +47,12 @@
 
         .main-footer {
             margin-left: 0px !important;
+            position: absolute;
+            /* left: 0; */
+            /* bottom: 0; */
+            height: 100px;
+            width: 100%;
+            overflow: hidden;
         }
     </style>
 
@@ -64,6 +70,7 @@
         <header>
             <div id="logo" class="container">
                 <h1><a href="#">Dự Toán Xây Dựng</a></h1>
+                <h2 class="text-center" style="margin-top:-15px">CES</h2>
                 @*<p>Vươn lên tầm cao mới</p>*@
             </div>
             <div id="menu-wrapper" style="margin-bottom:0px">
@@ -105,10 +112,7 @@
             <br />
         </div>
 
-
-
         <!--footer-->
-
         <footer class="main-footer">
             <div class="row">
                 <div class="col-sm-1"></div>
@@ -116,8 +120,8 @@
                     <div class="pull-right hidden-xs">
                         <b>Version</b> 1.0
                     </div>
-                    <p>SaiGon Unisersity</p>
-                    <p>An Dương Vương, Q.5, TP. Hồ Chí Minh</p>
+                    <strong>SaiGon Unisersity</strong>
+                    <span>An Dương Vương, Q.5, TP. Hồ Chí Minh</span>
                     <p>Thiết kế và phát triển bởi Huỳnh Hữu Duy, Thạch Thị Kiều Linh</p>
                     <strong>Copyright © 2016-2017, Template design by <a href="http://templated.co">http://templated.co</a> .</strong> All rights
                     reserved.
@@ -128,7 +132,5 @@
     </div>
     @RenderSection("Scripts", required: false)
     @RenderSection("CSS", required: false)
-
-
 </body>
 </html>

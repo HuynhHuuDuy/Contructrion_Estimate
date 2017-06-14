@@ -57,31 +57,27 @@
      };
 
      //Create building item
-     $scope.submit = function () {
+     $scope.add = function () {
          if ($scope.building_id != null) {
              var fd = new FormData();
-             if ($scope.add.$valid) {
-                 // mact = document.getElementById("MaCT").value;
-                 //console.log(mact);
-                 var tenhm = document.getElementById("TenHM").value;
-                 var mota = document.getElementById("MoTa").value;
-                 fd.append("Building_ID", $scope.building_id);
-                 fd.append("Name", tenhm);
-                 fd.append("Description", mota);
-                 $http.post('/CongTrinh/post_themhangmuc', fd, {
-                     transformRequest: angular.identity,
-                     headers: { 'Content-Type': undefined }
-                 })
-                   .then(function (result) {
-                       if (result.data == "ok") {
-                           open_alert("success");
-                           location.reload();
-                       } else {
-                           open_alert("fail");
+             var tenhm = document.getElementById("TenHM").value;
+             var mota = document.getElementById("MoTa").value;
+             fd.append("Building_ID", $scope.building_id);
+             fd.append("Name", tenhm);
+             fd.append("Description", mota);
+             $http.post('/CongTrinh/post_themhangmuc', fd, {
+                 transformRequest: angular.identity,
+                 headers: { 'Content-Type': undefined }
+             })
+               .then(function (result) {
+                   if (result.data == "ok") {
+                       open_alert("success");
+                       location.reload();
+                   } else {
+                       open_alert("fail");
 
-                       }
-                   });
-             }
+                   }
+               });
          }
      };
 

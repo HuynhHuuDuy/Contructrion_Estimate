@@ -171,9 +171,10 @@
                var deferred = $q.defer();
 
                $http({
-                   method: "GET",
+                   method: "POST",
                    url: url,
-                   params: { ID: id }
+                   params: { ID: id },
+                   dataType: "json",
                })
                      .then(function (response) {
 
@@ -183,7 +184,6 @@
                          //showing errors
                          deferred.reject({ message: "Really bad" });
                      });
-
 
                return deferred.promise;
            }
@@ -196,18 +196,23 @@
 
                    var obj = {
                        filename: value.name,
-                       url: value.src
+                       url: window.location.protocol + '//' + window.location.host + value.src 
                    };
 
                    listdropbox.push(obj);
 
                });
 
-               //console.log(listdropbox);
+               console.log(listdropbox);
 
                var options = {
 
                    files: listdropbox,
+                   //files: [
+                   // // You can specify up to 100 files.
+                   // { 'url': 'http://localhost:51328/Images/CongTrinh/Building39/Capture2.PNG', 'filename': 'haha.png' },
+                   // // ...
+                   //            ],
 
                    // Success is called once all files have been successfully added to the user's
                    // Dropbox, although they may not have synced to the user's devices yet.
@@ -229,6 +234,7 @@
                    // hosting the files, such as not being able to find a file. This callback is
                    // also called if there is an error on Dropbox or if the user is over quota.
                    error: function (errorMessage) {
+                       alert(errorMessage);
                    }
                };
 

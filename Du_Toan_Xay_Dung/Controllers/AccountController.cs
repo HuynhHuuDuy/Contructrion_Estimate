@@ -52,7 +52,8 @@ namespace Du_Toan_Xay_Dung.Controllers
             }
             else
             {
-                return RedirectToAction("Login","Account");
+                TempData["Message"] = "Tài khoản hoặc mật khẩu không đúng !";
+                return RedirectToAction("Login", "Account");
             }
         }
 
@@ -90,10 +91,7 @@ namespace Du_Toan_Xay_Dung.Controllers
             SessionHandler.User = null;
             return RedirectToAction("Login");
         }
-        public ActionResult Forgot()
-        {
-            return View();
-        }
+
         [HttpPost]
         public ActionResult Forgot(String Email)
         {
